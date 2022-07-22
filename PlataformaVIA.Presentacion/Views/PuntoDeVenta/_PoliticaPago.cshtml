@@ -1,0 +1,13 @@
+@model PlataformaVIA.Core.Domain.AdministradorDocumentos.ImagenesInstructivo
+
+@{
+    ViewBag.Title = "_PoliticaPago";
+}
+<head>
+    @* Adjust the viewport width as per device width for mobile *@
+    <meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+</head>
+
+<div style="height:100%;">
+    <img src="/AdministradorDocumentos/MostrarArchivo/?ubicacion=@Model.Ubicacion" alt="image" class=" center-block" style="width:100%;">
+</div>

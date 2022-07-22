@@ -1,0 +1,118 @@
+﻿@model PlataformaVIA.Core.Domain.Cadena.Cadena
+
+@{
+    Layout = null;
+}
+<div class="form-horizontal dvBuscadorReportesCadena">
+    <div class="dvBuscadorReportesCadenaHeader">
+        <h3>Solicitud reporte de facturación</h3>
+    </div>
+    <div class="row marto15">
+        <label class="col-md-6">Seleccione si requiere el reporte de facturación semanal o mensual</label>
+        <label class="col-md-2"><input type="checkbox" id="chkSemanal" value="Semanal" /> Semanal</label>
+        <label class="col-md-2"><input type="checkbox" id="chkMensual" value="Mensual" /> Mensual</label>
+    </div>
+    <div class="row marto15">
+        <label class="control-label col-md-2">Mes o Semana</label>
+        @Html.DropDownList("ddlPeriodos", Enumerable.Empty<SelectListItem>(), "Seleccionar...",
+                                new { @class = "form-control col-md-4 mx-2", @id= "ddlPeriodos" })
+
+        <button id="btnEjecutarBusquedaAvanzadaFechas" type="button" class="btn btn-primary" data-dismiss="modal" onclick="CrearReporteCadena()" >Enviar</button>
+    </div>
+    <div class="row mensajeNota marto15">
+        <span><b id="bMensaje" style="color:red;"></b></span>
+    </div>
+</div>
+<script type="text/javascript">
+
+    $('#chkSemanal').change(function () {
+        if ($(this).is(":checked")) {
+            
+            $('#chkMensual').prop('checked', false);
+            //Llena las semanas
+            $("select[id$=ddlPeriodos] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("ObtenerSemanasCertificado")',
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+                       
+                        $("#ddlPeriodos").append($("<option>").val(item.Id).text(item.Periodo));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         console.log(xhr); console.log(thrownError);
+                         $("#bMensaje").html(xhr);
+                     }
+                 });
+        }
+    });
+
+    $('#chkMensual').change(function () {
+        if ($(this).is(":checked")) {
+           
+            $('#chkSemanal').prop('checked', false);
+
+            //Llena los meses
+            $("select[id$=ddlPeriodos] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("ObtenerMesesCertificado")',
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+                        
+                        $("#ddlPeriodos").append($("<option>").val(item.Id).text(item.Periodo));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         console.log(xhr); console.log(thrownError);
+                         $("#bMensaje").html(xhr);
+                     }
+                 });
+        }
+    });
+
+    function CrearReporteCadena() {
+
+        var codCD = @Html.Raw(Json.Encode(Model.Id));
+        console.log(codCD)
+
+        if ($("#chkSemanal").is(":checked")) {
+            var tipoReporte = "ReporteVentasporProductoSemanal";
+        }
+
+        if ($("#chkMensual").is(":checked")) {
+            var tipoReporte = "ReporteVentasporProductoMensual";
+        }
+
+        var codigo = $("#ddlPeriodos").val();
+
+        if (codigo != null && codigo != "" && codigo != undefined) {            
+                $.ajax({
+                    type: "Post",
+                    url: "@Url.Action("CrearReportes")",
+                    data: {
+                    tipoReporte: tipoReporte,
+                    codCadena: codCD,
+                    codCiclo: codigo
+                    },
+                    success: function (data) {
+                        $("#bMensaje").html(data);
+
+                        $('#ddlPeriodos')[0].selectedIndex = 0;
+                    }
+                });
+            } else {
+                $("#bMensaje").html('Seleccione un ciclo de facturación');
+            }
+
+
+        }
+
+</script>

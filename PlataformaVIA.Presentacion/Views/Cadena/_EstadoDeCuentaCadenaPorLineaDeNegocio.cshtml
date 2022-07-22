@@ -1,0 +1,72 @@
+@model PlataformaVIA.Core.Domain.Cadena.Cadena
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Información general estado de cuenta
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="collapse show">
+    <div class="c-accordeon__contenedor">
+        <div class="table-responsive">
+            <table class="table c-table mt-3">
+                @if (Model.EstadosCarteraxLDN.ToList().Count > 0)
+                {
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text text--color--black border border--reset p-1">
+                                @Html.DisplayNameFor(model => model.EstadosCarteraxLDN.FirstOrDefault().LineadeNegocio)
+                            </th>
+                            <th scope="col" class="text text--color--black border border--reset p-1">
+                                @Html.DisplayNameFor(model => model.EstadosCarteraxLDN.FirstOrDefault().DiasMora)
+                            </th>
+                            <th scope="col" class="text text--color--black border border--reset p-1">
+                                @Html.DisplayNameFor(model => model.EstadosCarteraxLDN.FirstOrDefault().TotalDeuda)
+                            </th>
+                            <th scope="col" class="text text--color--black border border--reset p-1">
+                                @Html.DisplayNameFor(model => model.EstadosCarteraxLDN.FirstOrDefault().SaldoCorriente)
+                            </th>
+                            <th scope="col" class="text text--color--black border border--reset p-1">
+                                @Html.DisplayNameFor(model => model.EstadosCarteraxLDN.FirstOrDefault().SaldoVencido)
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @foreach (var item in Model.EstadosCarteraxLDN.ToList())
+                        {
+                            <tr>
+                                <th scope="row" class="text text--color--black border border--reset p-1">
+                                    @Html.DisplayFor(modelItem => item.LineadeNegocio)
+                                </th>
+                                <td class="text text--color--st_green border border--reset p-1">
+                                    @Html.DisplayFor(modelItem => item.DiasMora)
+                                </td>
+                                <td class="text text--color--st_green border border--reset p-1">
+                                    @Html.DisplayFor(modelItem => item.TotalDeuda)
+                                </td>
+                                <td class="text text--color--st_green border border--reset p-1">
+                                    @Html.DisplayFor(modelItem => item.SaldoCorriente)
+                                </td>
+                                <td class="text text--color--st_green border border--reset p-1">
+                                    @Html.DisplayFor(modelItem => item.SaldoVencido)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
+                else
+                {
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text text--color--black border border--reset p-1">
+                                No hay datos
+                            </th>
+                        </tr>
+                    </tbody>
+                }
+            </table>
+        </div>        
+    </div>
+</div>
+

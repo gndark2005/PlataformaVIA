@@ -1,0 +1,65 @@
+﻿@model IEnumerable<PlataformaVIA.Core.Domain.Media.Articulo>
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="~/Content/bootstrap.css" rel="stylesheet">
+
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" onclick="CancelarCambios()" data-dismiss="modal">×</button>
+            <h3 class="modal-title" id="myModalLabel">Instructivo</h3>
+        </div>
+        <div class="modal-body">
+            <div id="imageCarousel" class="carousel slide" data-interval="7000"
+                 data-ride="carousel" data-pause="hover" data-wrap="true">
+                <ol class="carousel-indicators">
+                    <li data-target="#imageCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#imageCarousel" data-slide-to="1"></li>
+                    <li data-target="#imageCarousel" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                    @for (int i = 0; i < Model.ToList().Count; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <div class="item active">
+                                <img src="@Model.ToList()[i].NombreImagen" class="img-responsive marCenter" style="height:350px;">
+                                <div class="carousel-caption">
+                                    <h3></h3>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="item">
+                                <img src="@Model.ToList()[i].NombreImagen" class="img-responsive marCenter" style="height:350px;">
+                                <div class="carousel-caption">
+                                    <h3></h3>
+                                </div>
+                            </div>
+                        }
+
+                    }
+                </div>
+
+                <a href="#imageCarousel" class="carousel-control left" data-slide="prev">
+                    <span class="glyphicon glyphicon-hand-left"></span>
+                </a>
+                <a href="#imageCarousel" class="carousel-control right" data-slide="next">
+                    <span class="glyphicon glyphicon-hand-right"></span>
+                </a>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+<footer>
+
+</footer>

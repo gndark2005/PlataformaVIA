@@ -1,0 +1,46 @@
+﻿@model PlataformaVIA.Presentacion.ViewModels.BarcodeViewModel
+@{
+    Layout = null;
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content mt-5">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            <h3 class="modal-title text-center h1" id="myModalLabel">Banco de Bogotá</h3>
+        </div>
+        <div class="modal-body">
+            <div class="container">
+                @if (Model.BarcodeIGT != null  && Model.BarcodeFiducia != null)
+                {
+                    <div class="row center">
+                        <h2 class="col text-center">Producto IGT 3030052</h2>
+                        <div class="col">
+                            <img src="@String.Format("data:image/png;base64,{0}",Convert.ToBase64String(Model.BarcodeIGT))" class="img-responsive center-block" />
+                        </div>
+                        <div class="col text-center font-weight-bold">
+                            @Model.TextoBarcodeIGT
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row center mt-4">
+                        <h2 class="col text-center">Producto FIDUCIA 3030058</h2>
+                        <div class="col">
+                            <img src="@String.Format("data:image/png;base64,{0}",Convert.ToBase64String(Model.BarcodeFiducia))" class="img-responsive center-block" />
+                        </div>
+                        <div class="col text-center font-weight-bold">
+                            @Model.TextoBarcodeFiducia
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="row center mt-4">
+                        <h2 class="col text-center">No hay información disponible</h2>
+                    </div>
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

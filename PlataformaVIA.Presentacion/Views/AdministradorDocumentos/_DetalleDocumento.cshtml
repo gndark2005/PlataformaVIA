@@ -1,0 +1,151 @@
+@model PlataformaVIA.Core.Domain.AdministradorDocumentos.Instructivos
+
+@{
+    ViewBag.Title = "Detalles del Documento";
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript(true);
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+          
+            <h3 class="modal-title" id="myModalLabel">@Model.Titulo</h3>
+        </div>
+        <div class="modal-body">
+            <div class="dvCentro">
+
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.TipoInstructivo)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.TipoInstructivo)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Titulo)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Titulo)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Descripcion)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Descripcion)
+                    </div>
+                </div>
+
+                @if (Model.MultiplesArchivos)
+                {
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.TipoTerminal)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.TipoTerminal)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Categoria)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.Categoria)
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold"> @Html.DisplayName("Imagen: ")</div>
+                    <div class="col-md-6 ">
+                        <img id="CargaDocumento" width="200" height="200" />
+                    </div>
+                </div>
+
+                <div>
+                    <table id="imagenes-data-table"
+                           class="table table-striped table-bordered dataTableBotonesColocador"
+                           style="width:100%"></table>
+                </div>
+                
+                <div class="row textoCentro marto15">
+                    <span class="col-md-9"></span>
+                    <input type="button" class="btn btn-info mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Regresar" />
+                </div>
+            </div>
+        </div>      
+    </div>
+    
+</div>
+
+    <script type="text/javascript">
+        var ImagenesListVM;
+
+        function CargarImagen(ubicacionFile) {
+
+            var url = '/AdministradorDocumentos/MostrarArchivo/?ubicacion=' + ubicacionFile
+        
+            $("#CargaDocumento").attr("src", url);
+        }
+
+    $(function () {
+        ImagenesListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#imagenes-data-table').DataTable({
+                        dom: '',
+                        "serverSide": true,
+                        "bSort": false,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        "scrollX": true,
+                        //"ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            type: 'POST',
+                            "url":
+                                "@Url.Action("GetImagenesDetalle", "AdministradorDocumentos")",
+                            "data": {idDoc: @Model.IdInstructivo},
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "title": "",
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' title='Consultar documento' id='" + data.Ubicacion+"'  onclick='CargarImagen(this.id)' data-id=" + data.Id + "><i class='fa fa-search'></i></a>";
+                                }
+                            },
+                            //{
+                            //    "title": "ID",
+                            //    "data": "Id",
+                            //    "searchable": false,
+                            //    "visible": false
+                            //},
+                            {
+                                "title": "Orden",
+                                "data": "Orden",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Archivo",
+                                "data": "NombreArchivo",
+                                "searchable": false
+                            },
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                    });
+                },
+                refresh: function () {
+                        dt.ajax.reload();
+                }
+        };
+            // initialize the datatables
+        ImagenesListVM.init();
+    });
+
+    </script>
+}
+

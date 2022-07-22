@@ -1,0 +1,114 @@
+﻿@{
+    ViewBag.Title = "Generación de Certificados";
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="list-panel-heading">
+            @Html.Action("GetListadoDeCertificados")
+        </div>
+        <div id="partialPlaceHolder" style="display:none;"> </div>
+    </div>
+    <div>
+        <iframe id="pdfFrame0" src="" style="width:100%;" height="900" frameBorder="0" type='application/pdf'></iframe>
+    </div>
+    <div>
+        <iframe id="pdfFrame1" src="" style="width:100%;" height="900" frameBorder="0" type='application/pdf'></iframe>
+    </div>
+</div>
+
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        $('#codTipoCertificado').change(function () {
+            if ($(this).val() != "") {
+                //Clear Db Old values
+                $("select[id$=mesCertificado] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("_GetFechasCertificado", "Certificado")',
+                     data: { codCertificado: $(this).val()},
+                    type: 'GET',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                    $.each(data, function (index, item) {
+                        $("#mesCertificado").append($("<option>").val(item.Fecha).text(item.Texto));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                       console.log(xhr); console.log(thrownError);
+                     }
+                 });
+            }
+        });
+
+        function GenerarCertificado() {
+            if ($('#formCertificado').valid()) {
+
+               $.ajax({
+                    url: '@Url.Action("GenerarCertificado", "Certificado")',
+                data: {
+                    codCertificado: $('#codTipoCertificado').val(),
+                    fecha: $("#mesCertificado").val(),
+                    keyParametro: $('#codTipoCertificado option:selected').text()
+                },
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        if (data==false) {
+                            $("#StatusMessage").html("Certificado no disponible")
+                            OcultarFrame();
+                        } else {
+                            $("#StatusMessage").html("Certificado generado")
+                            //window.location.href = "@Url.RouteUrl(new { Controller = "Certificado", Action = "DescargarCertificado" })/?fileName=" + data;
+                            data.forEach(function (elemento) {
+                                //console.log(elemento.Item1);
+                                //alert(elemento(0))
+                                MostrarDocumento(elemento.Item1, elemento.Item2);
+                            });
+                            //MostrarDocumento(data)
+                        }
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         console.log(xhr); console.log(thrownError);
+                         $("#StatusMessage").html(thrownError)
+                     }
+                 });
+            }
+        }
+
+        function MostrarDocumento(index, data) {
+
+            //for (var i = 0; i < data.length; i++) {
+            //    alert(data(i));
+            //}
+
+
+            var $iframe = $('#pdfFrame' + index);
+
+            if ($iframe.length) {
+
+                var url = '/Certificado/VistaDocumento/?ubicacion=' + data
+
+                $iframe.attr('src', url);
+
+            }
+
+            return true;
+
+        }
+
+    function OcultarFrame() {
+        var $iframe = $('#pdfFrame');
+        if ($iframe.length) {
+            $iframe.attr('src', "");
+        }
+        return true;
+    }
+    </script>
+}

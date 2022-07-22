@@ -1,0 +1,236 @@
+﻿@model PlataformaVIA.Core.Domain.Divulgacion
+
+@{
+    ViewBag.Title = "Crear Divulgación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Nueva Divulgación</h1>
+        </div>
+        <div class="panel-body">
+
+            @using (Html.BeginForm("CrearDivulgacion", "Divulgacion", FormMethod.Post, new { id = "CrearDivulgacion" }))
+            {
+
+                @Html.HiddenFor(model => model.TEXTO)
+
+                <div class="modal-body">
+                    <div class="dvCentro">
+
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.NOMBRE)</div>
+                            <div class="col-md-6 ">
+                                @Html.EditorFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                                @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.TITULO)</div>
+                            <div class="col-md-6 ">
+                                @Html.EditorFor(model => model.TITULO, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                                @Html.ValidationMessageFor(model => model.TITULO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.FECHAINICIO)</div>
+                            <div class="col-md-6 ">
+                                @Html.EditorFor(model => model.FECHAINICIO, new { htmlAttributes = new { @class = "form-control .w-100", @autocomplete = "off", @Value = "" } })
+                                @Html.ValidationMessageFor(model => model.FECHAINICIO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.FECHAFIN)</div>
+                            <div class="col-md-6 ">
+                                @Html.EditorFor(model => model.FECHAFIN, new { htmlAttributes = new { @class = "form-control .w-100", @autocomplete = "off", @Value = "" } })
+                                @Html.ValidationMessageFor(model => model.FECHAFIN, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.OPCIONRECHAZAR)</div>
+                            <div class="col-md-6 ">
+                                @Html.CheckBoxFor(model => model.OPCIONRECHAZAR, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                                @Html.ValidationMessageFor(model => model.OPCIONRECHAZAR, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.POLITICADETRATAMIENTO)</div>
+                            <div class="col-md-6 ">
+                                @Html.CheckBoxFor(model => model.POLITICADETRATAMIENTO, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                                @Html.ValidationMessageFor(model => model.POLITICADETRATAMIENTO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.ROLES)</div>
+                            <div class="col-md-6 ">
+                                @Html.ListBoxFor(model => model.ROLES, (IEnumerable<SelectListItem>)ViewBag.Roles,
+                                new { @class = "form-control .w-100"})
+                                @Html.ValidationMessageFor(model => model.ROLES, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.EXCEPCIONESNIT)</div>
+                            <div class="col-md-6 ">
+                                @Html.ListBoxFor(model => model.EXCEPCIONESNIT, new List<SelectListItem>(),
+                                new { @class = "form-control .w-100"})
+                                @Html.ValidationMessageFor(model => model.EXCEPCIONESNIT, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.TEXTO)</div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+
+                <br />
+                <div class="row">
+                    <div style="width: 100%">
+                        @Html.TextArea("TEXTOEDIT", new { htmlAttributes = new { @class = "form-control .w-100" } })
+                        @Html.ValidationMessageFor(model => model.TEXTO, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="modal-body">
+                    <div class="dvCentro">
+                        <div class="row textoCentro marto15">
+                            <span class="col-md-4"></span>
+                            <input type="button" id="btnAgregar" class="btn btn-primary mensajeNota col-md-3" value="Crear" onclick="SubmitForm()" />
+                            <a class="btn btn-danger mensajeNota col-md-3" role="button" href="@Url.Action("Index", "Divulgacion")">
+                                <span aria-hidden='true'></span> &nbsp;Cancelar
+                            </a>
+
+                        </div>
+                        <div class="row textoCentro">
+                            <p class="resultadoGuardado" id="pMensajeResultado"></p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+
+        $(document).ready(function () {
+
+            $("#TEXTOEDIT").summernote({
+                toolbar:[
+                    ['style', ['bold', 'italic', 'clear']]
+                ]
+            });
+
+            $("#FECHAINICIO").datepicker({ dateFormat: "dd/mm/yy", autoclose: true});
+            $("#FECHAFIN").datepicker({ dateFormat: "dd/mm/yy", autoclose: true });
+
+            
+            $("#ROLES").selectpicker({ noneSelectedText: 'Seleccione...' });
+            $("#EXCEPCIONESNIT").selectpicker({ noneSelectedText: 'Digite NIT...', liveSearch: true });
+
+            $('input[type="search"]').on('change input', function () {
+                var $this = $(this);
+
+                console.log($this.val())
+
+                $.ajax({
+                type: "POST",
+                url: '@Url.Action("ObtenerNITS")',
+                data: { search: $this.val() },
+                dataType: 'json',
+                    success: function (response) {
+                    
+                       
+                        RemoveList();
+                        
+
+                    $.each(response, function (index, value) {
+         
+        
+                        $("#EXCEPCIONESNIT").append($('<option>').text(value.NIT).val(value.NIT));
+                        $("#EXCEPCIONESNIT").selectpicker('refresh');
+
+                    });
+                    
+                },
+                error: function (error) {
+
+                }
+                });
+
+            });
+
+        });
+
+        function RemoveList() {
+
+            var listbox = document.getElementById("EXCEPCIONESNIT")
+            
+            if ($("#EXCEPCIONESNIT").children().length != 0) {
+                var i;
+                for (i = listbox.options.length - 1; i >= 0; i--) {
+                    if (listbox.options[i].selected) {
+
+                    } else {
+                        listbox.remove(i)
+                    }
+                }
+            }
+            
+            $("#EXCEPCIONESNIT").selectpicker('refresh');
+        }
+
+        function SubmitForm() {
+
+            var markUp = encodeURIComponent($("#TEXTOEDIT").summernote('code'));
+            $("#TEXTO").val(markUp)
+            //console.log(markUp);
+
+            //console.log($("#TEXTO").val())
+
+            $("#CrearDivulgacion").submit();
+
+        }
+
+        
+
+    </script>
+    }
+
+
+
+
+
+
+

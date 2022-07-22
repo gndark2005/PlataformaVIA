@@ -1,0 +1,351 @@
+@model PlataformaVIA.Core.Domain.RepresentanteLegal.Colocador
+
+@{
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript(true);
+}
+
+<head>
+    @* Adjust the viewport width as per device width for mobile *@
+    <meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+</head>
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            <h3 class="modal-title" id="myModalLabel">Crear Colocador</h3>
+        </div>
+        <div class="modal-body">
+            <div style="width:80%; min-width:400px; margin:5px auto;">
+
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "addColaborador", autocomplete = "off" }))
+                {
+                    @Html.AntiForgeryToken()
+
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Nombres)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Nombres, new { htmlAttributes = new { @class = "form-control .w-100", autocomplete = "fname " } })
+                            @Html.ValidationMessageFor(model => model.Nombres, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Apellidos)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Apellidos, new { htmlAttributes = new { @class = "form-control .w-100", autocomplete = "lname" } })
+                            @Html.ValidationMessageFor(model => model.Apellidos, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CodTipoIdentificacion)</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.CodTipoIdentificacion, (IEnumerable<SelectListItem>)ViewBag.TiposIdentificacion, "Seleccione...",
+                                   new { @class = "form-control .w-100" })
+                            @Html.ValidationMessageFor(model => model.CodTipoIdentificacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.NumeroIdentificacion)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.NumeroIdentificacion, new { htmlAttributes = new { @class = "form-control .w-100", @autocomplete = "tel" } })
+                            @Html.ValidationMessageFor(model => model.NumeroIdentificacion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold center">@Html.DisplayNameFor(model => model.CiudadExpedicionCedula)</div>
+                        <div class="col-md-6 ">
+                            @Html.TextBoxFor(model => model.CiudadExpedicionCedula, new { @class = "form-control .w-100", autocomplete = "false" })
+                            @Html.ValidationMessageFor(model => model.CodCiudadExpedicionCedula, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.CodCiudadExpedicionCedula)
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Genero)</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.CodGenero, (IEnumerable<SelectListItem>)ViewBag.Generos, "Seleccione...",
+                                    new { @class = "form-control .w-100" })
+                            @Html.ValidationMessageFor(model => model.CodGenero, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.FechaNacimiento)</div>
+                        <div class="col-md-6 ">
+                            @Html.TextBoxFor(model => model.FechaNacimiento, new { @class = "form-control .w-100 date-picker", data_val_date = "Fecha de nacimiento no valida", autocomplete = "cc-exp" })
+                            @Html.ValidationMessageFor(model => model.FechaNacimiento, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CiudadNacimiento)</div>
+                        <div class="col-md-6 ">
+                            @Html.TextBoxFor(model => model.CiudadNacimiento, new { @class = "form-control .w-100", autocomplete = "false" })
+                            @Html.ValidationMessageFor(model => model.CodCiudadNacimiento, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.CodCiudadNacimiento)
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.DireccionVendedor)</div>
+                        <div class="col-md-6 ">
+                            @Html.TextBoxFor(model => model.DireccionVendedor, new { @class = "form-control .w-100", autocomplete = "shipping street-address" })
+                            @Html.ValidationMessageFor(model => model.DireccionVendedor, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CiudadVendedor)</div>
+                        <div class="col-md-6 ">
+                            @Html.TextBoxFor(model => model.CiudadVendedor, new { @class = "form-control .w-100", autocomplete = "nope" })
+                            @Html.ValidationMessageFor(model => model.CodCiudadVendedor, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.CodCiudadVendedor)
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Telefono)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Telefono, new { htmlAttributes = new { @class = "form-control .w-100", autocomplete = "tel" } })
+                            @Html.ValidationMessageFor(model => model.Telefono, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Celular)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Celular, new { htmlAttributes = new { @class = "form-control .w-100", autocomplete = "tel" } })
+                            @Html.ValidationMessageFor(model => model.Celular, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.TipoSangre)</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.CodTipoSangre, (IEnumerable<SelectListItem>)ViewBag.TiposSangre, "Seleccione...",
+                                    new { @class = "form-control .w-100" })
+                            @Html.ValidationMessageFor(model => model.CodTipoSangre, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.TipoColocador)</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.CodTipoColocador, (IEnumerable<SelectListItem>)ViewBag.TiposVendedor, "Seleccione...",
+                                  new { @class = "form-control .w-100" })
+                            @Html.ValidationMessageFor(model => model.CodTipoColocador, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CorreoElectronico)</div>
+                        <div class="col-md-6 ">
+                            @Html.TextBoxFor(model => model.CorreoElectronico, new { @class = "form-control .w-100", autocomplete = "email" })
+                            @Html.ValidationMessageFor(model => model.CorreoElectronico, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="row textoCentro marto15">
+                        <span class="col-md-4"></span>
+                        <input type="submit" id="btnAgregar" class="btn btn-primary mensajeNota col-md-3 mt-1" value="Crear" />
+                        <input type="button" class="btn btn-danger mensajeNota col-md-3 mt-1" data-dismiss="modal" aria-label="Close" value="Cancelar" />
+                    </div>
+                    <div class="row textoCentro">
+                        <p class="resultadoGuardado" id="pMensajeResultado"></p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        var tempCiudades = [];
+        var form = $("#addColaborador");
+        form.data("validator").settings.ignore = "";
+
+        $('#addColaborador').submit(function (event) {
+            if ($('#addColaborador').validate({
+                focusInvalid: false
+            }).valid()) {
+                $.ajax({
+                    url: '@Url.Action("_CrearColocador")',
+                    dataType: "json",
+                    type:"POST",
+                    data: $('#addColaborador').serialize(),
+                    success: function (data) {
+                        if (data.Error == false) {
+                            $('#pMensajeResultado').removeClass('text-danger');
+                            $('#pMensajeResultado').addClass('text-success');
+                            $('#pMensajeResultado').empty();
+                            $('#pMensajeResultado').html('Colocador guardado correctamente');
+                            try {
+                                colocadoresListVM.refresh();
+                                pasarAAsignacionDeAccesos(data.idColocador)
+                            } catch (error) {
+                                }
+                        } else {
+                            $('#pMensajeResultado').removeClass('text-danger');
+                            $('#pMensajeResultado').addClass('text-danger');
+                            $('#pMensajeResultado').empty();
+                            $('#pMensajeResultado').html('Mensaje: ' + data.Mensaje);
+                        }
+                    },
+                    error: function (error) {
+                        $('#pMensajeResultado').removeClass('text-danger');
+                        $('#pMensajeResultado').addClass('text-danger');
+                        $('#pMensajeResultado').empty();
+                        $('#pMensajeResultado').html('Error: ' + error);
+                    }
+                });
+            } else {
+                $('#pMensajeResultado').removeClass('text-danger');
+                $('#pMensajeResultado').addClass('text-danger');
+                $('#pMensajeResultado').empty();
+                $('#pMensajeResultado').html('Debe diligenciar todos los campos requeridos');
+            }
+            event.preventDefault();
+        });
+
+        $("#CiudadExpedicionCedula").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCiudadesByFilter")',
+                    dataType: "json",
+                    data: {
+                         "filtro": request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                value: item.Nombre,
+                                id: item.Id
+                            };
+                        }))
+                    },
+                });
+            },
+            select: function (e, ui) {
+                $("#CodCiudadExpedicionCedula").val(ui.item.id);
+            },
+            minLength: 3,
+            appendTo: '#modal-detalle-colocador'
+        });
+
+        $("#CiudadNacimiento").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCiudadesByFilter")',
+                    dataType: "json",
+                    data: {
+                         "filtro": request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                value: item.Nombre,
+                                id: item.Id
+                            };
+                        }))
+                    },
+                });
+            },
+            select: function (e, ui) {
+                $("#CodCiudadNacimiento").val(ui.item.id);
+            },
+            minLength: 3,
+            appendTo: '#modal-detalle-colocador'
+        });
+
+        $("#CiudadVendedor").autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: '@Url.Action("GetCiudadesByFilter")',
+                    dataType: "json",
+                    data: {
+                         "filtro": request.term
+                    },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return {
+                                value: item.Nombre,
+                                id: item.Id
+                            };
+                        }))
+                    },
+                    minLength: 3,
+                });
+            },
+            select: function (e, ui) {
+                $("#CodCiudadVendedor").val(ui.item.id);
+            },
+            appendTo: '#modal-detalle-colocador'
+        });
+
+
+        $.validator.addMethod('date', function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var valid = true;
+            try {
+                $.datepicker.parseDate('dd-mm-yy', value);
+            }
+            catch (err) {
+                valid = false;
+            }
+            return valid;
+        });
+
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //Enero is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var todayformat = mm + '-' + dd + '-' + yyyy;
+
+        var availableDates = [todayformat];
+
+        $(".date-picker").datepicker({
+
+            beforeShowDay: function (d) {
+                var dmy = (d.getMonth() + 1);
+                if (d.getMonth() < 9)
+                    dmy = "0" + dmy;
+                dmy += "-";
+
+                if (d.getDate() < 10) dmy += "0";
+                dmy += d.getDate() + "-" + d.getFullYear();
+
+                if ($.inArray(dmy, availableDates) != -1) {
+                    return [false, "", "unAvailable"];
+                } else {
+                    return [true, "", "Available"];
+                }
+            },
+            closeText: 'Fecha',
+            minDate: "-100y",
+            maxDate: "-10y",
+            monthNames: language['pickerMonthNames'],
+            monthNamesShort: language['pickerMonthNamesShort'],
+            dayNames: language['pickerDayNames'],
+            dayNamesShort: language['pickerDayNamesShort'],
+            dayNamesMin: language['pickerDayNamesMin'],
+            weekHeader: 'Sm',
+            dateFormat: language['pickerDateFormat'],
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: '',
+            prevText: 'Ant',
+            nextText: 'Sig',
+            currentText: 'Hoy',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: '1900:2100'
+        }).val('');
+
+    });
+</script>

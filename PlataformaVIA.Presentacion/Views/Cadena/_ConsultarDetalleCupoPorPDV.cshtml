@@ -1,0 +1,227 @@
+@model PlataformaVIA.Core.Domain.Cadena.Cadena
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="marto15">
+    <h3>Saldo al corte del ciclo de facturación</h3>
+    <br />
+    <div>
+        <table id="detalleCupoPorPDV-data-table"
+               class="table table-striped table-bordered dataTableSinBotones ampliaTabla"
+               style="width:100%">
+            <thead>
+                <tr>
+                    <th colspan="4" class="emptyCell"></th>
+                    <th colspan="3">Pago de facturas</th>
+                    <th colspan="3">Pines y Recargas</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+            </thead>
+        </table>
+    </div>
+    
+</div>
+
+
+<script type="text/javascript">
+
+    var detalleCupoPorPDVVM;
+
+    $(function () {
+        $(document).on("preInit.dt", function () {
+            var searchDelay = null;
+            var $sb = $(".dataTables_filter input[type='search']");
+            $sb.off();
+            $sb.on("keyup", function (evtObj) {
+                var search = $('div.dataTables_filter input').val();
+
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    if (search != null) {
+                        dt.search(search).draw();
+                    }
+                }, 1000);
+            });
+        });
+
+            detalleCupoPorPDVVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#detalleCupoPorPDV-data-table').DataTable({
+                        "dom": 'Blfrtip',
+                        buttons: [{
+                            "extend": 'excelHtml5',
+                            "title": 'Detalle Cupo por PDV',
+                            "text": 'Exportar a excel',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+                        "responsive": false,
+                        "bSort": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "rowHeight": 'auto',
+                       // "ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAvanzadoDetalleCupoPorPDV", "Cadena")",
+                            "type":"POST",
+                            "data": function (data) {
+                                data.CodCadena = '@Model.Id'
+                            }
+                        },
+                        "columns": [{
+                            "title": "-",
+                            "searchable": false,
+                            "visible": true,
+                            "orderable": false,
+                            "mRender": function (data, type, full) {
+                                return "<span></span>";
+                            }
+                        },
+                            {
+                                "title": "PDV",
+                                "data": "CodigoPuntoVenta",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Nombre del PDV",
+                                "data": "NombrePuntoVenta",
+                                "searchable": true,
+                                "width" : "120px"
+                            },
+                            {
+                                "title": "Ciudad",
+                                "data": "Ciudad",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Cupo Asignado",
+                                "data": "CupoAsignadoBP",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Cupo Consumido",
+                                "data": "CupoConsumidoBP",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Porcentaje Disponible",
+                                "data": "PorcentajeDisponibleBP",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '', '%'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Cupo Asignado",
+                                "data": "CupoAsignadoPines",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Cupo Consumido",
+                                "data": "CupoConsumidoPines",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Porcentaje Disponible",
+                                "data": "PorcentajeDisponiblePines",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '', '%'),
+                                "searchable": true,
+                                className: 'text-right'
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmAdvancedSearch')); //Importante agregar para validación en este tipo de vistas parciales
+                    if ($("#frmAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            ////  Manejador de botón de búsqueda avanzada
+            //$('#btnEjecutarBusquedaAvanzadaFechas').on("click", detalleCarteraPorPDVVM.refresh);
+
+
+            // initialize the datatables
+            detalleCupoPorPDVVM.init();
+
+
+    });
+
+    var oldExportAction = function (self, e, dt, button, config) {
+        if (button[0].className.indexOf('buttons-excel') >= 0) {
+            if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+            }
+            else {
+                $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            }
+        } else if (button[0].className.indexOf('buttons-print') >= 0) {
+            $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+        }
+    };
+
+    var newExportAction = function (e, dt, button, config) {
+        var self = this;
+        var oldStart = dt.settings()[0]._iDisplayStart;
+
+        dt.one('preXhr', function (e, s, data) {
+            //carga todos los datos del server con el max value
+            data.start = 0;
+            data.length = 2147483647;
+
+            dt.one('preDraw', function (e, settings) {
+                // Call the original action function
+                oldExportAction(self, e, dt, button, config);
+
+                dt.one('preXhr', function (e, s, data) {
+
+                    settings._iDisplayStart = oldStart;
+                    data.start = oldStart;
+                });
+
+
+                setTimeout(dt.ajax.reload, 0);
+
+
+                return false;
+            });
+        });
+
+
+        dt.ajax.reload();
+    };
+
+</script>
+
+

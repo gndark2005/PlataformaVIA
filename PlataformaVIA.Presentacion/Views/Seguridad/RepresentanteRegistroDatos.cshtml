@@ -1,0 +1,94 @@
+﻿@model  PlataformaVIA.Presentacion.ViewModels.Registro.Registro
+@{
+    ViewBag.Title = "Datos personales";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<div class="container col-md-6 mt-5">
+    <h2 class="marto15">@ViewBag.Title.</h2>
+    @using (Html.BeginForm("RepresentanteRegistroDatos", "Seguridad", FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "frmRegistroDatos", autocomplete = "off" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.Token, new { @value = @ViewBag.Token })
+        <hr />
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email)
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", Placeholder = "Correo Electrónico", autocomplete = "nope" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmEmail)
+            @Html.TextBoxFor(m => m.ConfirmEmail, new { @class = "form-control", Placeholder = "Confirmar Correo Electrónico", autocomplete = "nope" })
+            @Html.ValidationMessageFor(m => m.ConfirmEmail, "", new { @class = "text text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.NombreCompleto)
+            @Html.TextBoxFor(m => m.NombreCompleto, new { @class = "form-control", Placeholder = "Nombre completo", autocomplete = "nope" })
+            @Html.ValidationMessageFor(m => m.NombreCompleto, "", new { @class = "text text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Telefono)
+            @Html.TextBoxFor(m => m.Telefono, new { @class = "form-control", Placeholder = "Teléfono", autocomplete = "nope" })
+            @Html.ValidationMessageFor(m => m.Telefono, "", new { @class = "text text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", Placeholder = "Contraseña", autocomplete = "new-password" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text text-danger" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PasswordConfirm)
+            @Html.PasswordFor(m => m.PasswordConfirm, new { @class = "form-control", Placeholder = "Confirmar contraseña", autocomplete = "new-password" })
+            @Html.ValidationMessageFor(m => m.PasswordConfirm, "", new { @class = "text text-danger" })
+        </div>
+        <div class="form-group">
+            <button id="btnRegistrarDatos" class="btn btn-primary btn-block" type="submit">Guardar</button>
+        </div>
+    }
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        var validacion = new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.{8,})(?=.*[!@@#\$%\^&\*/\+\-_.()])');
+        $(document).ready(function () {
+
+            $('#ConfirmEmail').on("cut copy paste", function (e) {
+                e.preventDefault();
+            });
+
+            $("input").attr("autocomplete", "off");
+            $('#frmRegistroDatos').on('submit', function (e) {
+                var frm = $(this);
+                var validador = frm.validate()
+
+                if (validacion.test($("#Password").val())) {
+                    if ($("#Password").val() == $("#PasswordConfirm").val()) {
+                        console.log("Vamos bien");
+                        frm.submit;
+                    } else {
+                        validador.showErrors({ PasswordConfirm: 'Las contraseñas no coinciden' })
+                        $("#Password").val('');
+                        $("#PasswordConfirm").val('');
+                        e.preventDefault();
+
+                    }
+                } else {
+                    validador.showErrors({ Password: 'La contraseña no cumple con los los requisitos: Longitud mínima de caractéres, Mayusculas, Minusculas, Números y Caractéres especiales' })
+                    $("#Password").val('');
+                    $("#PasswordConfirm").val('');
+                    e.preventDefault();
+                }
+            });
+
+            $('#Email').on('change', function () {
+                $('#Email').val($('#Email').val().trim())
+            })
+
+            $('#ConfirmEmail').on('change', function () {
+                $('#ConfirmEmail').val($('#ConfirmEmail').val().trim()) 
+            })
+        });
+
+    </script>
+}

@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Mis Transacciones";
+
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Mis Transacciones</h1>
+        </div>
+        <div class="panel-body">
+            <div class="row textoCentro">
+                <div class="col-md-8">
+                    @Html.Partial("_ConsultarTransacciones")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+}

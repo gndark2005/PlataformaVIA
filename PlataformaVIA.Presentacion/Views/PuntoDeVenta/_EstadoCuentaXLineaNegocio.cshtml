@@ -1,0 +1,72 @@
+@model IEnumerable<PlataformaVIA.Core.Domain.EstadoCuentaXLineaDeNegocio>
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Información general estado de cuenta
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="collapse show">
+    <div class="c-accordeon__contenedor">
+        <table class="table c-table mt-3">
+            @if (Model.ToList().Count > 0)
+            {
+                <thead>
+                    <tr>
+                        <th scope="col" class="text text--color--black border border--reset p-1 w-25"></th>
+                        <th scope="col" class="text text--color--black border border--reset p-1 w-25">
+                            @Html.DisplayNameFor(model => model.Estado)
+                        </th>
+                        <th scope="col" class="text text--color--black border border--reset p-1 w-25">
+                            @Html.DisplayNameFor(model => model.CupoDisponible)
+                        </th>
+                        <th scope="col" class="text text--color--black border border--reset p-1 w-25">
+                            @Html.DisplayNameFor(model => model.CupoTotal)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" class="text text--color--black border border--reset p-1">
+                                @Html.DisplayFor(modelItem => item.LineaDeNegocio)
+                            </th>
+                            <td class="text text--color--st_green border border--reset p-1">
+                                @Html.DisplayFor(modelItem => item.Estado)
+                            </td>
+                            <td class="text text--color--st_green border border--reset p-1">
+                                @if (item.CupoDisponibleTexto == "")
+                                {
+                                    @Html.DisplayFor(modelItem => item.CupoDisponible)
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.CupoDisponibleTexto)
+                                }
+                            </td>
+                            <td class="text text--color--st_green border border--reset p-1">
+                                @if (item.CupoTotalTexto == "")
+                                {
+                                    @Html.DisplayFor(modelItem => item.CupoTotal)
+                                }
+                                else
+                                {
+                                    @Html.DisplayFor(modelItem => item.CupoTotalTexto)
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr>
+                        <th scope="row" class="text text--color--black border border--reset p-1">
+                            No hay datos
+                        </th>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>

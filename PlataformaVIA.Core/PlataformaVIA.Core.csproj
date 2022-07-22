@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlataformaVIA.Core</RootNamespace>
+    <AssemblyName>PlataformaVIA.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Domain\AdministracionCorreo.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\Categorias.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\FileConstructor.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\ImagenesInstructivo.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\Instructivos.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\InstructivoUbicacion.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\TipoDocumentoEnum.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\TipoImagenEnum.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\TiposDocumento.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\TipoTerminal.cs" />
+    <Compile Include="Domain\AdministradorDocumentos\TipoTerminalEnum.cs" />
+    <Compile Include="Domain\AppMobile\Articulo.cs" />
+    <Compile Include="Domain\AppMobile\Banner.cs" />
+    <Compile Include="Domain\AppMobile\Categoria.cs" />
+    <Compile Include="Domain\AppMobile\Instructivo.cs" />
+    <Compile Include="Domain\AppMobile\InstructivoTerminal.cs" />
+    <Compile Include="Domain\AppMobile\Noticia.cs" />
+    <Compile Include="Domain\AppMobile\ProductoComercial.cs" />
+    <Compile Include="Domain\AppMobile\ProductoComercialDetalle.cs" />
+    <Compile Include="Domain\AppMobile\Punto.cs" />
+    <Compile Include="Domain\Barcode.cs" />
+    <Compile Include="Domain\Busqueda\BusquedaDetalleAjuste.cs" />
+    <Compile Include="Domain\Busqueda\BusquedaDetallePagocs.cs" />
+    <Compile Include="Domain\Busqueda\CriterioBusquedaCicloFacturacion.cs" />
+    <Compile Include="Domain\Busqueda\CriterioBusquedaPagoAjuste.cs" />
+    <Compile Include="Domain\Busqueda\CriterioBusquedaTransaccionesPDV.cs" />
+    <Compile Include="Domain\Busqueda\CriterioBusquedaFechas.cs" />
+    <Compile Include="Domain\Busqueda\ParametroPaginacion.cs" />
+    <Compile Include="Domain\Certificados\Certificado.cs" />
+    <Compile Include="Domain\Certificados\FechaCertificado.cs" />
+    <Compile Include="Domain\Certificados\TipoDeCertificado.cs" />
+    <Compile Include="Domain\Divulgacion.cs" />
+    <Compile Include="Domain\DivulgacionxRol.cs" />
+    <Compile Include="Domain\ExcepcionxNIT.cs" />
+    <Compile Include="Domain\InicioSaldosFacturacion.cs" />
+    <Compile Include="Domain\NitDivulgacion.cs" />
+    <Compile Include="Domain\Notificaciones.cs" />
+    <Compile Include="Domain\Parametro\Parametro.cs" />
+    <Compile Include="Domain\PuntoDeVenta\DistribucionDetalleAjuste.cs" />
+    <Compile Include="Domain\PuntoDeVenta\DistribucionDetallePago.cs" />
+    <Compile Include="Domain\PuntoDeVenta\DistribucionPago.cs" />
+    <Compile Include="Domain\Reportes\PeriodoReporte.cs" />
+    <Compile Include="Domain\Reportes\SolicitudReporte.cs" />
+    <Compile Include="Domain\Reportes\TipoReporteEnum.cs" />
+    <Compile Include="Domain\RespuestaSolicitud.cs" />
+    <Compile Include="Domain\ResultadoDivulgacion.cs" />
+    <Compile Include="Domain\ResultadoValidacionSeguridad.cs" />
+    <Compile Include="Domain\Rol.cs" />
+    <Compile Include="Domain\Seguridad\Registro.cs" />
+    <Compile Include="Domain\Seguridad\TipoRegistroEvento.cs" />
+    <Compile Include="Domain\Seguridad\ValidacionToken.cs" />
+    <Compile Include="Domain\SolicitudesBatch.cs" />
+    <Compile Include="Domain\Colocador\AsignacionPuntoDeVenta.cs" />
+    <Compile Include="Domain\Colocador\Genero.cs" />
+    <Compile Include="Domain\Colocador\TipoVendedor.cs" />
+    <Compile Include="Domain\Colocador\TipoSangre.cs" />
+    <Compile Include="Domain\Colocador\TipoIdentificacion.cs" />
+    <Compile Include="Domain\DataContext.cs" />
+    <Compile Include="Domain\Documentos\DocumentoPDF.cs" />
+    <Compile Include="Domain\EmpresaEnum.cs" />
+    <Compile Include="Domain\EstadoCuenta.cs" />
+    <Compile Include="Domain\General\Ciudad.cs" />
+    <Compile Include="Domain\Media\Articulo.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Domain\AjusteRazonSocial.cs" />
+    <Compile Include="Domain\Banco.cs" />
+    <Compile Include="Domain\Cadena\Cadena.cs" />
+    <Compile Include="Domain\CicloFacturacion.cs" />
+    <Compile Include="Domain\Cadena\DetalleCarteraPuntoVenta.cs" />
+    <Compile Include="Domain\Cadena\DetalleCupoPuntodeVenta.cs" />
+    <Compile Include="Domain\DistribucionAjusteRazonSocial.cs" />
+    <Compile Include="Domain\DistribucionPagoRazonSocial.cs" />
+    <Compile Include="Domain\Cadena\EstadoCartera.cs" />
+    <Compile Include="Domain\PruebasAzure\Categoria.cs" />
+    <Compile Include="Domain\PruebasAzure\Producto.cs" />
+    <Compile Include="Domain\PuntoDeVenta\DetalleProducto.cs" />
+    <Compile Include="Domain\PuntoDeVenta\PresupuestoXLineaDeNegocio.cs" />
+    <Compile Include="Domain\PuntoDeVenta\Producto.cs" />
+    <Compile Include="Domain\RazonSocial.cs" />
+    <Compile Include="Domain\RepresentanteLegal\AccesoColocador.cs" />
+    <Compile Include="Domain\RepresentanteLegal\PuntosVentaAcceso.cs" />
+    <Compile Include="Domain\RepresentanteLegal\SolicitudCertificado.cs" />
+    <Compile Include="Domain\RepresentanteLegal\Colocador.cs" />
+    <Compile Include="Domain\Reportes\SolicitudReporteResponse.cs" />
+    <Compile Include="Domain\Response.cs" />
+    <Compile Include="Domain\Seguridad\UsuarioInfo.cs" />
+    <Compile Include="Domain\Seguridad\ValidacionPreguntasSeguridadResponse.cs" />
+    <Compile Include="Domain\Seguridad\TipoUsuario.cs" />
+    <Compile Include="Domain\Seguridad\Usuario.cs" />
+    <Compile Include="Domain\Seguridad\ValidacionPreguntasSeguridad.cs" />
+    <Compile Include="Domain\Busqueda\CriterioBusqueda.cs" />
+    <Compile Include="Domain\Busqueda\IPagedList.cs" />
+    <Compile Include="Domain\PuntoDeVenta\EstadoCuentaXLineaDeNegocio.cs" />
+    <Compile Include="Domain\Cadena\EstadoPuntoVentaXLineadeNegocio.cs" />
+    <Compile Include="Domain\Cadena\Facturacion.cs" />
+    <Compile Include="Domain\Media\Instructivo.cs" />
+    <Compile Include="Domain\PagoRazonSocial.cs" />
+    <Compile Include="Domain\ConceptoPagoEnum.cs" />
+    <Compile Include="Domain\EstadoPuntoVentaEnum.cs" />
+    <Compile Include="Domain\LineadeNegocioEnum.cs" />
+    <Compile Include="Domain\Media\Noticia.cs" />
+    <Compile Include="Domain\Media\Notificacion.cs" />
+    <Compile Include="Domain\ProductoComercial.cs" />
+    <Compile Include="Domain\ProductoComercialDetalle.cs" />
+    <Compile Include="Domain\PuntoDeVenta\Ajuste.cs" />
+    <Compile Include="Domain\PuntoDeVenta\CuadreSemanal.cs" />
+    <Compile Include="Domain\PuntoDeVenta\DistribucionAjuste.cs" />
+    <Compile Include="Domain\PuntoDeVenta\EstadoDeCuentaGeneral.cs" />
+    <Compile Include="Domain\PuntoDeVenta\Pago.cs" />
+    <Compile Include="Domain\PuntoDeVenta\ResumenAjustesCartera.cs" />
+    <Compile Include="Domain\PuntoDeVenta\ResumenPagosRetirosSemanaActual.cs" />
+    <Compile Include="Domain\PuntoDeVenta\ResumenPago.cs" />
+    <Compile Include="Domain\PuntoDeVenta\ResumenCuadreSemanal.cs" />
+    <Compile Include="Domain\PuntoDeVenta\TirillaCuadreSemanal.cs" />
+    <Compile Include="Domain\PuntoDeVenta\Ventas.cs" />
+    <Compile Include="Domain\Seguridad\Pregunta.cs" />
+    <Compile Include="Domain\PuntoDeVenta\PuntodeVenta.cs" />
+    <Compile Include="Domain\Seguridad\UsuarioSistema.cs" />
+    <Compile Include="Domain\RepresentanteLegalRegistro.cs" />
+    <Compile Include="Domain\Seguridad\Respuesta.cs" />
+    <Compile Include="Domain\SaldoFacturacion.cs" />
+    <Compile Include="Domain\Seguridad\TipoUsuarioEnum.cs" />
+    <Compile Include="Domain\Seguridad\UsuarioLogin.cs" />
+    <Compile Include="Domain\Seguridad\ValidacionTokenResponse.cs" />
+    <Compile Include="Domain\Sorteo.cs" />
+    <Compile Include="Domain\TipoAjusteEnum.cs" />
+    <Compile Include="Domain\TipoCadenaEnum.cs" />
+    <Compile Include="Domain\TipoFiltro.cs" />
+    <Compile Include="Domain\TipoIngresoNotificacionEnum.cs" />
+    <Compile Include="Domain\TipoInstructivo.cs" />
+    <Compile Include="Domain\TipoSolicitudEnvioReporteEnum.cs" />
+    <Compile Include="Domain\TipoTerminalEnum.cs" />
+    <Compile Include="Domain\PuntoDeVenta\Transaccion.cs" />
+    <Compile Include="Domain\Busqueda\PagedList.cs" />
+    <Compile Include="Domain\TipoTokenNotificacionEnum.cs" />
+    <Compile Include="Domain\UsuarioPuntoDeVenta.cs" />
+    <Compile Include="Domain\ValidacionRespuestaSeguridad.cs" />
+    <Compile Include="Domain\ViaBaloto\Aliado.cs" />
+    <Compile Include="Domain\ViaBaloto\Categoria.cs" />
+    <Compile Include="Domain\ViaBaloto\Ciudad.cs" />
+    <Compile Include="Domain\Message.cs" />
+    <Compile Include="Domain\ViaBaloto\ProductoDetalle.cs" />
+    <Compile Include="Domain\ViaBaloto\Producto.cs" />
+    <Compile Include="Domain\ViaBaloto\ProductoEspecifico.cs" />
+    <Compile Include="Domain\ViaBaloto\ProductoLista.cs" />
+    <Compile Include="Domain\ViaBaloto\PuntoDeVenta.cs" />
+    <Compile Include="Domain\ResponseEO.cs" />
+    <Compile Include="Domain\ResponseIndividualEO.cs" />
+    <Compile Include="Domain\ViaBaloto\Transaccion.cs" />
+    <Compile Include="Domain\ViaBaloto\TransaccionDetalle.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

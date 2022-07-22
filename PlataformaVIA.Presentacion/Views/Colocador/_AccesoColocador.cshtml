@@ -1,0 +1,69 @@
+@model PlataformaVIA.Core.Domain.RepresentanteLegal.Colocador
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 class="modal-title" id="myModalLabel">Colocador @Html.DisplayFor(model => model.Numero)</h3>
+        </div>
+        <div class="modal-body">
+            <div class="dvCentro">
+                <div class="row">
+                    @Html.HiddenFor(model => model.Id)
+                    <div class="col font-weight-bold">@Html.DisplayNameFor(model => model.Nombres)</div>
+                    <div class="col">@Html.DisplayFor(model => model.Nombres)</div>
+                </div>
+                <div class="row">
+                    <div class="col font-weight-bold">@Html.DisplayNameFor(model => model.Apellidos)</div>
+                    <div class="col">@Html.DisplayFor(model => model.Apellidos)</div>
+                </div>
+                <div class="row">
+                    <div class="col font-weight-bold"> @Html.DisplayNameFor(model => model.NumeroIdentificacion)</div>
+                    <div class="col">@Html.DisplayFor(model => model.NumeroIdentificacion)</div>
+                </div>
+                <div class="row">
+                    <div class="col  font-weight-bold">@Html.DisplayNameFor(model => model.OtorgarAccesoGlobal)</div>
+                    <div class="col">@Html.DropDownListFor(model => model.OtorgarAccesoGlobal, (IEnumerable<SelectListItem>)ViewBag.OtorgarAcceso, "Seleccione...", new { @class = "form-control .w-100" })</div>
+                </div>
+            </div>
+            <div id="puntosDeVentaColocador" class="marto15" style="display:none;">
+                @Html.Action("_EditarPuntosVentaAccesoColocador", "Colocador")
+            </div>
+            <div class="row textoCentro marto15">
+                <p class="col-md-3"></p>
+                <input type="button" id="btnOtorgarAcceso" class="btn btn-primary mensajeNota col-md-3 mt-1" value="Otorgar acceso" />
+                <input type="button" id="btnCancelarCambios" class="btn btn-danger mensajeNota col-md-3 mt-1" value="Cancelar" />
+                <input type="button" id="btnRegresarAPrincipal" class="btn btn-info mensajeNota col-md-3 mt-1" style="display:none;"  data-dismiss="modal" aria-label="Close" value="Cerrar" />
+            </div>
+            <div id="divMensajeAccesos" class="resultadoGuardado"></div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+
+        $('#OtorgarAccesoGlobal').on('change', function () {
+            puntosAsignados = [];
+            if ($('#OtorgarAccesoGlobal').val() === "False") {
+                $('#puntosDeVentaColocador').show();
+            } else {
+                $('#puntosDeVentaColocador').hide();
+            }
+        });
+
+        $('#btnOtorgarAcceso').click(function () {
+            otorgarAcceso();
+        });
+
+        $('#btnCancelarCambios').click(function () {
+            CancelarCambios();
+        });
+
+        function CancelarCambios() {
+            if (confirm("¿Esta seguro que desea salir?, se perderan todos los cambios")) {
+                puntosAsignados = [];
+                cancelPrincipal();
+            }
+        }
+
+        $('#OtorgarAccesoGlobal').trigger('change');
+    });
+</script>

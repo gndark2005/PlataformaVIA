@@ -1,0 +1,89 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            @if (ViewBag.EsPagoMinimo)
+            {
+                <h3 class="modal-title" id="myModalLabel">Detalle Pago mínimo a la Fecha</h3>
+
+            }
+            else
+            {
+                <h3 class="modal-title" id="myModalLabel">Detalle Pago Total a la Fecha</h3>
+            }
+        </div>
+        <div class="modal-body">
+            <div class="c-accordeon col-12 mt-4">
+                <div class="c-accordeon">
+                    <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                            data-toggle="collapse"
+                            data-target="#collapsePagoTotal"
+                            aria-expanded="true" aria-controls="collapsePagoTotal">
+                        @if (ViewBag.EsPagoMinimo)
+                        {
+                            <span>Resumen Pago Mínimo</span>
+                        }
+                        else
+                        {
+                            <span>Resumen Pago Total a la Fecha</span>
+                        }
+                        <i class="fa fa-sort-down ml-1"></i>
+                    </button>
+                    <div class="collapse in" id="collapsePagoTotal">
+                        <div class="c-accordeon__contenedor">
+                            @Html.Action("_ResumenPagoTotalFecha", "PuntoDeVenta", new { codpuntoventa = ViewBag.Id, esPagoMinimo = ViewBag.EsPagoMinimo })
+                        </div>
+                    </div>
+                    <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseResumenCuadreSemanal"
+                            aria-expanded="false" aria-controls="collapseResumenCuadreSemanal">
+                        Resumen Cuadre Semanal <i class="fa fa-sort-down ml-1"></i>
+                    </button>
+                    <div class="collapse" id="collapseResumenCuadreSemanal">
+                        <div class="c-accordeon__contenedor">
+                            @Html.Action("_ResumenCuadreSemanal", "PuntoDeVenta", new { codpuntoventa = ViewBag.Id, esPagoMinimo = ViewBag.EsPagoMinimo })
+                        </div>
+                    </div>
+                    <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseResumenVentasAjustesFacturacion"
+                            aria-expanded="false" aria-controls="collapseResumenVentasAjustesFacturacion">
+                        Resumen Ventas Ajustes Facturación Premios Semana Actual <i class="fa fa-sort-down ml-1"></i>
+                    </button>
+                    <div class="collapse" id="collapseResumenVentasAjustesFacturacion">
+                        <div class="c-accordeon__contenedor">
+                            @Html.Action("_ResumenVentasAjustesFacturacion", "PuntoDeVenta", new { codpuntoventa = ViewBag.Id })
+                        </div>
+                    </div>
+                    <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseResumenPagosRetirosFacturacion"
+                            aria-expanded="false" aria-controls="collapseResumenPagosRetirosFacturacion">
+                        Resumen Pagos y Retiros <i class="fa fa-sort-down ml-1"></i>
+                    </button>
+                    <div class="collapse" id="collapseResumenPagosRetirosFacturacion">
+                        <div class="c-accordeon__contenedor table-responsive">
+                            @Html.Action("_ResumenPagosRetirosFacturacion", "PuntoDeVenta", new { codpuntoventa = ViewBag.Id })
+                        </div>
+                    </div>
+                    <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseResumenAjustesCartera"
+                            aria-expanded="false" aria-controls="collapseResumenAjustesCartera">
+                        Resumen Ajustes en Cartera <i class="fa fa-sort-down ml-1"></i>
+                    </button>
+                    <div class="collapse" id="collapseResumenAjustesCartera">
+                        <div class="c-accordeon__contenedor">
+                            @Html.Action("_ResumenAjustesCartera", "PuntoDeVenta", new { codpuntoventa = ViewBag.Id })
+                        </div>
+                    </div>
+                    <div class="row textoCentro marto15">
+                        <span class="col-md-9"></span>
+                        <input type="button" class="btn btn-info mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Regresar" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

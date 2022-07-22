@@ -1,0 +1,273 @@
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+@{
+    ViewBag.Title = "Administrador de Colocadores";
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Mis colocadores</h1>
+        </div>
+        <div class="panel-body">
+            <div class="addColocador textoCentro btn-arrow-link">
+                @if (!User.IsInRole("Funcionario") && !User.IsInRole("FuncionarioExterno"))
+                {
+                    <a data-toggle='tooltip' role="button" onclick="OpcionesColocadorModal(0, 0, 'Create')" title='Agregar colocador'>
+                        <i class='fa fa-user-plus fa-2x'></i>
+                    </a>
+                }
+            </div>
+            <form id="frmTableColocador">
+                @Html.AntiForgeryToken()
+                <table id="colocador-data-table"
+                       class="table table-striped table-bordered ampliaTabla"
+                       style="width:100%"></table>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-detalle-colocador">
+    <div id="modal-detalle-colocador-container"></div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        var colocadoresListVM;
+
+    function OpcionesColocadorModal(idcolocador, sincronizar, opcion) {
+        switch (opcion) {
+            case 'Detail':
+                var url = '@Url.Action("_DetalleColocador")';
+                $.get(url + '/' + idcolocador + "?sincronizar=" + sincronizar, function (data) {
+                    $('#modal-detalle-colocador-container').html(data);
+                    $('#modal-detalle-colocador').modal('show');
+                });
+                break;
+            case 'Edit':
+                var url = '@Url.Action("_EditarColocador")';
+                $.get(url + '/' + idcolocador + "?sincronizar=" + sincronizar, function (data) {
+                    $('#modal-detalle-colocador-container').html(data);
+                    $('#modal-detalle-colocador').modal('show');
+                });
+                break;
+              case 'Create':
+                var url = '@Url.Action("_CrearColocador")';
+                $('#modal-detalle-colocador-container').empty();
+                $.get(url + '/', function (data) {
+                    $('#modal-detalle-colocador-container').html(data);
+                    $('#modal-detalle-colocador').modal('show');
+                });
+                break;
+            case 'Access':
+                var url = '@Url.Action("_AccesoColocador")';
+                $('#modal-detalle-colocador-container').empty();
+                $.get(url + '/' + idcolocador + "?sincronizar=" + sincronizar, function (data) {
+                    $('#modal-detalle-colocador-container').html(data);
+                    $('#modal-detalle-colocador').modal('show');
+                });
+                break;
+            case 'Delete_':
+                var url = '@Url.Action("_EliminarColocador_")';
+                if (confirm("Esta seguro que desea eliminar el colocador? ")) {
+                    var request = { IdPadre: idcolocador };
+                    request.__RequestVerificationToken = $('#frmTableColocador input[name="__RequestVerificationToken"]').val();
+                    $.post(url, request)
+                        .done(function (data) {
+                            colocadoresListVM.refresh();
+                        });
+                }
+                break;
+            default:
+                console.log("default");
+                break;
+        }
+    }
+
+    function pasarAAsignacionDeAccesos(idcolocador) {
+        OpcionesColocadorModal(idcolocador, 1, 'Access');
+    }
+
+     function cancelPrincipal() {
+        $('#modal-detalle-colocador').modal('hide');
+    }
+
+        $(function () {
+
+            $(document).on("preInit.dt", function () {
+                var searchDelay = null;
+                var $sb = $(".dataTables_filter input[type='search']");
+                $sb.off();
+                $sb.on("keyup", function (evtObj) {
+                    var search = $('div.dataTables_filter input').val();
+
+                    clearTimeout(searchDelay);
+
+                    searchDelay = setTimeout(function () {
+                        if (search != null) {
+                            dt.search(search).draw();
+                        }
+                    }, 1000);
+                });
+            });
+
+                colocadoresListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#colocador-data-table').DataTable({
+                        "serverSide": true,
+                        "bSort": false,
+                        "dom": 'lfrtip',
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        "scrollX": true,
+                        "responsive": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            type: 'POST',
+                            "url":
+                               "@Url.Action("GetFiltroBasicoColocadores", "Colocador")"
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    @if (!User.IsInRole("Funcionario") && !User.IsInRole("FuncionarioExterno"))
+                                    {
+                                        <text>
+                                        return  "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' title='Consultar colocador' onclick='(OpcionesColocadorModal(" + data.Id + ", " + data.Sincronizar + ", \"Detail\"))' data-id=" + data.Id + "><i class='fa fa-search'></i></a> " +
+                                                "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' title='Editar colocador' onclick='(OpcionesColocadorModal(" + data.Id + ", " + data.Sincronizar + ", \"Edit\"))' data-id=" + data.Id + "><i class='fa fa-edit'></i></a> " +
+                                                "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' title='Otorgar acceso' onclick='(OpcionesColocadorModal(" + data.Id + ", " + data.Sincronizar + ", \"Access\"))' data-id=" + data.Id + "><i class='fa fa-lock'></i></a> " +
+                                                "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' style='color:gray' title='Eliminar colocador'  onclick='(OpcionesColocadorModal(" + data.Id + ", " + data.Sincronizar + ", \"Delete\"))' data-id=" + data.Id + "><i class='fa fa-trash'></i></a>";
+                                        </text>
+                                    }
+                                    else {
+                                        <text>
+                                    return "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' title='Consultar colocador' onclick='(OpcionesColocadorModal(" + data.Id + ", " + data.Sincronizar + ", \"Detail\"))' data-id=" + data.Id + "><i class='fa fa-search'></i></a> ";
+                                        </text>
+                                    }
+                                }
+                            },
+                        @if (User.IsInRole("Funcionario") || User.IsInRole("FuncionarioExterno"))
+                        {
+                            <text>
+
+                            {
+                                "title": "NIT",
+                                "data": "NIT",
+                                "searchable": true,
+                                "width": "80px"
+                            },
+                            </text>
+                        }
+                            {
+                            "title": "Tipo de Identificación",
+                                "data": "TipoIdentificacion",
+                                "searchable": true,
+                                "width": "120px",
+                            },
+                            {
+                                "title": "No. Identificación",
+                                "data": "NumeroIdentificacion",
+                                "searchable": true,
+                                "width": "80px",
+                            },
+                            {
+                                "title": "Nombre y Apellido",
+                                "data": "NombreCompleto",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Ciudad del Vendedor",
+                                "data": "CiudadVendedor",
+                                "searchable": true,
+                                "width": "100px",
+                            },
+                            {
+                                "title": "Usuario Asignado",
+                                "data": "UsuarioAsignado",
+                                "searchable": true,
+                                "mRender": function (data, type, full) {
+                                     if (data.UsuarioAsignado === true) {
+                                        return "Si"
+                                     } else {
+                                         return "No"
+                                     }
+                                 }
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                        "initComplete": function (settings, json) {
+                            //localStorage.removeItem('entendidocolocador');
+                            var mob = @Html.Raw(Json.Encode(Request.Browser.IsMobileDevice));
+                               if (mob === true) {
+                                var handImgUrl = '@Url.Content("~/Content/img/click.png")';
+                                var help = new Anno({
+                                    target: '.dataTables_scroll',
+                                    position: 'center-top',
+                                    content: '<div id="anno-container" style="position:relative;"><img src="' + handImgUrl +'" />Deslice horizontalmente para ver mas información</div>',
+                                    buttons: [{
+                                        text: 'Entendido',
+                                        click: function (anno, evt) {
+                                            evt.preventDefault();
+                                            anno.hide()
+                                        }
+                                    }]
+                                });
+                                help.show();
+                                $("#anno-container").animate({
+                                    opacity: 0.25,
+                                    left: "-=20",
+                                }, 1200).animate({
+                                    opacity: 1,
+                                    left: "+=30",
+                                    }, 1200).animate({ opacity: 1 }, 100, function () {
+                                        localStorage.setItem('entendidocolocador', '1');
+                                    });
+
+                            }
+                        }
+                    });
+                },
+                refresh: function () {
+                        dt.ajax.reload();
+                }
+        };
+
+
+        var newExportAction = function (e, dt, button, config) {
+            var self = this;
+            var oldStart = dt.settings()[0]._iDisplayStart;
+
+            dt.one('preXhr', function (e, s, data) {
+                //carga todos los datos del server con el max value
+                data.start = 0;
+                data.length = 2147483647;
+
+                dt.one('preDraw', function (e, settings) {
+                    // Call the original action function
+                    oldExportAction(self, e, dt, button, config);
+
+                    dt.one('preXhr', function (e, s, data) {
+
+                        settings._iDisplayStart = oldStart;
+                        data.start = oldStart;
+                    });
+
+
+                    setTimeout(dt.ajax.reload, 0);
+
+
+                    return false;
+                });
+            });
+        }
+        colocadoresListVM.init();
+        });
+
+    </script>
+}

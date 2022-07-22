@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{19617B34-45BF-4F24-8E04-175207822B83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PlataformaVIA.Services</RootNamespace>
+    <AssemblyName>PlataformaVIA.Services</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Implementations\AdministracionCorreoService.cs" />
+    <Compile Include="Implementations\AdministradorDocumentosService.cs" />
+    <Compile Include="Implementations\AppMobileService.cs" />
+    <Compile Include="Implementations\CadenaService.cs" />
+    <Compile Include="Implementations\CertificadosService.cs" />
+    <Compile Include="Implementations\CicloFacturacionService.cs" />
+    <Compile Include="Implementations\ColocadorService.cs" />
+    <Compile Include="Implementations\DivulgacionService.cs" />
+    <Compile Include="Implementations\DocumentosService.cs" />
+    <Compile Include="Implementations\InstructivoService.cs" />
+    <Compile Include="Implementations\AjusteService.cs" />
+    <Compile Include="Implementations\NotificacionesService.cs" />
+    <Compile Include="Implementations\ParametroService.cs" />
+    <Compile Include="Implementations\RegistroService.cs" />
+    <Compile Include="Implementations\SeguridadService.cs" />
+    <Compile Include="Implementations\PagoService.cs" />
+    <Compile Include="Implementations\PuntoVentaService.cs" />
+    <Compile Include="Implementations\SeguridadServices.cs" />
+    <Compile Include="Implementations\SolicitudBatchService.cs" />
+    <Compile Include="Implementations\TerminalService.cs" />
+    <Compile Include="Implementations\ViaBalotoService.cs" />
+    <Compile Include="Interfaces\IAdministracionCorreoService.cs" />
+    <Compile Include="Interfaces\IAdministradorDocumentosService.cs" />
+    <Compile Include="Interfaces\IAppMobileService.cs" />
+    <Compile Include="Interfaces\ICertificadosService.cs" />
+    <Compile Include="Interfaces\IDivulgacionService.cs" />
+    <Compile Include="Interfaces\IDocumentosService.cs" />
+    <Compile Include="Interfaces\INotificacionesService.cs" />
+    <Compile Include="Interfaces\IParametroService.cs" />
+    <Compile Include="Interfaces\IRegistroService.cs" />
+    <Compile Include="Interfaces\ISeguridadService.cs" />
+    <Compile Include="Interfaces\ISolicitudBatchService.cs" />
+    <Compile Include="Interfaces\ITerminalService.cs" />
+    <Compile Include="Interfaces\IViaBalotoService.cs" />
+    <Compile Include="Interfaces\ICadenaService.cs" />
+    <Compile Include="Interfaces\ICicloFacturacionService.cs" />
+    <Compile Include="Interfaces\IColocadorService.cs" />
+    <Compile Include="Interfaces\IInstructivoService.cs" />
+    <Compile Include="Interfaces\IAjusteService.cs" />
+    <Compile Include="Interfaces\IPagoService.cs" />
+    <Compile Include="Interfaces\IPuntoVentaService.cs" />
+    <Compile Include="Interfaces\ISeguridadServices.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PlataformaVIA.Core\PlataformaVIA.Core.csproj">
+      <Project>{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}</Project>
+      <Name>PlataformaVIA.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PlataformaVIA.Data\PlataformaVIA.Data.csproj">
+      <Project>{48108EC8-37BF-42DC-9697-0DD0880C2C23}</Project>
+      <Name>PlataformaVIA.Data</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

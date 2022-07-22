@@ -1,0 +1,266 @@
+@model PlataformaVIA.Core.Domain.PuntoDeVenta.PuntodeVenta
+@{
+    Layout = null;
+}
+
+<head>
+    @* Adjust the viewport width as per device width for mobile *@
+    <meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+</head>
+
+<div class="list-panel-heading">
+    <div class="icontooltip">
+        @*<button type="button" id="btnExplicacionRangos" class="btnIconos" data-toggle="modal" data-target="#modal-explicacion-rangos">
+                <i class="fa fa-exclamation-triangle fa-3x"></i>
+            </button>*@
+    </div>
+</div>
+
+
+<div class="table-responsive">
+    <table id="estadocuentageneral-data-table"
+           class="table table-striped table-bordered dataTableSinBotones"
+           style="width:100%" />
+</div>
+
+<br />
+
+<button type="button" style="font-size:16px;" id="btnDetallePagoTotal" class="btn btn-block btn--solid btn--color--blue text text--color--white" data-toggle="modal">Ver detalle pago total a la fecha</button>
+<button type="button" style="font-size:16px;" id="btnDetallePagoMinimo" class="btn btn-block btn--solid btn--color--blue text text--color--white" data-toggle="modal">Ver detalle pago mínimo a la fecha</button>
+
+
+
+<br />
+<br />
+<span style="font-size:small">*El cupo disponible incluye solo las ventas hasta el día anterior, sí refleja los pagos y retiros del día actual</span>
+<br />
+<span style="font-size:small">*En el estado de cuenta general no se incluye las ventas del día actual.</span>
+<br />
+
+
+<div class="modal fade" id="modal-detalle-pagototal">
+    <div id="modal-detalle-pagototal-container"></div>
+</div>
+
+<div class="modal fade" id="modal-detalle-pagominimo">
+    <div id="modal-detalle-pagominimo-container"></div>
+</div>
+
+
+<div class="modal fade" id="modal-explicacion-rangos">
+    <div id="modal-explicacion-rangos-container">
+        <div class="modal-dialog big-modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+                    <h3 class="modal-title" id="myModalLabel">Rangos de Facturación</h3>
+                </div>
+                <div class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var estadoCuentaGeneralListVM;
+
+    $(function () {
+
+        //var form = $("#frmAdvancedSearch");
+        //form.validate();
+
+            estadoCuentaGeneralListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#estadocuentageneral-data-table').DataTable({
+                        "dom": '',
+                        "serverSide": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        "ordering": false,
+                        "scrollX": true,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAvanzadoEstadoCuentaGeneral", "PuntoDeVenta")",
+                            "data": function (data) {
+                                data.CodPuntoVenta = '@Model.Id';
+                            },
+                            "type": "POST"
+                        },
+                        "columns": [
+                            {
+                                "title": "Línea de Negocio",
+                                "data": "LineaDeNegocio",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "<strong>" + data + "</strong>";
+                                    } else {
+                                        formatedResult = data
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true
+                            },
+                            {
+                                "title": "Pago total a la fecha",
+                                "data": "PagoTotalALaFecha",
+                                "render": function (data, type, row)
+                                {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "<strong>" + "$" + $.fn.dataTable.render.number(',', '.', 2).display(data); + "</strong>";
+                                    } else {
+                                        formatedResult = "$" + $.fn.dataTable.render.number(',', '.', 2).display(data);
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true,
+                                className: 'text-right',
+
+                            },
+                            {
+                                "title": "Pago mínimo IGT",
+                                "data": "PagoMiniMoIGT",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "<strong>" + "$" + $.fn.dataTable.render.number(',', '.', 2).display(data); + "</strong>";
+                                    } else {
+                                        formatedResult = "$" + $.fn.dataTable.render.number(',', '.', 2).display(data);
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Pago mínimo FIDUCIA",
+                                "data": "PagoMinimoFiducia",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "<strong>" + "$" + $.fn.dataTable.render.number(',', '.', 2).display(data); + "</strong>";
+                                    } else {
+                                        formatedResult = "$" + $.fn.dataTable.render.number(',', '.', 2).display(data);
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Fecha límite de Pago",
+                                "data": "FechaLimitePago",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "";
+                                    } else {
+                                        formatedResult = moment(data).format('MM/DD/YYYY');
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true
+                            },
+                            {
+                                "title": "Cupo disponible",
+                                "data": "CupoDisponible",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "";
+                                    } else {
+                                        if (row.CupoDisponibleTexto == "") {
+                                            formatedResult = "$" + $.fn.dataTable.render.number(',', '.', 2).display(data);
+                                        } else {
+                                            formatedResult = row.CupoDisponibleTexto;
+                                        }
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Estado",
+                                "data": "Estado",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "";
+                                    } else {
+                                        formatedResult = data;
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true
+                            },
+                            {
+                                "title": "Motivo estado",
+                                "data": "MotivoEstado",
+                                "render": function (data, type, row) {
+                                    var formatedResult;
+                                    if (row.LineaDeNegocio == "TOTAL") {
+                                        formatedResult = "";
+                                    } else {
+                                        formatedResult = data;
+                                    }
+
+                                    return formatedResult;
+                                },
+                                "searchable": true
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmAdvancedSearch'));
+                    if ($("#frmAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            //  Manejador de botón de búsqueda avanzada
+            //$('#btnEjecutarBusquedaAvanzada').on("click", estadoCuentaGeneralListVM.refresh);
+
+            // initialize the datatables
+            estadoCuentaGeneralListVM.init();
+
+           // Manejador de botón de Detalle de pago total
+            $('#btnDetallePagoTotal').on("click", function () {
+                VerDetallePagoMinimoTotal(false);
+            });
+
+            // Manejador de botón de Detalle de pago mínimo
+            $('#btnDetallePagoMinimo').on("click", function () {
+                VerDetallePagoMinimoTotal(true);
+            });
+
+
+
+            function VerDetallePagoMinimoTotal(pagominimo) {
+                var url = '@Url.Action("_DetallePagoTotalYMinimoFecha", "PuntoDeVenta")';
+                $.get(url + '?id=' + idpuntoventa + '&esPagoMinimo=' + pagominimo, function (data) {
+                    $('#modal-detalle-pagototal-container').html(data);
+                    $('#modal-detalle-pagototal').modal('show');
+                });
+            }
+
+         });
+
+</script>

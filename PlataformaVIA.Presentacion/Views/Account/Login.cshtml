@@ -1,0 +1,68 @@
+﻿@using PlataformaVIA.Presentacion.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Iniciar Sesión";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+<div class="container center col-md-8 ml-auto">
+    <h2 class="marto15">@ViewBag.Title.</h2>
+    <section id="loginForm">
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", autocomplete = "off" }))
+        {
+            @Html.AntiForgeryToken()
+            <hr />
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Email, new { @class = "col-sm-3 col-form-label" })
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control", autocomplete = "nope" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger validationMessage" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @Html.LabelFor(m => m.Password, new { @class = "col-sm-3 col-form-label" })
+                <div class="col-sm-6">
+                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger validationMessage", autocomplete = "new-password" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-md-offset-5">
+                    <input type="submit" value="Iniciar sesión" class="btn btn-primary btn-block" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-md-offset-5">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger validationSummary textoCentro" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-md-offset-5 textoCentro aRegistroNuevo">
+                    @Html.ActionLink("Registro de usuario", "RepresentanteRegistro", "Seguridad")
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3"></div>
+                <div class="col-md-6 col-md-offset-5 textoCentro aRegistroNuevo">
+                    @Html.ActionLink("Olvidó su contraseña?", "ForgotPassword", "Account")
+                </div>
+            </div>
+
+        }
+    </section>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script type="text/javascript">
+    window.onload = window.history.forward(0);
+</script>
+}

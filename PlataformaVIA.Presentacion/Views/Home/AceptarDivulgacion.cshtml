@@ -1,0 +1,210 @@
+﻿@model PlataformaVIA.Core.Domain.Divulgacion
+
+@{
+    /**/
+
+    ViewBag.Title = "Divulgación";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+
+@using (Html.BeginForm("AceptarDivulgacion", "Home", FormMethod.Post, new { id = "CrearDivulgacion" }))
+{
+
+    <div class="col-md-12">
+        <br />
+        <div class="panel panel-primary list-panel" id="list-panel">
+            <div class="panel-heading list-panel-heading">
+                <h1 class="panel-title list-panel-title">@Model.NOMBRE</h1>
+            </div>
+            <div class="panel-body">
+
+
+                @Html.HiddenFor(model => model.ID_DIVULGACION)
+                @Html.HiddenFor(model => model.TITULO)
+                @Html.HiddenFor(model => model.TEXTO)
+                @Html.HiddenFor(model => model.HABILITADA)
+                @Html.HiddenFor(model => model.OPCIONRECHAZAR)
+                @Html.HiddenFor(model => model.ACEPTADO)
+                @Html.HiddenFor(model => model.POLITICADETRATAMIENTO)
+                @Html.HiddenFor(model => model.UBICACION)
+                @Html.HiddenFor(model => model.CONTAINERPATH)
+
+                <div class="modal-body">
+                    <div>
+
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+
+                        <br />
+
+                        <div class="row">
+                            <h2>@Model.TITULO</h2>
+                        </div>
+
+                        <br />
+
+                        <div id="INFORMATION">
+
+                        </div>
+
+                        <br />
+                        <div class="row">
+                            <span>
+                                <span style="font-weight:bold;">Al hacer clic en el botón “Aceptar” declaro:</span>
+                                <br />
+                                (i) que como titular y usuario del perfil a través del cual se ingresa a la plataforma de autogestión vía  tengo la capacidad legal para representar legalmente a la razón social
+                                <br />
+                                @Model.RAZONSOCIAL @Model.NIT en el marco de su relación contractual con IGT Colombia Ltda., y reconozco y acepto expresamente que la firma electrónica utilizada
+                                <br />
+                                para estos efectos, como representante legal de la razón social @Model.RAZONSOCIAL @Model.NIT es válida y capaz de garantizar la autenticidad,
+                                <br />
+                                integridad y no repudio del contenido de la manifestación de la voluntad, y que tendrá plena validez, cumplimiento y admisibilidad según el artículo 7° del Decreto 2364 de 2012;
+
+                            </span>
+                        </div>
+
+                        @if (Model.POLITICADETRATAMIENTO)
+                        {
+
+                            <br />
+                            <div class="row">
+                                <span>
+                                    @Html.CheckBox("POLITICAS") &nbsp; &nbsp;
+                                    (ii) que autorizo a IGT Colombia Ltda. para que como responsable trate mis datos personales, para efectos del ejercicio de mi rol como representante legal de la razón social @Model.RAZONSOCIAL
+                                    <br />
+                                    ante IGT Colombia Ltda. así como la ejecución de las finalidades que son aplicables según la Política de Tratamiento de Información disponible en su página web <a style="font-weight:bold;" href="@Url.Action("ObtenerPoliticas","Certificado")" target="_blank">en este enlace</a>
+                                    <br />
+                                    la que declaro conocer y aceptar.
+                                </span>
+
+
+                            </div>
+                        }
+
+                        <br />
+                    </div>
+                </div>
+
+
+
+
+                @if (Model.OPCIONRECHAZAR)
+                {
+                    <div class="modal-body">
+                        <div class="dvCentro">
+                            <div class="row textoCentro marto15">
+                                <span class="col-md-3"></span>
+                                <input type="button" id="btnAceptar" class="btn btn-primary mensajeNota col-md-3" value="Aceptar" onclick="SubmitForm(this)" />
+                                <input type="button" id="btnRechazar" class="btn btn-danger mensajeNota col-md-3" value="Rechazar" onclick="SubmitForm(this)" />
+
+                            </div>
+
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="modal-body">
+                        <div class="dvCentro">
+                            <div class="row textoCentro marto15">
+                                <span class="col-md-4"></span>
+                                <input type="button" id="btnNeutral" class="btn btn-primary mensajeNota col-md-3" value="Aceptar" onclick="SubmitForm(this)" />
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+
+}
+
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            var markUp = decodeURIComponent(@Html.Raw(Json.Encode(Model.TEXTO)));
+
+            $("#INFORMATION").html(markUp)
+
+           
+
+            GetLocation();
+
+            var politics = @Html.Raw(Json.Encode(Model.POLITICADETRATAMIENTO));
+
+            if (politics) {
+                $("#btnAceptar").prop('disabled', true)
+                $("#btnNeutral").prop('disabled', true)
+            }
+
+            $("#POLITICAS").change(function () {
+
+                if (this.checked) {
+                    $("#btnAceptar").prop('disabled', false)
+                    $("#btnNeutral").prop('disabled', false)
+                } else {
+                    $("#btnAceptar").prop('disabled', true)
+                    $("#btnNeutral").prop('disabled', true)
+                }
+            });
+
+        });
+       
+        function SubmitForm(e) {
+
+            if (e.id == "btnAceptar" || e.id == "btnNeutral") {
+                $("#ACEPTADO").val(true)
+            } else {
+                $("#ACEPTADO").val(false)
+            }
+
+            $("#CrearDivulgacion").submit();
+
+        }
+
+        function GetLocation() {
+
+            $("#UBICACION").val("No se puede detectar");
+
+            fetch('https://extreme-ip-lookup.com/json/')
+                .then(res => res.json())
+                .then(response => {
+
+                    $("#UBICACION").val(response.city + ", " + response.country);
+                    
+                })
+                .catch((data, status) => {
+                    $("#UBICACION").val("Fallo al detectar ubicacion");
+                })
+
+        }
+
+        
+
+    </script>
+}
+
+<style>
+    .line-breaks {
+        white-space: pre-line;
+    }
+</style>
+
+
+
+
+
+
+
+
+

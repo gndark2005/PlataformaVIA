@@ -1,0 +1,391 @@
+@model PlataformaVIA.Presentacion.ViewModels.BusquedaAvanzada.BusquedaAvanzadaCicloFacturacionViewModel
+
+@{
+    Layout = null;
+}
+
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Estado de cuenta
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="form-horizontal dvBuscadorEstadoDeCuenta">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row center">
+        <label class="col-md-5">Formato de reporte estado de cuenta:</label>
+        <br />
+        <label class="col-md-2"><input type="checkbox" id="chkECDiario" value="Diario" /> Diario</label>
+        <label class="col-md-2"><input type="checkbox" id="chkECSemanal" value="Semanal" /> Semanal</label>
+    </div>
+    <div class="row center" style="margin-top:2%;">
+        @Html.Label("Desde", htmlAttributes: new { @class = "control-label col-md-3" })
+
+        @Html.DropDownList("ddlEstadoCuenta", Enumerable.Empty<SelectListItem>(), "Seleccionar...",
+                               new { @class = "form-control col-md-3 mx-2", @id = "ddlEstadoCuenta" })
+
+        <button id="btnEjecutarBusquedaAvanzada" type="button" class="btn btn-primary col-md-2" data-dismiss="modal" onclick="CrearReporte('1')">Generar</button>
+    </div>
+    <div class="row center">
+        <span>La consulta solo se podrá realizar hasta 20 semanas atras.</span>
+    </div>
+    @*<div class="row">
+            <span>Nota: El Estado de cuenta solicitado será enviado al correo electronico registrado.</span>
+        </div>*@
+</div>
+
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Reporte de prefacturación
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="form-horizontal dvBuscadorReportePrefacturacion">
+    <div class="row center">
+        <label class="col-md-5">Reporte de prefacturación semanal o mensual:</label>
+        <br />
+        <label class="col-md-2"><input type="checkbox" id="chkRPSemanal" value="Semanal" />  Semanal</label>
+        <label class="col-md-2"><input type="checkbox" id="chkRPMensual" value="Mensual" /> Mensual</label>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        @Html.LabelFor(model => model.CodCicloFacturacion, htmlAttributes: new { @class = "control-label col-md-3" })
+
+        @Html.DropDownList("ddlPrefacturacion", Enumerable.Empty<SelectListItem>(), "Seleccionar...",
+                                new { @class = "form-control col-md-3 mx-2", @id = "ddlPrefacturacion" })
+
+        <button id="btnEjecutarBusquedaAvanzada" type="button" class="btn btn-primary col-md-2" data-dismiss="modal" onclick="CrearReporte('2')">Generar</button>
+    </div>
+    <div class="row center">
+        <span>La consulta solo se podrá realizar hasta 20 semanas atras.</span>
+    </div>
+    @*<div class="row" style="text-align:center;">
+        <span style="color:red;"><b id="bMensaje"></b></span>
+    </div>*@
+</div>
+
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Informe Fiscal de Ventas
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="form-horizontal dvBuscadorReportePrefacturacion">
+    <div class="row center">
+        <label class="col-md-5">Informe Fiscal de Ventas Diarias Servicios Comerciales:</label>
+        <br />
+        <label class="col-md-2"><input type="checkbox" id="chkECDiario" value="Diario" checked="checked" disabled="disabled" /> Diario</label>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        @Html.LabelFor(model => model.FechaReferencia, htmlAttributes: new { @class = "control-label col-md-3" })
+
+        @Html.TextBoxFor(model => model.FechaReferencia, htmlAttributes: new { @id = "dtReferenciaIF", @class = "date-picker form-control col-md-3 mx-2" })
+        @Html.ValidationMessageFor(model => model.FechaReferencia, "", new { @class = "text-danger" })
+
+        <button id="btnEjecutarBusquedaAvanzada" type="button" class="btn btn-primary col-md-2" data-dismiss="modal" onclick="CrearReporte('3')">Generar</button>
+    </div>
+    <div class="row center">
+        <span>La consulta solo se podrá realizar hasta 3 meses atras.</span>
+    </div>
+    @*<div class="row" style="text-align:center;">
+        <span style="color:red;"><b id="bMensaje"></b></span>
+    </div>*@
+</div>
+
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Reporte de Ventas Diarias
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="form-horizontal dvBuscadorReportePrefacturacion">
+    <div class="row center">
+        <label class="col-md-5">Reporte de Ventas Diarias Servicios Comerciales:</label>
+        <br />
+        <label class="col-md-2"><input type="checkbox" id="chkECDiario" value="Diario" checked="checked" disabled="disabled" /> Diario</label>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        @Html.LabelFor(model => model.FechaReferencia, htmlAttributes: new { @class = "control-label col-md-3" })
+
+        @Html.TextBoxFor(model => model.FechaReferencia, htmlAttributes: new { @id = "dtReferenciaVD", @class = "date-picker form-control col-md-3 mx-2" })
+        @Html.ValidationMessageFor(model => model.FechaReferencia, "", new { @class = "text-danger" })
+
+        <button id="btnEjecutarBusquedaAvanzada" type="button" class="btn btn-primary col-md-2" data-dismiss="modal" onclick="CrearReporte('4')">Generar</button>
+    </div>
+    <div class="row center">
+        <span>La consulta solo se podrá realizar hasta 3 meses atras.</span>
+    </div>
+    <div class="row" style="text-align:center;">
+        <span style="color:red;"><b id="bMensaje"></b></span>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    //FUNCIONES DE REPORTES ESTADO DE CUENTA
+
+    $('#chkECSemanal').change(function () {
+        if ($(this).is(":checked")) {
+
+            $('#chkECDiario').prop('checked', false);
+
+             //Llena los meses
+            $("select[id$=ddlEstadoCuenta] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("ObtenerCicloDiarioEstadodeCuenta")',
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            $("#ddlEstadoCuenta").append($("<option>").val(item.Value).text(item.Text));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         $("#msgEstadoCuenta").html(xhr);
+                     }
+                 });
+        }
+    });
+
+
+    $('#chkECDiario').change(function () {
+        if ($(this).is(":checked")) {
+            $('#chkECSemanal').prop('checked', false);
+
+            $("select[id$=ddlEstadoCuenta] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("ObtenerCicloDiarioEstadodeCuenta")',
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+                            console.log(item)
+                            $("#ddlEstadoCuenta").append($("<option>").val(item.Value).text(item.Text));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         $("#msgEstadoCuenta").html(xhr);
+                     }
+                 });
+
+        }
+    });
+
+    //FUNCIONES DE REPORTES PREFACTURACION
+
+    $('#chkRPSemanal').change(function () {
+        if ($(this).is(":checked")) {
+            $('#chkRPMensual').prop('checked', false);
+
+            //Llena los meses
+            $("select[id$=ddlPrefacturacion] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("ObtenerCicloSemanalPrefacturacion")',
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            $("#ddlPrefacturacion").append($("<option>").val(item.Value).text(item.Text));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         $("#msgEstadoCuenta").html(xhr);
+                     }
+                 });
+        }
+    });
+
+    $('#chkRPMensual').change(function () {
+        if ($(this).is(":checked")) {
+            $('#chkRPSemanal').prop('checked', false);
+
+            //Llena las semanas
+            $("select[id$=ddlPrefacturacion] > option:gt(0)").remove();
+                 $.ajax({
+                    url: '@Url.Action("ObtenerMesesPrefacturacion")',
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $.each(data, function (index, item) {
+
+                            $("#ddlPrefacturacion").append($("<option>").val(item.Value).text(item.Text));
+                    });
+
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         $("#msgEstadoCuenta").html(xhr);
+                     }
+                 });
+        }
+    });
+
+
+    //CREA EL REPORTE
+    function CrearReporte(tipo) {
+
+        var tipoReporte = "";
+        var valFechaReferencia;
+
+            if (tipo == 1) {
+                var codigo = $("#ddlEstadoCuenta").val();
+                $('#ddlEstadoCuenta')[0].selectedIndex = 0;
+
+                if ($("#chkECSemanal").is(":checked")) {
+
+                    tipoReporte = "EstadoCuentaPDVSemanal"
+
+                } else if ($("#chkECDiario").is(":checked")) {
+
+                    tipoReporte = "EstadoDeCuentaPDVDiario"
+
+                }
+
+            } else if (tipo == 2) {
+                var codigo = $("#ddlPrefacturacion").val();
+                $('#ddlPrefacturacion')[0].selectedIndex = 0;
+
+                if ($("#chkRPSemanal").is(":checked")) {
+
+                    tipoReporte = "PrefacturacionPDV"
+
+                } else if ($("#chkRPMensual").is(":checked")) {
+
+                    tipoReporte = "PrefacturacionPDVMensual"
+
+                }
+            } else if (tipo == 3) {
+                tipoReporte = "InformeFiscalVentas"
+                valFechaReferencia = $("#dtReferenciaIF").val();
+
+            } else if (tipo == 4) {
+                tipoReporte = "ReporteVentasDiarias"
+                valFechaReferencia = $("#dtReferenciaVD").val();
+            }
+ 
+        if (tipo == 1 || tipo == 2)
+        {
+            if (codigo != null && codigo != "" && codigo != undefined && tipoReporte != "") {
+                $("#bMensaje").html('');
+                $.ajax({
+                type: "post",
+             url: "@Url.Action("CrearReportes")",
+             data: {
+                 tipoReporte: tipoReporte,
+                 codPDV: idpuntoventa,
+                 codCiclo: codigo
+             },
+             success: function (data) {
+                 $("#bMensaje").html(data);
+             }
+         });
+            } else {
+                $("#bMensaje").html('Verifique el período y el tipo de reporte (Diario, semanal, mensual)');
+            }
+        } else if (tipo == 3 || tipo == 4){
+            if (valFechaReferencia != null && valFechaReferencia != "" && valFechaReferencia != undefined && tipoReporte != "") {
+                $("#bMensaje").html('');
+                $.ajax({
+                type: "post",
+             url: "@Url.Action("CrearReportes")",
+             data: {
+                 tipoReporte: tipoReporte,
+                 codPDV: idpuntoventa,
+                 codCiclo: codigo,
+                 fechaReferencia: valFechaReferencia
+             },
+             success: function (data) {
+                 $("#bMensaje").html(data);
+             }
+         });
+            } else {
+                $("#bMensaje").html('Verifique el período y el tipo de reporte (Diario, semanal, mensual)');
+            }
+        }
+
+
+
+
+    }
+
+    var today = new Date();
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Zero time components
+
+
+    $(function () {
+
+        $.validator.addMethod('date', function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var valid = true;
+            try {
+                $.datepicker.parseDate('dd-mm-yy', value);
+            }
+            catch (err) {
+                valid = false;
+            }
+            return valid;
+        });
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //Enero is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var todayformat = mm + '-' + dd + '-' + yyyy;
+
+        console.log(todayformat);
+        var availableDates = [todayformat];
+
+        $(".date-picker").datepicker({
+
+            beforeShowDay: function (d) {
+                var dmy = (d.getMonth() + 1);
+                if (d.getMonth() < 9)
+                    dmy = "0" + dmy;
+                dmy += "-";
+
+                if (d.getDate() < 10) dmy += "0";
+                dmy += d.getDate() + "-" + d.getFullYear();
+                if ($.inArray(dmy, availableDates) != -1) {
+                    return [false, "", "unAvailable"];
+                } else {
+                    return [true, "", "Available"];
+                }
+            },
+            closeText: 'Fecha',
+            minDate: "-3m",
+            maxDate: "",
+            prevText: '',
+            nextText: '',
+            currentText: 'Hoje',
+            monthNames: language['pickerMonthNames'],
+            monthNamesShort: language['pickerMonthNamesShort'],
+            dayNames: language['pickerDayNames'],
+            dayNamesShort: language['pickerDayNamesShort'],
+            dayNamesMin: language['pickerDayNamesMin'],
+            weekHeader: 'Sm',
+            dateFormat: language['pickerDateFormat'],
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: '',
+            changeMonth: true,
+            changeYear: true
+        }).val('');
+
+
+
+
+
+
+    });
+
+</script>

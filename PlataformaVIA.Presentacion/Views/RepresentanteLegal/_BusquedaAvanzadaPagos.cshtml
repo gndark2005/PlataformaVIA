@@ -1,0 +1,38 @@
+@model PlataformaVIA.Presentacion.ViewModels.BusquedaAvanzada.BusquedaAvanzadaCicloFacturacionViewModel
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+@using (Html.BeginForm("GetFiltroAvanzadoPagos", "RepresentanteLegal", FormMethod.Get, new { id = "frmAdvancedSearch", @class = "form-horizontal dvCentro", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal dvBuscador">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row dvCentro">
+            @Html.LabelFor(model => model.CodCicloFacturacion, htmlAttributes: new { @class = "control-label col-md-4 mx-2" })
+            @Html.DropDownListFor(model => model.CodCicloFacturacion, Model.CicloFacturacionList, "Seleccionar Ciclo de Facturación",
+                                    new { @class = "form-control col-md-4 mx-2 mb-2", required = "required" })
+
+            @Html.LabelFor(model => model.CodTipoFiltro, htmlAttributes: new { @class = "control-label col-md-4 mx-2" })
+            @Html.DropDownListFor(model => model.CodTipoFiltro, ViewBag.FiltroList as SelectList, "Seleccionar Ciclo de Facturación",
+                                     new { @class = "form-control col-md-4 mx-2 mb-2", required = "required" })
+            <button id="btnEjecutarBusquedaAvanzada" type="button" class="btn btn-primary col-md-2" data-dismiss="modal">Consultar</button>
+        </div>
+        @Html.HiddenFor(model => model.TipoConsulta)
+
+    </div>
+    <div class="form-group">
+        <div class="offset-4 col-md-10">
+            @Html.ValidationMessageFor(model => model.CodCicloFacturacion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<input id="test_id" name="cmdName" type="checkbox" checked data-toggle="toggle">*@
+    @*<input name="tipopago" class="col-sm-6 form-control chk" id="tipopago" type="checkbox" data-off-color="success" data-indeterminate="true" value="true" data-val="true">*@
+    <div class="text-center">
+        <input id="chkTipoConsulta" name="chkTipoConsulta" type="checkbox" data-off-text="Mis Ajustes" data-on-text="Mis Pagos" data-label-text="Mis Ajustes" class="BSswitch">
+    </div>
+}
+

@@ -1,0 +1,65 @@
+@model PlataformaVIA.Core.Domain.PuntoDeVenta.PuntodeVenta
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Información del Punto
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="collapse show">
+    <div class="c-accordeon__contenedor">
+        <table class="table c-table mt-3">
+            <tbody>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.CodigoPuntoVenta)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50"> @Html.DisplayFor(model => model.CodigoPuntoVenta)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.Nombre)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.Nombre)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.NITRazonSocial)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.Nit)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.NombreRazonSocial)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.RazonSocial)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.NombreCadena)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.NombreCadena)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.Direccion)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.Direccion)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.CiudadPuntoVenta)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.CiudadPuntoVenta)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.Telefono)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.Telefono)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.ReferenciaPago)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.ReferenciaPago)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.RepresentanteVentas)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.RepresentanteVentas)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.RepresentanteVentasCelular)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.RepresentanteVentasCelular)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.RepresentanteVentasEmail)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.RepresentanteVentasEmail)</td>
+                </tr>
+                <tr>
+                    <th scope="row" class="text text--color--black border border--reset p-1 w-50">@Html.DisplayNameFor(model => model.Estado)</th>
+                    <td class="text text--color--gray_light border border--reset p-1 w-50">@Html.DisplayFor(model => model.Estado)</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

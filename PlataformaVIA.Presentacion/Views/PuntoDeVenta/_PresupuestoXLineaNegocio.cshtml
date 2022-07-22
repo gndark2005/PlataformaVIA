@@ -1,0 +1,61 @@
+@model IEnumerable<PlataformaVIA.Core.Domain.PuntoDeVenta.PresupuestoXLineaDeNegocio>
+<h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+    Presupuesto de Ventas
+    <i class="fa fa-sort-down ml-1"></i>
+</h2>
+<div class="collapse show">
+    <div class="c-accordeon__contenedor">
+        <table class="table c-table mt-3">
+            @if (Model.ToList().Count > 0)
+            {
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <th scope="row" class="text text--color--black border border--reset p-1">@Html.DisplayFor(model => item.LineaDeNegocio)</th>
+
+                            <td class=" border border--reset w-50">
+                                <div class="c-progress progress" style="text-align:center!important;">
+                                    <div class="progress-bar" style="width: @item.PorcentajePresupuesto%;color:black;" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                                        @if (item.PorcentajePresupuesto > 40)
+                                        {
+                                            if (item.TipoAnalisis == 2)
+                                            {
+                                                <p style="position:absolute !important; margin:auto !important; width:50% !important;"> @string.Format("{0:C} / {1:C}", item.PresupuestoCumplido, item.Presupuesto)</p>
+                                            }
+                                            else
+                                            {
+                                                <p style="position:absolute !important; margin:auto !important; width:50% !important;"> @string.Format("{0:0} / {1:0}", item.PresupuestoCumplido, item.Presupuesto)</p>
+                                            }
+                                        }
+                                    </div>
+                                    @if (item.PorcentajePresupuesto <= 40)
+                                    {
+                                        if (item.TipoAnalisis == 2)
+                                        {
+                                            <p style="position:absolute !important; margin:auto !important; width:50% !important;"> @string.Format("{0:C} / {1:C}", item.PresupuestoCumplido, item.Presupuesto)</p>
+                                        }
+                                        else
+                                        {
+                                            <p style="position:absolute !important; margin:auto !important; width:50% !important;"> @string.Format("{0:F0} / {1:F0}", item.PresupuestoCumplido, item.Presupuesto)</p>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+            else
+            {
+                <tbody>
+                    <tr>
+                        <th scope="row" class="text text--color--black border border--reset p-1">
+                            No hay datos
+                        </th>
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Contáctanos";
+
+    if (Request.IsAuthenticated)
+    {
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    else {
+        Layout = "~/Views/Shared/_PublicLayout.cshtml";
+    }
+
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <h2 class="col-12 title title--sub text text--color--blue pb-2 text-uppercase border border--bottom my-5">CONTÁCTANOS</h2>
+        <div class="wrapper col-12 text-center">
+            <p class="h3 text text--color--black mb-4"><strong>Tus inquietudes y comentarios son importantes para nosotros.</strong></p>
+            <p class="h3 text text--color--black">Puedes contactarnos telefónicamente.</p>
+            <p class="h3 text text--color--black">Desde fuera de Bogotá gratis al: <strong>01 8000 956 886.</strong></p>
+            <p class="h3 text text--color--black">Desde Bogotá al: <strong>592 34 30.</strong></p>
+        </div>
+    </div>
+</div>

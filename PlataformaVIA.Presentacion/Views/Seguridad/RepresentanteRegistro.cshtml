@@ -1,0 +1,161 @@
+@using Recaptcha.Web.Mvc;
+@{
+    ViewBag.Title = "Registro de usuario";
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+<div class="container center col-md-8 ml-auto">
+    <h2 class="marto15">@ViewBag.Title.</h2>
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmRegistroPasoInicial", autocomplete = "off" }))
+    {
+        @Html.AntiForgeryToken()
+
+    <div id="divContenidoValidacion" class="row">
+        
+            <div class="col-md-7"><label class="col-form-label">Ingrese su Nit:</label></div>
+            <div class="col-md-7 mt-2"><input type="text" id="txtNit" class="form-control col-md-5" maxlength="15" autocomplete="nope" required placeholder="Nit sin dígito de verificación" /></div>
+            <div class="col-md-7 mt-2">
+                @Html.Recaptcha(theme: Recaptcha.Web.RecaptchaTheme.Clean)
+                <div id="divMensajeCaptcha"></div>
+            </div>
+            <div class="col-md-7 mt-2"><button id="btnValidarNit" type="button" class="btn btn-primary">Continuar</button></div>
+      
+    </div>
+        <div class="marto15 left">
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+                <label id="lblMensajeValidacion" style="display:none;" class="alert alert-danger"></label>
+            </div>
+        </div>
+        <div class="col-md-12 mt-5 marbo15 mb-5" id="divContenidoPreguntas">
+        </div>
+    }
+    <div id="divContenidoMensajeValidacion" class="row mb-5 mt-5">
+    </div>
+</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+
+            $(document).on('change', '.preguntaControl', function () {
+                event.preventDefault();
+            });
+
+            $("#btnValidarNit").on('click', function (e) {
+                e.preventDefault();
+                $('#lblMensajeValidacion').hide();
+                if ($("#txtNit").val() != "") {
+                    ObtenerPreguntasDeSeguridad();
+                } else {
+                    $('#lblMensajeValidacion').show();
+                    $("#lblMensajeValidacion").text("Debe diligenciar el Nit");
+                    grecaptcha.reset()
+                }
+
+            });
+
+                $(document).on('click', '#btnReintentar', function (e) {
+                e.preventDefault();
+                var url = '@Url.Action("RepresentanteRegistro")';
+                window.location.replace(url);
+            });
+
+
+            function ObtenerPreguntasDeSeguridad() {
+                var url = '@Url.Action("ObtenerPreguntasDeSeguridad")';
+                var captcharesponse = grecaptcha.getResponse();
+                var request = {
+                    'Nit': $("#txtNit").val(), captcharesponse: captcharesponse
+                };
+                request.__RequestVerificationToken = $('#frmRegistroPasoInicial input[name="__RequestVerificationToken"]').val();
+                $.post(url, request)
+                    .done(function (data) {
+                        if (data.Mensaje.Error === false) {
+                            $("#divContenidoValidacion").hide();
+                            $("#divContenidoPreguntas").empty();
+                            for (var i = 0; i < data.Entidades.length; i++ ) {
+                                $("#divContenidoPreguntas").append('<div class="row mt-5"><h3>' + data.Entidades[i].Descripcion + '</h3>');
+                                $("#divContenidoPreguntas").append('<ul class="list-group">');
+
+                                for (var j = 0; j < data.Entidades[i].Respuestas.length; j++ ){
+                                    $("#divContenidoPreguntas").append('<li class="list-group-item"><label class="ml-2"><input type="radio" class="custom-control-input mr-3 preguntaControl" data-text="' + data.Entidades[i].Respuestas[j].Valor + '"  name="pregunta|' + data.Entidades[i].Id + '" value="' + data.Entidades[i].Respuestas[j].Id + '"/>' + data.Entidades[i].Respuestas[j].Valor + '</label></li>');
+                                }
+                                $("#divContenidoPreguntas").append('</ul>');
+                                $("#divContenidoPreguntas").append('</div>');
+                            }
+                            $("#divContenidoPreguntas").append('<div class="row"><div class= "col-md-4" ></div ><div class= "mt-2 col-md-4" id="parentBtn" ><button class= "btn btn-primary btn-block" type = "button" id = "btnContinuarValidacion" >Continuar</button ></div ></div > ');
+                        } else {
+                            $('#divMensajeCaptcha').empty();
+                            $('#divMensajeCaptcha').addClass('alert-danger');
+                            $('#divMensajeCaptcha').text(data.Mensaje.ErrorMessage);
+                            grecaptcha.reset()
+                        }
+
+                    });
+            }
+
+            $(document).on('keypress', function (e) {
+                if (event.keyCode === 10 || event.keyCode === 13) {
+                    event.preventDefault();
+                }
+            });
+
+
+            $(document).on('click', '#btnContinuarValidacion', function (e) {
+                e.preventDefault();
+                $('#lblMensajeValidacion').hide();
+                $("#lblMensajeValidacion").text("");
+                var preguntas = $(".preguntaControl");
+                var respuesta = {
+                    "Nit": $('#txtNit').val(),
+                    "ValoresContestados": [],
+                    "TokenResultado": 'dsadasfsfsdg',
+                    __RequestVerificationToken: $('input[name=__RequestVerificationToken]').val()
+                };
+
+                for (var w = 0; w < preguntas.length; w++) {
+                    if (preguntas[w].checked) {
+                        var resultNames = preguntas[w].name.toString().split('|');
+                        respuesta.ValoresContestados.push({ "CodPregunta": resultNames[1], "CodRespuestaSeleccionada": preguntas[w].value, "RespuestaSeleccionada": preguntas[w].dataset.text });
+                    }
+                }
+
+                if (respuesta.ValoresContestados.length === 3) {
+                    var url = '@Url.Action("ValidarPreguntasSeguridad")';
+                    $.ajax({
+                    url: url,
+                    method: "POST",
+                    data:  respuesta,
+                        success: function (result) {
+                            if (result.Mensaje.Error == true) {
+                                console.log(result.Mensaje.ErrorMessage)
+                                $('#divContenidoMensajeValidacion').empty();
+                                $('#divContenidoMensajeValidacion').append('<div class="col-md-8">' + result.Mensaje.ErrorMessage + '</div>');
+                                if (result.Mensaje.ErrorMessage.substring(0, 3) === '999') {
+                                    $("#divContenidoPreguntas").empty();
+                                    $('#divContenidoMensajeValidacion').append('<div class="col-md-3"><button type="button" class="btn btn-info" id="btnReintentar">Reintentar</button></div>')
+                                }
+
+                                $('#divContenidoMensajeValidacion').addClass('alert-danger p-2');
+                                
+
+                            } else if (result.Entidad.Token.length>0) {
+                                var url = '@Url.Action("RepresentanteRegistroDatos")' + "?token=" + result.Entidad.Token;
+                                window.location.replace(url);
+                            } else {
+                                ObtenerPreguntasDeSeguridad()
+                            }
+
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                } else {
+                    $('#lblMensajeValidacion').show();
+                    $("#lblMensajeValidacion").text("Debe seleccionar todas las opciones");
+                }
+        });
+    });
+    </script>
+}

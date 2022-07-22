@@ -1,0 +1,71 @@
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+@{
+    ViewBag.Title = "Pagos y Ajustes";
+}
+
+<div class="panel panel-primary list-panel" id="list-panel">
+    <div class="text-center">
+        <input id="chkTipoConsulta" name="chkTipoConsulta" type="checkbox" data-off-text="Mis Ajustes" data-on-text="Mis Pagos" data-label-text="Mis Ajustes" class="BSswitch">
+    </div>
+    @*<div class="list-panel-heading row">
+            @Html.Action("BusquedaAvanzadaPagos")
+        </div>*@
+    <div id="partialPlaceHolder" style="display:none;"> </div>
+</div>
+
+@section Scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+
+        function CargarPagos() {
+            $.get('/RepresentanteLegal/_ConsultarPagos/', function (data) {
+
+                $('#partialPlaceHolder').empty();
+                /* data is the pure html returned from action method, load it to your page */
+                $('#partialPlaceHolder').html(data);
+                /* little fade in effect */
+                $('#partialPlaceHolder').fadeIn('fast');
+            });
+        }
+
+        function CargarAjustes() {
+            $.get('/RepresentanteLegal/_ConsultarAjustes/', function (data) {
+
+                $('#partialPlaceHolder').empty();
+                /* data is the pure html returned from action method, load it to your page */
+                $('#partialPlaceHolder').html(data);
+                /* little fade in effect */
+                $('#partialPlaceHolder').fadeIn('fast');
+            });
+        }
+
+        $(function () {
+
+            $(document).on('keypress', function (e) {
+                if (event.keyCode === 10 || event.keyCode === 13) {
+                    event.preventDefault();
+                }
+            });
+
+            //Por defecto se realiza la carga de pagos
+            CargarPagos();
+
+            $("#tipopago").bootstrapSwitch({ size: "mini", onText: "Mis Ajustes", offText: "Mis Pagos", labelText: "Mis Ajustes" });
+            $('.BSswitch').bootstrapSwitch('state', true);
+
+            $('input[name="chkTipoConsulta"]').on('switchChange.bootstrapSwitch', function (event, state) {
+                //console.log(state)
+                if (state) { //Mis Pagos
+                    $('#chkTipoConsulta').bootstrapSwitch('labelText', "Mis Ajustes");
+                    CargarPagos();
+                }
+                else { //Mis Ajustes
+                    $('#chkTipoConsulta').bootstrapSwitch('labelText', "Mis Pagos");
+                    CargarAjustes();
+                }
+            });
+        });
+    </script>
+}

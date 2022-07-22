@@ -1,0 +1,33 @@
+
+@using PlataformaVIA.Core.Domain.AdministradorDocumentos
+
+@{
+    ViewBag.Title = "Como Operar su Terminal";
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">¿Cómo operar tu terminal?</h1>
+        </div>
+        <div class="panel-body">
+            <div class="row textoCentro">
+                <div class="col-md-5">
+                    <h3>Terminal Isys</h3>
+                    <a href="@Url.Action("Details","Terminal", new { codTipoTerminal = @Convert.ToInt32(TipoTerminalEnum.Isys) })"><img src="~/Content/img/isys.png" class="img-responsive center-block" alt="Terminal Isys" /></a>
+                </div>
+                <div class="col-md-5">
+                      <h3>Terminal Imagine</h3>
+                    <a href="@Url.Action("Details","Terminal", new { codTipoTerminal = @Convert.ToInt32(TipoTerminalEnum.Imagine) })"><img src="~/Content/img/imagine.png" class="img-responsive center-block" alt="Terminal Imagine" /></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    
+</div>
+

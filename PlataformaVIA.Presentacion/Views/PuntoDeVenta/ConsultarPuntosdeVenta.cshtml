@@ -1,0 +1,279 @@
+@{
+    ViewBag.Title = "Puntos de Venta";
+}
+
+<meta name="viewport" content=" width=device-width, initial-scale=1" />
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Mis puntos de Venta</h1>
+        </div>
+
+
+        <div class="panel-body">
+
+            <span style="font-size:small">*El cupo disponible incluye solo las ventas hasta el día anterior, sí refleja los pagos y retiros del día actual</span>
+            <br />
+            <br />
+
+
+            <div class="hidden-xs hidden-sm">
+                @Html.Action("FiltroBusqueda")
+            </div>
+
+            <table id="puntosdeventa-data-table"
+                   class="table table-striped table-bordered ampliaTabla"
+                   style="width:100%"></table>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $.fn.dataTable.ext.errMode = 'none';
+
+        var typingTimer;                //timer identifier
+        var doneTypingInterval = 5000;  //time in ms, 5 second for example
+
+    var puntosdeventaListVM;
+
+        $(function () {
+
+            $(document).on("preInit.dt", function () {
+                var searchDelay = null;
+                var $sb = $(".dataTables_filter input[type='search']");
+                $sb.off();
+                $sb.on("keyup", function (evtObj) {
+                    var search = $('div.dataTables_filter input').val();
+
+                    clearTimeout(searchDelay);
+
+                    searchDelay = setTimeout(function () {
+                        if (search != null) {
+                            dt.search(search).draw();
+                        }
+                    }, 1000);
+                });
+            });
+
+            var excelImg = '@Url.Content("~/Content/img/excel.png")';
+
+            puntosdeventaListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#puntosdeventa-data-table').on('error.dt', function (e, settings, techNote, message) {
+                        dt.ajax.reload();
+                    }).DataTable({
+                        "bSort": false,
+                        "dom": 'Blfrtip',
+                            buttons: [{
+                            "extend": 'excelHtml5',
+                            "title": 'Mis Puntos de Venta',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        "scrollX": true,
+                        "responsive": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("ConsultarPuntoDeVentaData")",
+                            "data": function (data) {
+                                const user = document.getElementsByClassName('text--user');
+                                gtag('event', 'ConsultarPuntoDeVentaData', { 'user': user[0].innerHTML});
+                                data.tipoBusqueda = $("#tipoBusqueda").val();
+                            },
+                            "type": "POST",
+                            error: function (xhr, error, thrown) {
+                              window.location.replace('@Url.Action("ConsultarPuntosDeVenta")');
+                            }
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class='py-0 text text--color--white border border--right' href='@Url.Action("Details")/" + data.Id + "'" + "><i class='fa fa-search'></i></a>";
+                                }
+                            },
+
+                            {
+                                "title": "id",
+                                "data": "Id",
+                                "searchable": false,
+                                "visible": false,
+
+                            },
+                            {
+                                "title": "Punto de venta",
+                                "width": "3%",
+                                "data": "CodigoPuntoVenta",
+                                "searchable": false,
+                                className: 'text-center'
+                            },
+                            {
+                                "title": "Cadena",
+                                "data": "CodigoCadena",
+                                "searchable": false,
+                                "width": "3%",
+                                "render": function (data) {
+                                    if (data == 0) {
+                                        return "-";
+                                    } else {
+                                        return data;
+                                    }
+                                },
+                                className: 'text-center'
+                            },
+                            {
+                                "title": "Nombre",
+                                "data": "Nombre",
+                                "width": "150px",
+                                "searchable": true
+                            },
+                            {
+                                "title": '<span id="SaldoTitle" title=" Corresponde al monto adeudado al día, ver detalle en estado de cuenta general">Pago Total</span>',
+                                "mData": null,
+                                "mRender": function (data, type, row) {
+                                    var saldoActual = accounting.formatMoney(row.SaldoActual, "$", 2, ",", ".");
+                                    if (data.DiasMora > 0) {
+                                        return '<span style="color:red;"><b>' + saldoActual + '</b></span>'
+                                    } else {
+                                        return '<span>' + saldoActual + '</span>'
+                                    }
+                                },
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Días de Mora",
+                                "width": "3%",
+                                "data": "DiasMora",
+                                "searchable": true,
+                                render: function (data, type, row) {
+                                    if (data > 0) {
+                                        return '<span style="color:red;"><b>' + data + '</b></span>'
+                                    } else {
+                                        return '<span>' + data + '</span>'
+                                    }
+                                },
+                                className: 'text-center'
+                            },
+                            {
+                                "title": "Cupo factura",
+                                data: null,
+                                render: function (data, type, row) {
+                                    var cupoFacturas = accounting.formatMoney(row.CupoPagoFacturas, "$", 2, ",", ".");
+                                    return cupoFacturas + " (" + row.PorcentajePagoFacturas + ")";
+                                },
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Cupo recargas/pines",
+                                data: null,
+                                render: function (data, type, row) {
+                                    var cupoPines = accounting.formatMoney(row.CupoPines, "$", 2, ",", ".");
+                                    return cupoPines + " (" + row.PorcentajePines + ")";
+                                },
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Estado",
+                                "width": "10%",
+                                "data": "Estado"
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                        "initComplete": function (settings, json) {
+                            //localStorage.removeItem('entendidopdv');
+                            var mob = @Html.Raw(Json.Encode(Request.Browser.IsMobileDevice));
+
+                               if (mob === true) {
+                                var handImgUrl = '@Url.Content("~/Content/img/click.png")';
+                                var help = new Anno({
+                                    target: '.dataTables_scroll',
+                                    position: 'center-top',
+                                    content: '<div id="anno-container" style="position:relative;"><img src="' + handImgUrl +'" />Deslice horizontalmente para ver mas información</div>',
+                                    buttons: [{
+                                        text: 'Entendido',
+                                        click: function (anno, evt) {
+                                            anno.hide()
+                                        }
+                                    }]
+                                });
+                                help.show();
+                                $("#anno-container").animate({
+                                    opacity: 0.25,
+                                    left: "-=20",
+                                }, 1200).animate({
+                                    opacity: 1,
+                                    left: "+=30",
+                                    }, 1200).animate({ opacity: 1 }, 100, function () {
+                                        localStorage.setItem('entendidopdv', '1');
+                                    });
+
+                            }
+                        }
+                    });
+
+                },
+            };
+            // initialize the datatables
+            puntosdeventaListVM.init();
+            $("#SaldoTitle").tooltip();
+
+        });
+
+        var oldExportAction = function (self, e, dt, button, config) {
+            if (button[0].className.indexOf('buttons-excel') >= 0) {
+                if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                    $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+                }
+                else {
+                    $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+                }
+            } else if (button[0].className.indexOf('buttons-print') >= 0) {
+                $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+            }
+        };
+
+        var newExportAction = function (e, dt, button, config) {
+            var self = this;
+            var oldStart = dt.settings()[0]._iDisplayStart;
+
+            dt.one('preXhr', function (e, s, data) {
+                //carga todos los datos del server con el max value
+                data.start = 0;
+                data.length = 2147483647;
+
+                dt.one('preDraw', function (e, settings) {
+                    // Call the original action function
+                    oldExportAction(self, e, dt, button, config);
+
+                    dt.one('preXhr', function (e, s, data) {
+
+                        settings._iDisplayStart = oldStart;
+                        data.start = oldStart;
+                    });
+
+                    setTimeout(dt.ajax.reload, 0);
+
+                    return false;
+                });
+            });
+
+
+            dt.ajax.reload();
+        };
+
+
+    </script>
+}

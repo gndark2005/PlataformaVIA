@@ -1,0 +1,180 @@
+﻿@model PlataformaVIA.Core.Domain.Divulgacion
+
+@{
+    ViewBag.Title = "Detalle Divulgación";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">@Model.NOMBRE</h1>
+        </div>
+        <div class="panel-body">
+
+           
+                @Html.HiddenFor(model => model.ID_DIVULGACION)
+                @Html.HiddenFor(model => model.HABILITADA)
+                @Html.HiddenFor(model => model.OPCIONRECHAZAR)
+
+                <div class="modal-body">
+                    <div class="dvCentro">
+
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.NOMBRE)</div>
+                            <div class="col-md-6 ">
+                                @Html.DisplayFor(model => model.NOMBRE, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                                @Html.ValidationMessageFor(model => model.NOMBRE, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.TITULO)</div>
+                            <div class="col-md-6 ">
+                                @Html.DisplayFor(model => model.TITULO, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                                @Html.ValidationMessageFor(model => model.TITULO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+
+                        <br />
+
+                        <div class="row" style="pointer-events:none">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.FECHAINICIO)</div>
+                            <div class="col-md-6 ">
+                                @Html.TextBoxFor(model => model.FECHAINICIO, "{0: dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control .w-100", @autocomplete = "off", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.FECHAINICIO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row" style="pointer-events:none">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.FECHAFIN)</div>
+                            <div class="col-md-6 ">
+                                @Html.TextBoxFor(model => model.FECHAFIN, "{0: dd/MM/yyyy}", new { htmlAttributes = new { @class = "form-control .w-100", @autocomplete = "off", @readonly = "readonly" } })
+                                @Html.ValidationMessageFor(model => model.FECHAFIN, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+                        <div class="row" style="pointer-events:none">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.OPCIONRECHAZAR)</div>
+                            <div class="col-md-6 ">
+                                @Html.CheckBoxFor(model => model.OPCIONRECHAZAR, new { htmlAttributes = new { @class = "form-control .w-100 BSswitch", @disabled = "disabled" } })
+                                @Html.ValidationMessageFor(model => model.OPCIONRECHAZAR, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" style="pointer-events:none">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.POLITICADETRATAMIENTO)</div>
+                            <div class="col-md-6 ">
+                                @Html.CheckBoxFor(model => model.POLITICADETRATAMIENTO, new { htmlAttributes = new { @class = "form-control .w-100 BSswitch", @disabled = "disabled" } })
+                                @Html.ValidationMessageFor(model => model.POLITICADETRATAMIENTO, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.ROLES)</div>
+                            <div class="col-md-6 ">
+                                @Html.ListBoxFor(model => model.ROLES, (IEnumerable<SelectListItem>)ViewBag.Roles,
+                                new { @class = "form-control .w-100", @disabled="disabled"})
+                                @Html.ValidationMessageFor(model => model.ROLES, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.EXCEPCIONESNIT)</div>
+                            <div class="col-md-6 ">
+                                @Html.ListBoxFor(model => model.EXCEPCIONESNIT, (IEnumerable<SelectListItem>)ViewBag.Exceptions,
+                                new { @class = "form-control .w-100", @disabled = "disabled" })
+                                @Html.ValidationMessageFor(model => model.EXCEPCIONESNIT, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <br />
+                        <br />
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.TEXTO)</div>
+
+                        </div>
+                        <br />
+                        <div id="INFORMATION" style="border-style: groove">
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <div class="modal-body">
+                    <div class="dvCentro">
+                        <div class="row textoCentro marto15">
+                            <span class="col-md-4"></span>
+                            
+                            <a class="btn btn-danger mensajeNota col-md-3" role="button" href="@Url.Action("Index", "Divulgacion")">
+                                <span aria-hidden='true'></span> &nbsp;Regresar
+                            </a>
+
+                        </div>
+                        <div class="row textoCentro">
+                            <p class="resultadoGuardado" id="pMensajeResultado"></p>
+                        </div>
+                    </div>
+                </div>
+            
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        var range = @Html.Raw(Json.Encode(Model.ROLES));
+        var except = @Html.Raw(Json.Encode(Model.EXCEPCIONESNIT));
+        
+        $(document).ready(function () {
+
+            var markUp = decodeURIComponent(@Html.Raw(Json.Encode(Model.TEXTO)));
+
+            $("#INFORMATION").html(markUp)
+
+            $("#FECHAINICIO").datepicker({ dateFormat: "dd/mm/yy", autoclose: true });
+            $("#FECHAFIN").datepicker({ dateFormat: "dd/mm/yy", autoclose: true });
+
+            $("#ROLES").selectpicker({ noneSelectedText: 'Seleccione...' });
+            $("#ROLES").selectpicker('val', range)
+
+            $("#EXCEPCIONESNIT").selectpicker({ noneSelectedText: 'Digite NIT...', liveSearch: true });
+            $("#EXCEPCIONESNIT").selectpicker('val', except);
+
+        });
+
+        
+    </script>
+}
+
+    <style>
+        .line-breaks {
+            white-space: pre-line;
+        }
+    </style>
+
+
+
+
+
+
+
+
+

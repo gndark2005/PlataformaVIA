@@ -1,0 +1,174 @@
+@model PlataformaVIA.Core.Domain.Cadena.Cadena
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="col-md-12">
+    <h2 class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left">
+        Puntos de venta asociados
+        <i class="fa fa-sort-down ml-1"></i>
+    </h2>
+    <div class="panel-body">
+        <div>
+            <table id="pdvAsociados-data-table"
+                   class="table table-striped table-bordered dataTableSinBotones ampliaTabla"
+                   style="width:100%"></table>
+        </div>
+        
+    </div>
+</div>
+<script type="text/javascript">
+        var cadenasListVM;
+    $(function () {
+
+        $(document).on("preInit.dt", function () {
+            var searchDelay = null;
+            var $sb = $(".dataTables_filter input[type='search']");
+            $sb.off();
+            $sb.on("keyup", function (evtObj) {
+                var search = $('div.dataTables_filter input').val();
+
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    if (search != null) {
+                        dt.search(search).draw();
+                    }
+                }, 1000);
+            });
+        });
+
+             cadenasListVM = {
+                dt: null,
+                init: function () {
+                    dt = $('#pdvAsociados-data-table').DataTable({
+                        dom: 'Blfrtip',
+                        "responsive":false,
+                        "bSort": false,
+                        buttons: [{
+                            "extend": 'excelHtml5',
+                            "className": 'btn btn-secondary',
+                            "title": 'Puntos de venta asociados',
+                            "text": 'Exportar a excel',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+                        "scrollX": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        //"ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            type: 'POST',
+                            "url":
+                                '@Url.Action("GetFiltroBasicoPDVAsociados", "Cadena")',
+                            "data": { idCadena: @Model.Id}
+                        },
+                        "columns": [
+                            {
+                                "title": "",
+                                "searchable": false,
+                                "visible": true,
+                                "orderable": false,
+                                "width": "10px",
+                                "mRender": function (data, type, full) {
+                                    return "<span></span>";
+                                }
+                            },
+                            {
+                                "title": "Código",
+                                "data": "CodigoPuntoVenta",
+                                "width":"10%",
+                                "searchable": false,
+                                "visible": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Nombre",
+                                "data": "Nombre",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Estado PDV",
+                                "data": "Estado",
+                                "width": "15%",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Estado juegos",
+                                "data": "EstadoJuego",
+                                "width": "15%",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Estado facturas y depositos",
+                                "data": "EstadoDeposito",
+                                "width": "15%",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Estado pines y recargas",
+                                "data": "EstadoPinesRecarga",
+                                "width": "15%",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                }
+            };
+            // initialize the datatables
+            cadenasListVM.init();
+
+        });
+
+        var oldExportAction = function (self, e, dt, button, config) {
+            if (button[0].className.indexOf('buttons-excel') >= 0) {
+                if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                    $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+                }
+                else {
+                    $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+                }
+            } else if (button[0].className.indexOf('buttons-print') >= 0) {
+                $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+            }
+        };
+
+        var newExportAction = function (e, dt, button, config) {
+            var self = this;
+            var oldStart = dt.settings()[0]._iDisplayStart;
+
+            dt.one('preXhr', function (e, s, data) {
+                //carga todos los datos del server con el max value
+                data.start = 0;
+                data.length = 2147483647;
+
+                dt.one('preDraw', function (e, settings) {
+                    // Call the original action function
+                    oldExportAction(self, e, dt, button, config);
+
+                    dt.one('preXhr', function (e, s, data) {
+
+                        settings._iDisplayStart = oldStart;
+                        data.start = oldStart;
+                    });
+
+
+                    setTimeout(dt.ajax.reload, 0);
+
+
+                    return false;
+                });
+            });
+
+
+            dt.ajax.reload();
+        };
+
+
+</script>

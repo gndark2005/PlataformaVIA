@@ -1,0 +1,19 @@
+﻿@{
+    Layout = "~/Views/Shared/_PublicLayout.cshtml";
+}
+
+@{ 
+    if ( !string.IsNullOrEmpty(ViewBag.Mensaje))
+    {
+    <div class="container">
+        <h2>@ViewBag.Titulo</h2>
+        <div class="@ViewBag.TipoMensaje">
+            @ViewBag.Mensaje
+        </div>
+        <div class="col-md-4 center">
+           <a href="@ViewBag.Destino" class="btn btn-primary">Continuar</a>
+        </div>
+    </div>
+    }
+
+}

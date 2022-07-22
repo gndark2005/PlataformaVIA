@@ -1,0 +1,214 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Core", "1. Core", "{1D2DD4FD-F7F9-4BFF-A8BE-B095437CCDD3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2. Data", "2. Data", "{09C8759D-DC8A-4941-8EED-1DCF3D134642}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIA.Data", "PlataformaVIA.Data\PlataformaVIA.Data.csproj", "{48108EC8-37BF-42DC-9697-0DD0880C2C23}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Services", "3. Services", "{F3EDE1AA-7EDE-445B-86CF-992874F734BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIA.Services", "PlataformaVIA.Services\PlataformaVIA.Services.csproj", "{19617B34-45BF-4F24-8E04-175207822B83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4. Presentation", "4. Presentation", "{C230F41F-B347-4CF0-B453-4BFB8654477B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIA.Core", "PlataformaVIA.Core\PlataformaVIA.Core.csproj", "{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "5. Distributed Services", "5. Distributed Services", "{B8327320-7976-4880-A72B-596531740445}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIA.WebServices", "PlataformaVIA.WebServices\PlataformaVIA.WebServices.csproj", "{302911DE-4AAB-4DCB-845A-20CD53D06E1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIAOAuth.WebServices", "PlataformaVIAOAuth.WebServices\PlataformaVIAOAuth.WebServices.csproj", "{3064C117-3DE1-4A08-AB9F-D03736C166C1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "6. Unit Tests", "6. Unit Tests", "{2262910B-6E8B-48DD-A583-F79B3D22FB89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestPPlataformaVIAOAuth.Tests", "UnitTestPPlataformaVIAOAuth.Tests\UnitTestPPlataformaVIAOAuth.Tests.csproj", "{44D41D2D-F45E-40A6-812A-A1AF20813C01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIA.Presentacion", "PlataformaVIA.Presentacion\PlataformaVIA.Presentacion.csproj", "{E25499CC-E866-492E-94D4-DF42B8BA9388}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVIA.MailAdministrator", "PlataformaVIA.MailAdministrator\PlataformaVIA.MailAdministrator.csproj", "{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlataformaVia.LocalService", "PlataformaVia.LocalService\PlataformaVia.LocalService.csproj", "{A810318E-69D0-4B73-982A-25D025E2B648}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Debug|x64.Build.0 = Debug|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Debug|x86.Build.0 = Debug|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Release|x64.ActiveCfg = Release|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Release|x64.Build.0 = Release|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Release|x86.ActiveCfg = Release|Any CPU
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23}.Release|x86.Build.0 = Release|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Debug|x64.Build.0 = Debug|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Debug|x86.Build.0 = Debug|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Release|x64.ActiveCfg = Release|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Release|x64.Build.0 = Release|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Release|x86.ActiveCfg = Release|Any CPU
+		{19617B34-45BF-4F24-8E04-175207822B83}.Release|x86.Build.0 = Release|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Debug|x64.Build.0 = Debug|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Debug|x86.Build.0 = Debug|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Release|x64.ActiveCfg = Release|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Release|x64.Build.0 = Release|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Release|x86.ActiveCfg = Release|Any CPU
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A}.Release|x86.Build.0 = Release|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Debug|x64.Build.0 = Debug|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Debug|x86.Build.0 = Debug|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Release|x64.ActiveCfg = Release|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Release|x64.Build.0 = Release|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Release|x86.ActiveCfg = Release|Any CPU
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F}.Release|x86.Build.0 = Release|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Debug|x64.Build.0 = Debug|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Debug|x86.Build.0 = Debug|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Release|x64.ActiveCfg = Release|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Release|x64.Build.0 = Release|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Release|x86.ActiveCfg = Release|Any CPU
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1}.Release|x86.Build.0 = Release|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Debug|x64.Build.0 = Debug|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Debug|x86.Build.0 = Debug|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Release|x64.ActiveCfg = Release|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Release|x64.Build.0 = Release|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Release|x86.ActiveCfg = Release|Any CPU
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01}.Release|x86.Build.0 = Release|Any CPU
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Debug|x64.ActiveCfg = Debug|x64
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Debug|x64.Build.0 = Debug|x64
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Debug|x86.ActiveCfg = Debug|x86
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Debug|x86.Build.0 = Debug|x86
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Release|x64.ActiveCfg = Release|x64
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Release|x64.Build.0 = Release|x64
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Release|x86.ActiveCfg = Release|x86
+		{E25499CC-E866-492E-94D4-DF42B8BA9388}.Release|x86.Build.0 = Release|x86
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Debug|x64.Build.0 = Debug|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Debug|x86.Build.0 = Debug|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Release|x64.ActiveCfg = Release|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Release|x64.Build.0 = Release|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Release|x86.ActiveCfg = Release|Any CPU
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217}.Release|x86.Build.0 = Release|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Debug|x64.Build.0 = Debug|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Debug|x86.Build.0 = Debug|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Release|x64.ActiveCfg = Release|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Release|x64.Build.0 = Release|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Release|x86.ActiveCfg = Release|Any CPU
+		{A810318E-69D0-4B73-982A-25D025E2B648}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{48108EC8-37BF-42DC-9697-0DD0880C2C23} = {09C8759D-DC8A-4941-8EED-1DCF3D134642}
+		{19617B34-45BF-4F24-8E04-175207822B83} = {F3EDE1AA-7EDE-445B-86CF-992874F734BE}
+		{CF7E60B4-F26F-49A1-82CA-82F2E3C0DC3A} = {1D2DD4FD-F7F9-4BFF-A8BE-B095437CCDD3}
+		{302911DE-4AAB-4DCB-845A-20CD53D06E1F} = {B8327320-7976-4880-A72B-596531740445}
+		{3064C117-3DE1-4A08-AB9F-D03736C166C1} = {B8327320-7976-4880-A72B-596531740445}
+		{44D41D2D-F45E-40A6-812A-A1AF20813C01} = {2262910B-6E8B-48DD-A583-F79B3D22FB89}
+		{E25499CC-E866-492E-94D4-DF42B8BA9388} = {C230F41F-B347-4CF0-B453-4BFB8654477B}
+		{CAA34F4C-6BB0-499F-88DB-BFF8C5941217} = {B8327320-7976-4880-A72B-596531740445}
+		{A810318E-69D0-4B73-982A-25D025E2B648} = {B8327320-7976-4880-A72B-596531740445}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D422C041-5266-4F7D-8027-F808EC688E93}
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 10
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://cbtfsprod:8080/tfs/desarrollo
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = PlataformaVIA.Data\\PlataformaVIA.Data.csproj
+		SccProjectTopLevelParentUniqueName1 = PlataformaVIA.sln
+		SccProjectName1 = PlataformaVIA.Data
+		SccLocalPath1 = PlataformaVIA.Data
+		SccProjectUniqueName2 = PlataformaVIA.Services\\PlataformaVIA.Services.csproj
+		SccProjectTopLevelParentUniqueName2 = PlataformaVIA.sln
+		SccProjectName2 = PlataformaVIA.Services
+		SccLocalPath2 = PlataformaVIA.Services
+		SccProjectUniqueName3 = PlataformaVIA.Core\\PlataformaVIA.Core.csproj
+		SccProjectTopLevelParentUniqueName3 = PlataformaVIA.sln
+		SccProjectName3 = PlataformaVIA.Core
+		SccLocalPath3 = PlataformaVIA.Core
+		SccProjectUniqueName4 = PlataformaVIA.WebServices\\PlataformaVIA.WebServices.csproj
+		SccProjectTopLevelParentUniqueName4 = PlataformaVIA.sln
+		SccProjectName4 = PlataformaVIA.WebServices
+		SccLocalPath4 = PlataformaVIA.WebServices
+		SccProjectUniqueName5 = PlataformaVIAOAuth.WebServices\\PlataformaVIAOAuth.WebServices.csproj
+		SccProjectTopLevelParentUniqueName5 = PlataformaVIA.sln
+		SccProjectName5 = PlataformaVIAOAuth.WebServices
+		SccLocalPath5 = PlataformaVIAOAuth.WebServices
+		SccProjectUniqueName6 = UnitTestPPlataformaVIAOAuth.Tests\\UnitTestPPlataformaVIAOAuth.Tests.csproj
+		SccProjectTopLevelParentUniqueName6 = PlataformaVIA.sln
+		SccProjectName6 = UnitTestPPlataformaVIAOAuth.Tests
+		SccLocalPath6 = UnitTestPPlataformaVIAOAuth.Tests
+		SccProjectUniqueName7 = PlataformaVIA.Presentacion\\PlataformaVIA.Presentacion.csproj
+		SccProjectTopLevelParentUniqueName7 = PlataformaVIA.sln
+		SccProjectName7 = PlataformaVIA.Presentacion
+		SccLocalPath7 = PlataformaVIA.Presentacion
+		SccProjectUniqueName8 = PlataformaVIA.MailAdministrator\\PlataformaVIA.MailAdministrator.csproj
+		SccProjectTopLevelParentUniqueName8 = PlataformaVIA.sln
+		SccProjectName8 = PlataformaVIA.MailAdministrator
+		SccLocalPath8 = PlataformaVIA.MailAdministrator
+		SccProjectUniqueName9 = PlataformaVia.LocalService\\PlataformaVia.LocalService.csproj
+		SccProjectTopLevelParentUniqueName9 = PlataformaVIA.sln
+		SccProjectName9 = PlataformaVia.LocalService
+		SccLocalPath9 = PlataformaVia.LocalService
+	EndGlobalSection
+EndGlobal

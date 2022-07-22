@@ -1,0 +1,28 @@
+﻿@model PlataformaVIA.Core.Domain.PuntoDeVenta.PuntodeVenta
+
+@{
+    ViewBag.Title = "Detalle Punto de Venta";
+}
+
+<div class="c-accordeon col-12 mt-4">
+
+    <div class="wrapper">
+        @Html.Partial("_PuntoVentaInfoGeneral")
+    </div>
+    <div class="wrapper">
+        @Html.Action("_EstadoCuentaXLineaNegocio", "PuntoDeVenta", new { codpuntoventa = Model.Id })
+    </div>
+    <span style="font-size:small"><b>*El cupo disponible incluye solo las ventas hasta el día anterior, sí refleja los pagos y retiros del día actual</b></span>
+    <br />
+    <br />
+    <div class="wrapper">
+        @Html.Action("_PresupuestoXLineaNegocio", "PuntoDeVenta", new { codpuntoventa = Model.Id })
+    </div>
+    @if (ViewBag.MostrarNoficiaciones)
+    {
+        <div class="wrapper">
+            <h2>Notificaciones</h2>
+            @Html.Action("_Notificaciones", "PuntoDeVenta", new { codpuntoventa = Model.Id })
+        </div>
+    }
+</div>

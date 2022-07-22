@@ -1,0 +1,85 @@
+﻿@model PlataformaVIA.Presentacion.Models.DataUpdateViewModels
+@{
+    Layout = null;
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Actualización de datos</h1>
+        </div>
+        <div class="container center col-md-10 marto15">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "dataUpdate", autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.EmailAlterno, new { @class = "col-sm-5 col-form-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.EmailAlterno, new { @class = "form-control", placeholder = "Email alterno", autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.EmailAlterno, "", new { @class = "text-danger validationMessage" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.Celular, new { @class = "col-sm-5 col-form-label" })
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.Celular, new { @class = "form-control", placeholder = "Celular", autocomplete = "off" })
+                        @Html.ValidationMessageFor(m => m.Celular, "", new { @class = "text-danger validationMessage" })
+                    </div>
+                </div>
+               <div class="form-group row">
+                    <label id="lblresultadoDatos" class="textoCentro"></label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-5 textoCentro"></div>
+                    <div class="col-md-4 textoCentro">
+                        <input type="submit" value="Cambiar" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        $("#dataUpdate").submit(function (e) {
+            e.preventDefault();
+            if ($('#dataUpdate').validate({
+                focusInvalid: false
+            }).valid()) {
+                $('#lblresultadoDatos').empty();
+                $.ajax({
+                    url: '@Url.Action("_DataUpdate")',
+                    dataType: "json",
+                    type: "POST",
+                    data: $('#dataUpdate').serialize(),
+                    success: function (data) {
+                        if (data.Error == false) {
+                            $('#lblresultadoDatos').removeClass('text-danger');
+                            $('#lblresultadoDatos').addClass('text-success');
+                            $('#lblresultadoDatos').empty();
+                            $('#lblresultadoDatos').html('Actualización realizada correctamente');
+                        } else {
+                            $('#lblresultadoDatos').removeClass('text-danger');
+                            $('#lblresultadoDatos').addClass('text-danger');
+                            $('#lblresultadoDatos').empty();
+                            $('#lblresultadoDatos').html('Mensaje: ' + data.Mensaje);
+                        }
+                    },
+                    error: function (error) {
+                        $('#lblresultadoDatos').removeClass('text-danger');
+                        $('#lblresultadoDatos').addClass('text-danger');
+                        $('#lblresultadoDatos').empty();
+                        $('#lblresultadoDatos').html('Error: ' + error);
+                    }
+                });
+            }
+         else {
+                $('#lblresultadoDatos').removeClass('text-danger');
+                $('#lblresultadoDatos').addClass('text-danger');
+                $('#lblresultadoDatos').empty();
+                $('#lblresultadoDatos').html('Debe diligenciar todos los campos requeridos');
+            }
+        });
+    })
+</script>

@@ -1,0 +1,106 @@
+@model PlataformaVIA.Presentacion.ViewModels.BusquedaAvanzada.BusquedaAvanzadaRangoFechasViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("GetFiltroAvanzadoMisVentas", "PuntoDeVenta", FormMethod.Post, new { id = "frmAdvancedSearch", @class = "form-horizontal dvCentro", role = "form" }))
+{
+<div class="row mb-2 form-horizontal ml-2">
+    <div class="col-md-5 mt-1">
+        <div class="text font-weight-bold" style="float:left; min-width:90px"> @Html.DisplayNameFor(model => model.FechaInicio)</div>
+        <div class="pl-2" style="float:left;">
+            @Html.TextBoxFor(model => model.FechaInicio, htmlAttributes: new { @class = "date-picker form-control" })
+            @Html.ValidationMessageFor(model => model.FechaInicio, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-5 mt-1">
+        <div class="text font-weight-bold" style="float:left; min-width:90px"> @Html.DisplayNameFor(model => model.FechaFin)</div>
+        <div class="pl-2" style="float:left;">
+            @Html.TextBoxFor(model => model.FechaFin, htmlAttributes: new { @class = "date-picker form-control" })
+            @Html.ValidationMessageFor(model => model.FechaFin, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="col-md-2 mt-1 textoCentro">
+        <span class="hidden-lg">&nbsp;</span>
+        <button id="btnEjecutarBusquedaAvanzadaFechas" type="button" class="btn btn-primary" data-dismiss="modal">Consultar</button>
+    </div>
+</div>
+}
+
+<script type="text/javascript">
+    var today = new Date();
+    today = new Date(today.getFullYear(), today.getMonth(), today.getDate()); // Zero time components
+
+    $(function () {
+        $.validator.addMethod('date', function (value, element) {
+            if (this.optional(element)) {
+                return true;
+            }
+            var valid = true;
+            try {
+                $.datepicker.parseDate('dd-mm-yy', value);
+            }
+            catch (err) {
+                valid = false;
+            }
+            return valid;
+        });
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1; //Enero is 0!
+        var yyyy = today.getFullYear();
+        if (dd < 10) {
+            dd = '0' + dd;
+        }
+        if (mm < 10) {
+            mm = '0' + mm;
+        }
+        var todayformat = mm + '-' + dd + '-' + yyyy;
+
+        console.log(todayformat);
+        var availableDates = [todayformat];
+
+        $(".date-picker").datepicker({
+
+            beforeShowDay: function (d) {
+                var dmy = (d.getMonth() + 1);
+                if (d.getMonth() < 9)
+                    dmy = "0" + dmy;
+                dmy += "-";
+
+                if (d.getDate() < 10) dmy += "0";
+                dmy += d.getDate() + "-" + d.getFullYear();
+                if ($.inArray(dmy, availableDates) != -1) {
+                    return [false, "", "unAvailable"];
+                } else {
+                    return [true, "", "Available"];
+                }
+            },
+            closeText: 'Fecha',
+            minDate: "-3m",
+            maxDate: "",
+            prevText: '',
+            nextText: '',
+            currentText: 'Hoje',
+            monthNames: language['pickerMonthNames'],
+            monthNamesShort: language['pickerMonthNamesShort'],
+            dayNames: language['pickerDayNames'],
+            dayNamesShort: language['pickerDayNamesShort'],
+            dayNamesMin: language['pickerDayNamesMin'],
+            weekHeader: 'Sm',
+            dateFormat: language['pickerDateFormat'],
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: '',
+            changeMonth: true,
+            changeYear: true
+        }).val('');
+
+
+
+
+
+
+    });
+</script>

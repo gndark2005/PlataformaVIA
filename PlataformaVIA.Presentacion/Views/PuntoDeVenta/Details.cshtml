@@ -1,0 +1,161 @@
+@{
+    ViewBag.Title = "Detalle del Punto de Venta";
+}
+
+<div class="row m-0">
+    <div class="col-12">
+        <div id="divEncabezadoPDV" style="background-color:#063e8e;">
+            <h2 class="visible-md visible-lg" id="title" style="color:white; text-align:center;"></h2>
+            <h4 style="text-align:center; color:white;" class="visible-xs visible-sm" id="title_xs"></h4>
+        </div>        
+        <div class="row">
+            <div class="center-block">
+                <div class="dropdown visible-xs visible-sm pb-2">
+                    <button class="btn btnMobile-secondary dropdownMobile-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu punto de venta
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a href="#" class="menupdv dropdownMobile-item" id="Inicio">Información General</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="EstadoCuenta">Estado de Cuenta General</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="TirillaCuadreSemanal">Tirilla de cuadre semanal</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Ventas">Mis Ventas</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Pagos">Mis Pagos</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Ajustes">Mis Ajustes</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Reportes">Mis Reportes</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Politica">Mi política de pago</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Transacciones">Consulta tus transacciones</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Productos">Mis productos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 visible-md visible-lg">
+                <div class="menulateral visible-md visible-lg">
+                    <ul>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Inicio">Información General</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="EstadoCuenta">Estado de Cuenta General</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="TirillaCuadreSemanal">Tirilla de cuadre semanal</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Ventas">Mis Ventas</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Pagos">Mis Pagos</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Ajustes">Mis Ajustes</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Reportes">Mis Reportes</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Politica">Mi política de pago</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Transacciones">Consulta tus transacciones</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Productos">Mis productos</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="dvcontenedorpuntodeventainfo" class="col-9" style="margin:auto; width:100%;"/>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+
+        var idpuntoventa = "@ViewBag.Id";
+        var currentMenu = "";
+
+           
+
+           function CrearReporte(tipoReporte, tipo) {
+
+            if (tipo == 1) {
+                var codigo = $("#ddlEstadoCuenta").val();
+                $('#ddlEstadoCuenta')[0].selectedIndex = 0;
+            } else if (tipo == 2) {
+                var codigo = $("#ddlPrefacturacion").val();
+                $('#ddlPrefacturacion')[0].selectedIndex = 0;
+            }
+
+
+
+            if (codigo != null && codigo != "" && codigo != undefined) {
+                $.ajax({
+                type: "post",
+             url: "@Url.Action("CrearReportes")",
+             data: {
+                 tipoReporte: tipoReporte,
+                 codPDV: idpuntoventa,
+                 codCiclo: codigo
+             },
+             success: function (data) {
+                 $("#bMensaje").html(data);
+             }
+         });
+            } else {
+                $("#bMensaje").html('Seleccione un ciclo de facturación');
+            }
+
+
+        }
+
+        $(function () {
+            CargarEncabezadoPDV("Encabezado");
+            CargarInformacionInicio("Inicio");
+
+            $('.dropdownMobile-item').click(function () {
+                $('#dropdownMenuButton').text($(this).text());
+                $(".dropdownMobile-toggle").dropdown('toggle');
+            });
+
+                      
+        $('.menupdv').click(function() {
+            var id = this.id;
+            KeepMenu(this)
+            CargarInformacionInicio(id);
+            return false;
+            });
+
+            function CargarEncabezadoPDV(idlink) {
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("GetPartialView")",
+                    data: { idlink: idlink, idpuntoventa: idpuntoventa },
+                success: function(data) {
+                    var texto = data.Nombre + " - Punto de venta " + data.CodigoPuntoVenta;
+                    $("#title").empty();
+                    $("#title").html(texto);
+                    $("#title_xs").empty();
+                    $("#title_xs").html(texto);
+                 }
+            });
+         }
+
+            function CargarInformacionInicio(idlink) {
+                gtag('event', 'PuntodeVenta/Details/' + idlink, { 'idpuntoventa': idpuntoventa });
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("GetPartialView")",
+                    data: { idlink: idlink, idpuntoventa: idpuntoventa },
+                success: function(d) {
+                 /* d is the HTML of the returned response */
+                   $("#dvcontenedorpuntodeventainfo").empty();
+                   $("#dvcontenedorpuntodeventainfo").html(d); //replaces previous HTML with action
+               }
+            });
+            }
+
+
+        });
+
+        function KeepMenu(id) {
+            if (currentMenu != "") {
+                $(currentMenu).removeAttr("style");
+                $(currentMenu).addClass("menupdv btn btn--link text");
+            }
+
+            $(id).css("background-color", "#063e8e");
+            $(id).css("color", "white");
+
+            currentMenu = id;
+        }
+    </script>
+}

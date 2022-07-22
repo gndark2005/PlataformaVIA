@@ -1,0 +1,18 @@
+﻿@model PlataformaVIA.Core.Domain.Cadena.Cadena
+
+@{
+    ViewBag.Title = "Detalle Cadena";
+}
+
+<div class="c-accordeon col-12 mt-4">
+    <div class="wrapper">
+        @Html.Partial("_CadenaInfoGeneral", Model)
+    </div>
+    <div class="wrapper">
+        @Html.Partial("_EstadoDeCuentaCadenaPorLineaDeNegocio", Model)
+    </div>
+    <div class="wrapper">
+
+        @Html.Partial("_PuntosDeVentaAsociados", Model)
+    </div>
+</div>

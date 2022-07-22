@@ -1,0 +1,171 @@
+*{
+	padding: 0px;
+	margin: 0px;
+	font-family: fiducia;
+
+}
+
+@font-face{
+	font-family: fiducia;
+	src: url(font/fiducia.otf);
+}
+
+.pp{
+	color: #ABB2B9;
+	font-size: 1.5em;
+}
+.pp a{
+	
+	color: #AFB1B3;
+}
+#inav{
+	font-size: 0.7em;
+}
+
+	
+.log{
+	line-height:3px;
+	font-size: .8em;
+
+}
+.banner1{
+	background-color: #0056C3
+}
+.banner1 img{
+	width: 300px;
+}
+.titulos{
+	font-size:20px; 
+	color: #004696;  "
+}
+.asunto table{
+	width: 100%;
+
+}
+.publicidad{
+	
+}
+.publicidad img{
+	width: 100%;
+	
+
+}
+
+.fondoHeader{
+	background-image: url(../img/fondo-header.png); 
+  	background-size: cover; 
+  	background-repeat: no-repeat;
+		
+
+}
+
+.containerHead{
+	margin-top: 10px;
+	color: #fff;
+
+}
+
+.containerHead a{
+	color: #fff;
+
+}
+
+
+.logo img{
+	width: 80px; 
+	margin:10px;
+}
+.iconos	{
+	text-align: right;
+}
+
+.iconos img{
+	margin: 10px;
+}
+
+.textIconos{
+	text-align: right; 
+	margin-top: -10px;
+}
+
+
+.textIconos span{
+	padding-right: 23px;
+}
+
+.bannerContenido{
+	background-color:#2258B0;
+}
+
+.titulo1{
+	color: #004696; 
+	font-size:1.4em;
+}
+.cajaSaldo{
+	color: #fff;
+	background-color: #063e8e; 
+	text-align: center; 
+	border-radius: 5px;
+
+}
+.tituloSaldo{
+	color: #fff200 ; 
+	font-size: 1.8em;
+}
+.datoSaldos{
+	font-size: 1.2em;
+
+}
+.datoSaldos2{
+	font-size: .8em;
+
+}
+
+
+#imgBanner{
+	width:100%; 
+	position: absolute; 
+	z-index: 100; 
+	margin-top: -60px;
+}
+
+
+
+
+
+
+@media (max-width: 581px) {
+ 
+	z-index: 0; 
+	margin-top: 0px;
+position: relative; 
+
+
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+    color: #00409A !important;
+    background-color: #fff;
+    border-color: #dee2e6 #dee2e6 #fff;
+}
+
+div#imageCarousel {
+    margin-top: -40px;
+    margin-left: 3px;
+}
+
+.dvContactanos {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    /*margin-top: -50px;*/
+    /*margin-left: -50px;*/
+    /* width: 100px; */
+    /* height: 100px; */
+}
+
+.titulocontactanos {
+    /* color: #004696; */
+    font-size: 16px;
+}

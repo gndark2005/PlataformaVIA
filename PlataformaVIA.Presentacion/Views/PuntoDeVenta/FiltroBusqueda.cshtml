@@ -1,0 +1,15 @@
+@model PlataformaVIA.Presentacion.ViewModels.BusquedaAvanzada.BusquedaAvanzadaFiltrosViewModel
+@{
+    Layout = null;
+}
+
+@Html.AntiForgeryToken()
+
+<div class="row col-md-2 visible-md visible-lg" style="left:65%; position:absolute; z-index:80">   
+    <div style="margin: 8px 0 0 0">
+        @Html.DisplayNameFor(model => model.OpcionesBusquedaList)
+
+        @Html.DropDownListFor(model => model.tipoBusqueda, Model.OpcionesBusquedaList, "Seleccionar...",
+                      new { @class = "form-control", required = "required" })
+    </div>        
+</div>

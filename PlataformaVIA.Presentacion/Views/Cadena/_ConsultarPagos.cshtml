@@ -1,0 +1,199 @@
+@model PlataformaVIA.Core.Domain.Cadena.Cadena
+@{
+    Layout = null;
+}
+
+@* Adjust the viewport width as per device width for mobile *@
+<meta name="viewport" content=" width=device-width, initial-scale=1" />
+<div class="list-panel-heading row">
+    @Html.Action("BusquedaAvanzadaMisPagos")
+    <div class="icontooltip">
+        @*<button type="button" id="btnExplicacionRangos" class="btnIconos" data-toggle="modal" data-target="#modal-explicacion-rangos">
+                <i class="fa fa-exclamation-triangle fa-3x"></i>
+            </button>*@
+    </div>
+</div>
+<div>
+    <table id="mispagos-data-table"
+           class="table table-striped table-bordered ampliaTabla"
+           style="width:100%" />
+</div>
+
+<div class="modal fade" id="modal-detallePago">
+    <div id="modal-detallePago-container">
+        <div class="modal-dialog  modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+                    <h3 class="modal-title" id="myModalLabel">Detalle de pago</h3>
+                </div>
+                <div id="modal-detallePago-body" class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var mispagosListVM;
+
+        $(function () {
+            mispagosListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#mispagos-data-table').DataTable({
+                        dom: 'Blrtip',
+                        "responsive": false,
+                        "scrollX": true,
+                        "bSort": false,
+                        buttons: [{
+                            "extend": 'excelHtml5',
+                            "className": 'btn btn-secondary',
+                            "title": 'Mis pagos',
+                            "text": 'Exportar a excel',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                       // "ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAvanzadoMisPagos", "Cadena")",
+                            "data": function (data) {
+                                data.CodCicloFacturacion = $("#CodCicloFacturacion").val();
+                                data.CodPuntoVenta = '@Model.Id'
+                            },
+                            "type": "POST"
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class='py-0 text text--color--white border border--right iniciarModalDetalle' data-id ='" + data.Id + "'><i class='fa fa-search'></i></a>";
+                                    //btn btn--solid
+                                }
+                            },
+                            {
+                                "title": "Referencia de pago",
+                                "data": "ReferenciaPago",
+                                "searchable": true,
+                                "width": "20%"
+                            },
+                            {
+                                "title": "Banco",
+                                "data": "Banco",
+                                "searchable": true,
+                                "width": "30%"
+                            },
+                            {
+                                "title": "Valor del pago",
+                                "data": "ValorPago",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "width": "20%"
+                            },
+                            {
+                                "title": "Fecha de pago",
+                                "data": "FechaPago",
+                                "render": function (data) {
+                                    return moment(data).format('MM/DD/YYYY');
+                                },
+                                "searchable": true,
+                                "width": "15%"
+                            },
+                            {
+                                "title": "Fecha de aplicación",
+                                "data": "FechaAplicacionPago",
+                                "render": function (data) {
+                                    return moment(data).format('MM/DD/YYYY HH:mm:ss');
+                                },
+                                "searchable": true,
+                                "width": "15%"
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmAdvancedSearch')); //Importante agregar para validación en este tipo de vistas parciales
+                    if ($("#frmAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            //  Manejador de botón de búsqueda avanzada
+            $('#btnEjecutarBusquedaAvanzada').on("click", mispagosListVM.refresh);
+
+
+            // initialize the datatables
+            mispagosListVM.init();
+
+            $('#mispagos-data-table').on('click', '.iniciarModalDetalle', function () {
+                var detallePago = $(this).data('id');
+                var url = '@Url.Action("_DetallePago", "PuntoDeVenta")';
+                $.get(url + '?id=' + detallePago, function (data) {
+                    $('#modal-detallePago-body').html(data);
+                    $('#modal-detallePago').modal('show');
+                });
+            });
+
+       });
+
+    var oldExportAction = function (self, e, dt, button, config) {
+        if (button[0].className.indexOf('buttons-excel') >= 0) {
+            if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+            }
+            else {
+                $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            }
+        } else if (button[0].className.indexOf('buttons-print') >= 0) {
+            $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+        }
+    };
+
+    var newExportAction = function (e, dt, button, config) {
+        var self = this;
+        var oldStart = dt.settings()[0]._iDisplayStart;
+
+        dt.one('preXhr', function (e, s, data) {
+            //carga todos los datos del server con el max value
+            data.start = 0;
+            data.length = 2147483647;
+
+            dt.one('preDraw', function (e, settings) {
+                // Call the original action function
+                oldExportAction(self, e, dt, button, config);
+
+                dt.one('preXhr', function (e, s, data) {
+
+                    settings._iDisplayStart = oldStart;
+                    data.start = oldStart;
+                });
+
+
+                setTimeout(dt.ajax.reload, 0);
+
+
+                return false;
+            });
+        });
+
+
+        dt.ajax.reload();
+    };
+
+</script>
+
+
+
+
+

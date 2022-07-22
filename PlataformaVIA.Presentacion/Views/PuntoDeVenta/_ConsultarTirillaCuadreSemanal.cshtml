@@ -1,0 +1,175 @@
+@model PlataformaVIA.Core.Domain.PuntoDeVenta.PuntodeVenta
+<div class="list-panel-heading">
+    <div class="row justify-content-center">
+        <div class="col textoCentro hidden-lg hidden-md">
+            Ver codigo de barras
+            <a href="#" id="lnkaux">
+                <img src='@Url.Content("~/Content/img/barcode.png")' id="btnVerBarcode" class="img-responsive center-block icon-pointer" alt="Ver código de barras" />
+            </a>
+        </div>
+        </div>
+</div>
+
+    <table id="tirillacuadresemanal-data-table"
+           class="table table-striped table-bordered dataTableSinBotones ampliaTabla"
+           style="width:100%" />
+
+<div class="modal fade" id="modal-detalle-barcode">
+    <div id="modal-detalle-barcode-container">
+        <b>Un momento por favor....</b>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var tirillaCuadreSemanalListVM;
+
+    $(function () {
+
+        $(document).on("preInit.dt", function () {
+            var searchDelay = null;
+            var $sb = $(".dataTables_filter input[type='search']");
+            $sb.off();
+            $sb.on("keyup", function (evtObj) {
+                var search = $('div.dataTables_filter input').val();
+
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    if (search != null) {
+                        dt.search(search).draw();
+                    }
+                }, 1000);
+            });
+        });
+
+            tirillaCuadreSemanalListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#tirillacuadresemanal-data-table').DataTable({
+                        "dom": 'lrtip',
+                        "responsive": false,
+                        "serverSide": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        "ordering": false,
+                        "scrollX": true,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAvanzadoTirillaCuadreSemanal", "PuntoDeVenta")",
+                            "data": function (data) {
+                                 data.CodPuntoVenta = '@Model.Id';
+                            },
+                            "type": "POST"
+                        },
+                        "columns": [
+                            {
+                                "title": "Período",
+                                "data": "Periodo",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Fecha límite",
+                                "data": "FechaLimite",
+                                "render": function (data) {
+                                    return moment(data).format('MM/DD/YYYY');
+                                },
+                                "searchable": true
+                            },
+                            {
+                                "title": "Saldo Previo",
+                                "data": "SaldoPrevio",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Valor IGT",
+                                "data": "ValorIGT",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Valor Fiducia",
+                                "data": "ValorFiducia",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+
+                            {
+                                "title": "Total",
+                                "data": "Total",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a id='" + data.RutaArchivo +"' onclick='GenerarTirilla(this.id)' href='#'>Descargar</a>";
+                                }
+                            },
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmAdvancedSearch')); //Importante agregar para validación en este tipo de vistas parciales
+                    if ($("#frmAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            // initialize the datatables
+            tirillaCuadreSemanalListVM.init();
+
+            $('#btnVerBarcode').click(function () {
+                VerBarcodesPuntos();
+            });
+
+            function VerBarcodesPuntos() {
+
+                var url = '@Url.Action("_Barcodes", "Pago")';
+                $.get(url + "?esCadena=" + false + "&codigo=" + "@Model.Id", function (data) {
+                    console.log("amm")
+                    $('#modal-detalle-barcode-container').html(data);
+                    $('#modal-detalle-barcode').modal('show');
+                });
+            }
+
+            $("#lnkaux").on("click", function () {
+                return false;
+            })
+
+        });
+
+    function GenerarTirilla(tirilla) {
+               
+               $.ajax({
+                    url: '@Url.Action("GenerarTirillaPDV")',
+                   data: {
+                       ubicacion: tirilla
+                    },
+                    type: 'POST',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        if (data==false) {
+                            alert('Tirilla no disponible');
+                        } else {
+                           window.location.href = "@Url.RouteUrl(new { Controller = "Certificado", Action = "DescargarCertificado" })/?fileName=" + data;
+                        }
+                 },
+                     error: function (xhr, ajaxOptions, thrownError) {
+                         console.log(xhr); console.log(thrownError);
+                     }
+                 });
+    }
+
+</script>

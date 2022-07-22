@@ -1,0 +1,74 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Inicio Portal Empresas";
+}
+
+<div>
+    <div style="width:50%; float:right;">
+        <div class="c-accordeon col-12 mt-3">
+            <div class="wrapper">
+                @*<button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                            data-toggle="collapse"
+                            data-target="#collapseExample"
+                            aria-expanded="true" aria-controls="collapseExample">
+                        Asunto <i class="fa fa-sort-down ml-1"></i>
+                    </button>
+                    <div class="collapse in" id="collapseExample">
+                        <div class="c-accordeon__contenedor" style="max-height: 10%;">
+                            <div id="dvnotificaciones"></div>
+                        </div>
+                    </div>*@
+
+                <div class="d-none d-lg-block col-xl-12 pr-lg-0">
+                    @*<img src="/Content/img/banner.jpg" alt="" class="w-100">*@
+                    @Html.Action("_Carousel", "Home")
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="dvcontenedorpuntodeventainfo" style="float:left; width:50%" />
+</div>
+
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+        var idpuntoventa = "@ViewBag.Id";
+
+        $(function () {
+            CargarInformacionInicio("Inicio");
+            //CargarNotificaciones();
+
+            function CargarInformacionInicio(idlink) {
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("GetPartialView")",
+                    data: { idlink: idlink, idpuntoventa: idpuntoventa },
+                success: function(d) {
+                 /* d is the HTML of the returned response */
+                   $("#dvcontenedorpuntodeventainfo").empty();
+                   $("#dvcontenedorpuntodeventainfo").html(d); //replaces previous HTML with action
+               }
+            });
+            }
+
+            @*function CargarNotificaciones() {
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("Notificaciones")",
+                success: function(d) {
+                    $("#dvnotificaciones").empty();
+                    $("#dvnotificaciones").html(d);
+               }
+            });
+            }*@
+
+
+     });
+    </script>
+}

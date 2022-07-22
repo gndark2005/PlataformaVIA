@@ -1,0 +1,143 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Inicio Administrador documentos";
+}
+
+<div class="wrapper mt-lg-3">
+    <div class="tab-content" id="nav-tabContent-user">
+        <div class="tab-pane fade show active" id="tab-inicio" role="tabpanel" aria-labelledby="tabs-inicio">
+            <div class="b-inicio ">
+                <div class="row align-items-lg-star">
+                    <div class="d-none d-lg-block col-md-12 pr-lg-0">
+                        @*<img src="/Content/img/banner.jpg" alt="" class="w-100">*@
+                        @Html.Action("_Carousel", "Home")
+                    </div>
+                    @*<div class="b-inicio__numbers bg bg--color--blue col-12">
+                            <div class="row py-4 col-lg-6 align-items-lg-center pb-lg-2">
+                                <div class="b-inicio__numbers--item col-6 col-lg-4 text-center">
+                                    <img src="/Content/img/logo_baloto.png" alt="" class="w-100">
+                                    <p class="b-inicio__numbers--number"><small>$</small>15.000 <span>millones</span></p>
+                                </div>                <div class="b-inicio__numbers--item col-6 col-lg-4 text-center">
+                                    <img src="/Content/img/logo_revancha.png" alt="" class="w-100">
+                                    <p class="b-inicio__numbers--number"><small>$</small>15.000 <span>millones</span></p>
+                                </div>                <div class="col-12 col-lg-4 b-inicio__numbers--sorteo align-items-lg-center d-lg-flex">
+                                    <div class="wrapper bg bg--color--white text-center m-auto">
+                                        <p class="text text--color--blue text-uppercase d-inline-block mb-0">proximo sorteo</p>
+                                        <p class="text text--color--blue text-uppercase d-inline-block mb-0">24 de noviembre</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                    @*<div class="col-12 col-lg-6 mt-3 d-flex flex-wrap">
+                            <h2 class="col-12 mb-4 title title--sub text text--color--blue border border--color--blue border--bottom pb-1">Saldo de facturacion</h2>
+                            <div class="b-inicio__saldo col-6 text-center pl-0">
+                                <div class="wrapper bg bg--color--blue p-3">
+                                    <p class="title h1 text text--color--yellow text-uppercase mb-0">Fiducia</p>
+                                    <small class="text text--color--white d-block">Fecha de pago fiducia</small>
+                                    <p id="pFiducia" class="text text--color--white mb-0"></p>
+                                    <small class="text text--color--white d-block">saldo</small>
+                                    <p id="pPagoFiducia" class="text text--color--white mb-0"></p>
+                                </div>
+                            </div>
+                            <div class="b-inicio__saldo col-6 text-center pr-0">
+                                <div class="wrapper bg bg--color--blue p-3">
+                                    <p class="title h1 text text--color--yellow text-uppercase mb-0">igt</p>
+                                    <small class="text text--color--white d-block">Fecha de pago IGT</small>
+                                    <p id="pIGT" class="text text--color--white mb-0"></p>
+                                    <small class="text text--color--white d-block">saldo</small>
+                                    <p id="pPagoIGT" class="text text--color--white mb-0"></p>
+                                </div>
+                            </div>
+                        </div>*@
+                    @*<div class="col-12 col-lg-6 mt-3 d-flex flex-wrap">
+                            <div class="c-accordeon col-12 mt-4">
+                                <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                                        data-toggle="collapse"
+                                        data-target="#collapseExample"
+                                        aria-expanded="true" aria-controls="collapseExample">
+                                    Asunto <i class="fa fa-sort-down ml-1"></i>
+                                </button>
+                                <div class="collapse in" id="collapseExample">
+                                    <div class="c-accordeon__contenedor">
+                                        <div id="dvnotificaciones"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+
+        $(function () {
+            //CargarNotificaciones();
+            //CargarSaldos();
+
+            @*function CargarNotificaciones() {
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("Notificaciones", "PuntoDeVenta")",
+                success: function(d) {
+                    $("#dvnotificaciones").empty();
+                    $("#dvnotificaciones").html(d);
+               }
+                });*@
+
+                @*CargarCarrusel();
+
+                function CargarCarrusel() {
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("Notificaciones", "PuntoDeVenta")",
+                success: function(d) {
+                    $("#dvnotificaciones").empty();
+                    $("#dvnotificaciones").html(d);
+               }
+            });*@
+            //}
+        });
+
+        @*function CargarSaldos() {
+            $.ajax({
+                type: "post",
+                url: "@Url.Action("GetSaldosFacturacion")",
+                success: function (data) {
+
+                    //Fecha fiducia
+                    var date = new Date(parseInt(data.FechaFiducia.substr(6)));
+                    var options = {
+                        year: "numeric", month: "long", day: "2-digit"
+                    };
+                    var formatDate = date.toLocaleTimeString("es-ES", options);
+
+                    $("#pFiducia").html(formatDate)
+
+                    //Fecha fiducia
+                    date = new Date(parseInt(data.FechaIGT.substr(6)));
+                    options = {
+                        year: "numeric", month: "long", day: "2-digit"
+                    };
+                    formatDate = date.toLocaleTimeString("es-ES", options);
+
+                    $("#pIGT").html(formatDate)
+
+                    //PAGOS
+                    $("#pPagoFiducia").html('$' + data.SaldoFiducia.toLocaleString())
+                    $("#pPagoIGT").html('$' + data.SaldoIGT.toLocaleString())
+
+                }
+            });
+        }*@
+    </script>
+}

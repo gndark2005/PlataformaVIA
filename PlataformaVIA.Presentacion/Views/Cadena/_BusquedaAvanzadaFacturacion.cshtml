@@ -1,0 +1,26 @@
+
+@model PlataformaVIA.Presentacion.ViewModels.BusquedaAvanzada.BusquedaAvanzadaCicloFacturacionViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("GetFiltroAvanzadoMisPagos", "PuntoDeVenta", FormMethod.Post, new { id = "frmAdvancedSearch", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal dvBuscador">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            @Html.LabelFor(model => model.CodCicloFacturacion, htmlAttributes: new { @class = "control-label col-md-4 mx-2" })
+            @Html.DropDownListFor(model => model.CodCicloFacturacion, Model.CicloFacturacionList, "Seleccionar Ciclo de Facturación",
+                                    new { @class = "form-control col-md-4 mx-2 mb-2"})
+            <button id="btnEjecutarBusquedaAvanzada" type="button" class="btn btn-primary col-md-2" data-dismiss="modal">Consultar</button>
+        </div>
+
+    </div>
+    <div class="form-group">
+        <div class="offset-4 col-md-10">
+            @Html.ValidationMessageFor(model => model.CodCicloFacturacion, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}

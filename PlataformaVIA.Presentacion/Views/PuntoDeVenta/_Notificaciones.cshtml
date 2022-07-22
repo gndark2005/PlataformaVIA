@@ -1,0 +1,48 @@
+﻿@model IEnumerable<PlataformaVIA.Core.Domain.Notificaciones>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TITULO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.MENSAJE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FECHAHORAINGRESO)
+        </th>       
+    </tr>
+
+    @foreach (var item in Model)
+    {   
+    <tr style="cursor:pointer;" onclick="MarkAsRead(@item.ID_NOTIFICACIONUSUARIOINFO);">
+        <td>
+            @Html.DisplayFor(modelItem => item.TITULO)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MENSAJE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FECHAHORAINGRESO)
+        </td>       
+    </tr>       
+    }
+
+</table>
+
+<script type="text/javascript">
+    function MarkAsRead(id) {              
+         $.ajax({
+        type: 'POST',
+            url: "@Url.Action("MarkAsRead", "Notificaciones")",
+             data: { idNotification: id },
+        success: function (response) {
+            console.log('leído');
+            updateNotification();
+        },
+        error: function (error) {
+        console.log(error);
+        }
+        })
+        }
+</script>

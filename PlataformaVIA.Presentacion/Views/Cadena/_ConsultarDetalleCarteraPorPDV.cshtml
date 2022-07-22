@@ -1,0 +1,224 @@
+@model PlataformaVIA.Core.Domain.Cadena.Cadena
+
+@{
+    Layout = null;
+}
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="marto15">
+    <h3>Saldo al corte del ciclo de facturación @Model.Nombre</h3>
+    <br />
+    <div>
+        <table id="detalleCarteraPorPDV-data-table"
+               class="table table-striped table-bordered dataTableSinBotones ampliaTabla"
+               style="width:100%" />
+    </div>
+   
+</div>
+
+
+<script type="text/javascript">
+
+    var detalleCarteraPorPDVVM;
+
+    $(function () {
+
+        $(document).on("preInit.dt", function () {
+            var searchDelay = null;
+            var $sb = $(".dataTables_filter input[type='search']");
+            $sb.off();
+            $sb.on("keyup", function (evtObj) {
+                var search = $('div.dataTables_filter input').val();
+
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    if (search != null) {
+                        dt.search(search).draw();
+                    }
+                }, 1000);
+            });
+        });
+
+            detalleCarteraPorPDVVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#detalleCarteraPorPDV-data-table').DataTable({
+                        "dom": 'Blfrtip',
+                        buttons: [{
+                            "extend": 'excelHtml5',
+                            "title": 'Detalle Cartera por PDV',
+                            "text": 'Exportar a excel',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+                        "responsive": false,
+                        "scrollX": true,
+                        "bSort": false,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                       // "ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAvanzadoDetalleCarteraPorPDV", "Cadena")",
+                            "type":"POST",
+                            "data": function (data) {
+                                data.CodCadena = '@Model.Id'
+                            }
+                        },
+                        "columns": [{
+                            "title": "-",
+                            "searchable": false,
+                            "visible": true,
+                            "orderable": false,
+                            "mRender": function (data, type, full) {
+                                return "<span></span>";
+                            }
+                        },
+                            {
+                                "title": "PDV",
+                                "data": "CodigoPuntoVenta",
+                                "searchable": true,
+                                "orderable" : false
+                            },
+                            {
+                                "title": "Nombre del PDV",
+                                "data": "NombrePuntoVenta",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Ciudad",
+                                "data": "Ciudad",
+                                "searchable": true,
+                                "orderable": false
+                            },
+                            {
+                                "title": "Dias mora",
+                                "data": "DiasMora",
+                                render: $.fn.dataTable.render.number(),
+                                "searchable": false,
+                                className: 'text-right',
+                                "orderable": false,
+                                "width":"10px"
+                            },
+                            {
+                                "title": "Juegos",
+                                "data": "SaldoJuegos",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "orderable": false
+                            },
+                            {
+                                "title": "Pines y Recargas",
+                                "data": "SaldoPines",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "orderable": false
+                            },
+                            {
+                                "title": "Pago de facturas",
+                                "data": "SaldoBP",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "orderable": false
+                            },
+                            {
+                                "title": "Retiros",
+                                "data": "SaldoRetiros",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "orderable": false
+                            },
+                            {
+                                "title": "Instalaciones",
+                                "data": "SaldoInstalaciones",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "orderable": false
+                            },
+                            {
+                                "title": "Total",
+                                "data": "Total",
+                                render: $.fn.dataTable.render.number(',', '.', 0, '$'),
+                                "searchable": true,
+                                className: 'text-right',
+                                "orderable": false
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmAdvancedSearch')); //Importante agregar para validación en este tipo de vistas parciales
+                    if ($("#frmAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            ////  Manejador de botón de búsqueda avanzada
+            //$('#btnEjecutarBusquedaAvanzadaFechas').on("click", detalleCarteraPorPDVVM.refresh);
+
+
+            // initialize the datatables
+            detalleCarteraPorPDVVM.init();
+
+
+    });
+
+    var oldExportAction = function (self, e, dt, button, config) {
+        if (button[0].className.indexOf('buttons-excel') >= 0) {
+            if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+            }
+            else {
+                $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            }
+        } else if (button[0].className.indexOf('buttons-print') >= 0) {
+            $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+        }
+    };
+
+    var newExportAction = function (e, dt, button, config) {
+        var self = this;
+        var oldStart = dt.settings()[0]._iDisplayStart;
+
+        dt.one('preXhr', function (e, s, data) {
+            //carga todos los datos del server con el max value
+            data.start = 0;
+            data.length = 2147483647;
+
+            dt.one('preDraw', function (e, settings) {
+                // Call the original action function
+                oldExportAction(self, e, dt, button, config);
+
+                dt.one('preXhr', function (e, s, data) {
+
+                    settings._iDisplayStart = oldStart;
+                    data.start = oldStart;
+                });
+
+
+                setTimeout(dt.ajax.reload, 0);
+
+
+                return false;
+            });
+        });
+
+
+        dt.ajax.reload();
+    };
+
+</script>
+
+

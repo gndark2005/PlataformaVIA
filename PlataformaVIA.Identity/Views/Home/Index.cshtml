@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "Inicio";
+}
+
+<div class="row bannerContenido no-gutters">
+    <div class="col-sm-6" >
+        <img src="@Url.Content("/Content/img/banner.png")" runat style="width: 100%;">
+    </div>
+</div>
+<div class="row no-gutters">
+    <div class="col-sm-6">
+        <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <span class="titulo1">Saldo Facturacion</span> <i class="fa fa-angle-down "></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class=" col-sm-6" style="padding: 0px 5px 0px 0px;">
+                                <div class="col-sm-12 cajaSaldo">
+                                    <span class="tituloSaldo">IGT</span> <br>
+                                    <span class="datoSaldos2">Fecha de pago</span> <br>
+                                    <span class="datoSaldos">(fecha)</span><br>
+                                    <span class="datoSaldos2">Saldo</span><br>
+                                    <span class="datoSaldos">(valor) </span>
+                                </div>
+                            </div>
+                            <div class="col-6" style="padding: 0px 0px 0px 5px;">
+                                <div class="col-sm-12 cajaSaldo" ">
+                                    <span class="tituloSaldo">FIDUCIA</span> <br>
+                                    <span class="datoSaldos2">Fecha de pago</span><br>
+                                    <span class="datoSaldos">(fecha)</span><br>
+                                    <span class="datoSaldos2">Saldo</span><br>
+                                    <span class="datoSaldos">(valor)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            <span class="titulo1">Asunto</span> <i class="fa fa-angle-down "></i>
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <table style="width: 100%;">
+                            <tr>
+                                <th>Asunto</th>
+                                <th>Fecha</th>
+                            </tr>
+                            <tr style="color: #AFB1B3; ">
+                                <th>Notificación de reporte a centrales</th>
+                                <th>10/Dic/2018</th>
+                            </tr>
+                            <tr style="color: #AFB1B3;">
+                                <th style="color:;">Registro de Pago</th>
+                                <th>10/Dic/2018</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-sm-6 " style="padding: 0px;">
+        @*<img src="@Url.Content("/Content/img/baloto.png")" id="imgBanner">*@
+        @Html.Partial("_Carousel")
+    </div>
+
+</div>

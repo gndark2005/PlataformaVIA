@@ -1,0 +1,107 @@
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Mis colocadores</h1>
+        </div>
+        <div class="panel-body">
+            <table id="colocador-data-table"
+                   class="table table-striped table-bordered dataTableVariosBotones"
+                   style="width:100%"></table>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-detalle-colocador">
+    <div id="modal-detalle-colocador-container"></div>
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        var colocadoresListVM;
+
+        function DetalleColocador(idcolocador) {
+                var url = '@Url.Action("_DetalleColocador", "Colocador")';
+            $.get(url + '/' + idcolocador, function (data) {
+                    $('#modal-detalle-colocador-container').html(data);
+                    $('#modal-detalle-colocador').modal('show');
+                });
+            }
+
+        $(function () {
+            console.log(location.protocol + "//" + location.hostname + "/scripts/Datatables/Spanish.json");
+            colocadoresListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#colocador-data-table').DataTable({
+                        "serverSide": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        //"ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            type: 'POST',
+                            "url":
+                               "@Url.Action("GetFiltroBasicoColocadores", "RepresentanteLegal")"
+                        },
+                        "columns": [
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class ='py-0 text text--color--white border border--right btndetalle' onclick='(DetalleColocador(" + data.Id + "))' data-id=" + data.Id +"><i class='fa fa-search'></i></a>";
+                                }
+                            },
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class='py-0 text text--color--white border border--right' href='@Url.Action("AccesoColocador", "Colocador")'><i class='fa fa-user-plus'></i></a>";
+                                    //btn btn--solid
+                                }
+                            },
+                            {
+                                "title": "ID",
+                                "data": "Id",
+                                "searchable": false,
+                                "visible": false
+                            },
+                            {
+                                "title": "No colocador",
+                                "data": "Numero",
+                                "searchable": true
+                            },
+                            {
+                                "title": "No. Identificación",
+                                "data": "NumeroIdentificacion",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Nombre y Apellido",
+                                "data": "NombreCompleto",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Ciudad del Vendedor",
+                                "data": "CiudadVendedor",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Usuario Asignado",
+                                "data": "UsuarioAsignado",
+                                "searchable": true
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                }
+            };
+            // initialize the datatables
+            colocadoresListVM.init();
+        });
+
+    </script>
+}

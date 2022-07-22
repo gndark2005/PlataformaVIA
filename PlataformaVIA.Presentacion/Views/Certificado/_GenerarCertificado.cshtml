@@ -1,0 +1,37 @@
+@model PlataformaVIA.Presentacion.ViewModels.Certificados.GenerarCertificadosViewModel
+@{
+    Layout = null;
+}
+
+@using (Html.BeginForm("GenerarCertificado", "Certificado", FormMethod.Post, new {@id="formCertificado",  @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal dvBuscador">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            @Html.LabelFor(model => model.codTipoCertificado, htmlAttributes: new { @class = "control-label col-md-4 mx-2" })
+            @Html.DropDownListFor(model => model.codTipoCertificado, Model.TiposDeCertificadoList, "Seleccionar certificado",
+                                    new { @class = "form-control col-md-3 mx-2", required = "required" })
+
+            @Html.LabelFor(model => model.mesCertificado, htmlAttributes: new { @class = "control-label" })
+            @Html.DropDownListFor(model => model.mesCertificado, new SelectList(Enumerable.Empty<SelectListItem>()), "Seleccionar mes",
+                                    new { @class = "form-control col-md-2 mx-2 mb-2", required = "required" })
+
+            <br />
+
+            <button id="btnGenerar" type="button" onclick="GenerarCertificado()" class="btn btn-primary col-md-2" data-dismiss="modal">Generar</button>
+        </div>        
+    </div>
+    <div class="form-group">
+        <div class="offset-4 col-md-10">
+            <label id="StatusMessage" class="text-danger"></label>           
+        </div>
+        <div class="offset-4 col-md-10">
+            @Html.ValidationMessageFor(model => model.codTipoCertificado, "", new { @class = "text-danger" })
+        </div>
+        <div class="offset-4 col-md-10">
+            @Html.ValidationMessageFor(model => model.mesCertificado, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}

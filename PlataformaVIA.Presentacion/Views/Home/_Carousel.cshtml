@@ -1,0 +1,437 @@
+@model  PlataformaVIA.Core.Domain.Sorteo
+@using PlataformaVIA.Core.Domain.AdministradorDocumentos
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link href="~/Content/Page_1.css" rel="stylesheet">
+<link href="//db.onlinewebfonts.com/c/db33e70bc9dee9fa9ae9737ad83d77ba?family=Gotham" rel="stylesheet" type="text/css" />
+
+<div id="imageCarousel" class="carousel slide" data-interval="false"
+     data-ride="carousel" data-pause="hover" data-wrap="true">
+    <ol class="carousel-indicators">
+        @{ int contInd = -1; }
+
+        @foreach (var item in Model.Banners)
+        {
+            var itemClass = contInd++ == -1 ? "active" : "";
+
+            if (itemClass == "active")
+            {
+                <li data-target="#imageCarousel" data-slide-to="0" class="active"></li>
+            }
+            else
+            {
+                <li data-target="#imageCarousel" data-slide-to=@contInd></li>
+            }
+        }
+    </ol>
+
+    <script type="text/javascript">
+        function OpenUrl(url) {
+            console.log(url)
+            if (url != null && url != "") {
+                window.open( url, '_blank')
+            }
+        }
+    </script>
+
+    <div class="carousel-inner">
+        @{ int cont = 0; }
+
+        @foreach (var item in Model.Banners)
+        {
+            var itemDinamico = cont++ == 0 ? "item active" : "item";
+
+            string[] fecha = Model.FechaSorteo.Split(' ');
+
+            <div class="@itemDinamico">
+
+                <div id="slider_image_div_0" class="inner-slider-1 slider" onclick="OpenUrl('@item.URL')" style="cursor:pointer; background-image: url(@Url.Action("GetImagenBackground", new { ubicacion = item.Ubicacion }));">
+                    @if (item.Atributo != null && item.Atributo.Equals(Enum.GetName(typeof(TipoImagenEnum), 2)))
+                    {
+                        <div class="container clearfix top_space visible-md visible-lg">
+                            <div class="row">
+                                <div class="left-content col-lg-6 col-sm-6 col-lg-12 text-center">
+                                    <div class="inner_left">
+                                        <div class="logo_left">
+                                            <img src="~/Content/img/Page_1/Logo_left_1.png" alt="logo">
+                                        </div>
+                                        <div class="price">
+                                            <h1>
+                                                <sup class="big-letter"></sup>@Html.DisplayFor(model => model.Acumulado)
+                                            </h1><p>millones</p>
+                                        </div>
+                                        <div class="numbers visible-md visible-lg">
+                                            <ul class="clearfix">
+                                                <li class=""><a>@Html.DisplayFor(model => model.B1)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.B2)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.B3)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.B4)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.B5)</a></li>
+                                                <li class="super"><p class="super_txt">súper balota</p><a href="">@Html.DisplayFor(model => model.SB)</a></li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="right-content col-lg-6 col-sm-6 col-lg-12 text-center">
+                                    <div class="inner_right">
+
+                                        <div class="logo_left">
+                                            <img src="~/Content/img/Page_1/Logo_right_1.png" alt="logo">
+                                        </div>
+
+                                        <div class="price">
+                                            <h1><sup class="big-letter"></sup>@Html.DisplayFor(model => model.Revancha)</h1><p>millones</p>
+                                        </div>
+
+                                        <div class="numbers visible-md visible-lg">
+                                            <ul class="clearfix">
+                                                <li class=""><a>@Html.DisplayFor(model => model.RB1)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.RB2)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.RB3)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.RB4)</a></li>
+                                                <li class=""><a>@Html.DisplayFor(model => model.RB5)</a></li>
+                                                <li class="super"><p class="super_txt">súper balota</p><a href="">@Html.DisplayFor(model => model.RSB)</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="bottom_txt text-center visible-md visible-lg">
+                                <p><span>Sorteo No. <a href="">@Html.DisplayFor(model => model.NumeroSorteo)</a> del </span><a href="">@Html.DisplayFor(model => model.FechaSorteo)</a></p>
+                            </div>
+                            <div class="bottom_txt text-center visible-xs visible-sm">
+                                <span class="bottom-span-responsive">Sorteo No. <a href="">@Html.DisplayFor(model => model.NumeroSorteo)</a> del </span><a class="bottom-responsive" href="">@Html.DisplayFor(model => model.FechaSorteo)</a>
+                            </div>
+                            <div class="bottom_txt text-left">
+                                <img src="~/Content/img/Page_1/logo-coljuegos.png" alt="logo">
+                            </div>
+                        </div>
+
+                        @*ACUMULADO PARA MOVILES CSS*@
+                        <div class="container clearfix top_space visible-xs visible-sm">
+                            <div class="row">
+                                <div class="col-12 center text-center">
+                                    <div style="margin:auto; width:100%;">
+                                        <div class="logo_left">
+                                            <img src="~/Content/img/Page_1/Logo_left_1.png" alt="logo">
+                                        </div>
+                                        <div>
+                                            <h2 class="h2-responsive-result">
+                                                @Html.DisplayFor(model => model.Acumulado)
+                                            </h2>
+                                            <br />
+                                            <span style="width:100% !important" class="p-responsive-result">millones</span>
+                                        </div>
+
+                                        <div class="col-12 row visible-sm visible-xs">
+                                            <div class="div-balotas-mobile" style="margin-top: 0 !important;">
+                                                <ul class="ul-acumulado-mobile">
+                                                    <li><a>@Html.DisplayFor(model => model.B1)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.B2)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.B3)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.B4)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.B5)</a></li>
+                                                    <li class="super"><a>@Html.DisplayFor(model => model.SB)</a></li>
+                                                </ul>
+                                                @*<span style="margin-left:2%; color:#ffffff" class="text-title-bold">Súper balota</span>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 center text-center">
+                                    <div style="margin:auto; width:100%;">
+
+                                        <div class="logo_left">
+                                            <img src="~/Content/img/Page_1/Logo_right_1.png" alt="logo">
+                                        </div>
+
+                                        <div class="">
+                                            <h2 class="h2-responsive-result">
+                                                @Html.DisplayFor(model => model.Revancha)
+                                            </h2>
+                                            <br />
+                                            <span style="width:100% !important" class="p-responsive-result">millones</span>
+                                        </div>
+
+                                        <div class="col-12 row" style="margin:auto; width:100%">
+                                            <div class="div-balotas-mobile">
+                                                <ul class="ul-acumulado-mobile">
+                                                    <li><a>@Html.DisplayFor(model => model.RB1)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.RB2)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.RB3)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.RB4)</a></li>
+                                                    <li><a>@Html.DisplayFor(model => model.RB5)</a></li>
+                                                    <li class="super"><a>@Html.DisplayFor(model => model.RSB)</a></li>
+                                                </ul>
+                                                @*<span style="margin-left:2%; color:#ffffff" class="text-title-bold">Súper balota</span>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="bottom_txt text-center visible-md visible-lg">
+                                <p><span>Sorteo No. <a href="">@Html.DisplayFor(model => model.NumeroSorteo)</a> del </span><a href="">@Html.DisplayFor(model => model.FechaSorteo)</a></p>
+                            </div>
+                            <div class="bottom_txt text-center visible-xs visible-sm">
+                                <span class="bottom-span-responsive">Sorteo No. <a href="">@Html.DisplayFor(model => model.NumeroSorteo)</a> del </span><a class="bottom-responsive" href="">@Html.DisplayFor(model => model.FechaSorteo)</a>
+                            </div>
+                            <div class="bottom_txt text-left">
+                                <img src="~/Content/img/Page_1/logo-coljuegos.png" alt="logo">
+                            </div>
+                        </div>
+                    }
+
+                    @if (item.Atributo != null && item.Atributo.Equals(Enum.GetName(typeof(TipoImagenEnum), 3)))
+                    {
+                        @*-SEGUNDO BANNER TOTALMENTE EN CSS-WEB*@
+                        <div class="div-acumulados visible-md visible-lg">
+                            <div class="row" style="margin-top:4%;">
+                                <div class="col-sm-12 col-lg-12">
+
+                                    @*FECHAS Y SORTEO*@
+                                    <div style="display:flex;">
+                                        <div class="col-8 row">
+                                            <div class="div-fechas-acumulados-inicial">
+                                                <p class="p-resultados text-title-bold">Sorteo:</p>
+                                                <span class="typo-baloto">@Html.DisplayFor(model => model.NumeroSorteo)</span>
+                                            </div>
+                                            <div class="div-fechas-acumulados">
+                                                <p class="p-resultados  text-title-bold">Día:</p>
+                                                <span class="typo-baloto">@fecha[2]</span>
+                                            </div>
+                                            <div class="div-fechas-acumulados">
+                                                <p class="p-resultados  text-title-bold">Mes:</p>
+                                                <span class="typo-baloto">@fecha[4]</span>
+                                            </div>
+                                            <div class="div-fechas-acumulados">
+                                                <p class="p-resultados  text-title-bold">Año:</p>
+                                                <span class="typo-baloto">@fecha[6]</span>
+                                            </div>
+                                        </div>
+
+                                        <div style="flex-grow: 1;">
+                                            @*<img src="~/Content/img/Page_1/Logo_left_1.png" alt="logo">*@
+                                            <br />
+                                            <br />
+                                            <br />                                          
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                @*ACUMULADO Y TOTAL DE GANADORES*@
+                                <div class="col-sm-12 col-lg-12">
+                                    <div>
+                                        <p class="p-resultados p-acumulado">Acumulado multimillonario</p>
+                                        <div class="row">
+                                            <h1 class="title-acumulado">@Html.DisplayFor(model => model.Acumulado) millones</h1>
+                                            <div class="div-total-ganadores">
+                                                <span class="typo-total-ganadores">@Html.DisplayFor(model => model.TotalGanadoresBaloto) </span>
+                                            </div>
+                                            <p style="margin-left:65% !important;" class="p-resultados p-acumulado">Total ganadores por sorteo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*BALOTAS Y SUPER BALOTA*@
+                                <div class="col-sm-12 col-lg-12 row">
+                                    <div class="div-balotas">
+                                        <p class="p-resultados p-acumulado">Números ganadores</p>
+                                        <ul class="ul-acumulado">
+                                            <li><a>@Html.DisplayFor(model => model.B1)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.B2)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.B3)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.B4)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.B5)</a></li>
+                                            <li class="super"><a>@Html.DisplayFor(model => model.SB)</a></li>
+                                        </ul>
+                                        <span style="margin-left:2%; color:#ffffff" class="text-title-bold">Súper balota</span>
+                                    </div>
+                                    <div style="margin-left:6%; margin-top:1%;">
+                                        <img src="~/Content/img/Page_1/Logo_left_1.png" alt="logo">
+                                    </div>
+                                </div>
+                                @*ACUMULADO Y TOTAL DE GANADORES REVANCHA*@
+                                <div class="col-sm-12 col-lg-12">
+                                    <div>
+                                        <p class="p-resultados p-acumulado">Acumulado multimillonario</p>
+                                        <div class="row">
+                                            <h1 class="title-acumulado">@Html.DisplayFor(model => model.Revancha) millones</h1>
+                                            <div class="div-total-ganadores">
+                                                <span class="typo-total-ganadores">@Html.DisplayFor(model => model.TotalGanadoresRevancha) </span>
+                                            </div>
+                                            <p style="margin-left:65% !important;" class="p-resultados p-acumulado">Total ganadores por sorteo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*BALOTAS Y SUPER BALOTA REVANCHA*@
+                                <div class="col-sm-12 col-lg-12 row">
+                                    <div class="div-balotas">
+                                        <p class="p-resultados p-acumulado">Números ganadores</p>
+                                        <ul class="ul-acumulado">
+                                            <li><a>@Html.DisplayFor(model => model.RB1)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.RB2)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.RB3)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.RB4)</a></li>
+                                            <li><a>@Html.DisplayFor(model => model.RB5)</a></li>
+                                            <li class="super"><a>@Html.DisplayFor(model => model.RSB)</a></li>
+                                        </ul>
+                                        <span style="margin-left:2%; color:#ffffff" class="text-title-bold">Súper balota</span>
+                                    </div>                                   
+                                    <div style="margin-left:6%; margin-top:0.5%;">
+                                        <img src="~/Content/img/Page_1/Logo_right_1.png" alt="logo">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-lg-12 row" style="background-color: #ee2e4e; height:100%">
+                                    <div class="div-balotas" style="margin-top:1%;">
+                                        <p class="p-resultados p-acumulado">¡A un tiquete de tenerlo todo!</p>  
+                                        <br />
+                                        <br />
+                                    </div>
+                                    <div style="margin-left:17%; margin-top:0.5%;">
+                                        <img src="~/Content/img/Page_1/logo-coljuegos.png" alt="logo">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*-SEGUNDO BANNER TOTALMENTE EN CSS-MOVILES*@
+                        <div class="visible-xs visible-sm div-acumulados" style="width:100%; overflow-y: scroll;">
+
+                            @*DATOS DE FECHA Y NUMERO DE SORTEO*@
+
+                            <div class="row col-xs-12 col-sm-12 text-center" style="margin-top:5%; margin-left:9%">
+
+                                <div class="div-fechas-acumulados-mobile row">
+                                    <span class="text-title-bold-mobile">Sorteo: </span>
+                                    <span class="typo-baloto-mobile">@Html.DisplayFor(model => model.NumeroSorteo)</span>
+                                </div>
+
+                                <div class="div-fechas-acumulados-mobile row" style="margin-left:8%">
+                                    <span class="text-title-bold-mobile">Día: </span>
+                                    <span class="typo-baloto-mobile">@fecha[2]</span>
+                                </div>
+
+                            </div>
+
+                            <div class="row col-xs-12 col-sm-12 text-center" style="margin-top:2%; margin-left:9%">
+
+                                <div class="div-fechas-acumulados-mobile row">
+                                    <span class="p-resultados  text-title-bold-mobile">Mes:</span>
+                                    <span class="typo-baloto-mobile">@fecha[4]</span>
+                                </div>
+                                <div class="div-fechas-acumulados-mobile row " style="margin-left:8%">
+                                    <span class="p-resultados  text-title-bold-mobile">Año:</span>
+                                    <span class="typo-baloto-mobile">@fecha[6]</span>
+                                </div>
+                            </div>
+
+                            @*ACUMULADO*@
+                            <div class="row col-sm-12 col-xs-12">
+                                <div>
+                                    <div class="row text-center" style="margin-top:10%; margin-left:15%">
+                                        <div class="row">
+                                            <div style="width: 65%;">
+                                                <span class="p-resultados p-acumulado-mobile">Acumulado multimillonario</span>
+                                            </div>
+                                            <div style="width: 20%;">
+                                                <img src="~/Content/img/Page_1/Logo_left_1.png" alt="logo" class="img-responsive">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%">
+                                            <h1 class="title-acumulado-mobile" style="margin-top:2%;">@Html.DisplayFor(model => model.Acumulado) millones</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*BALOTAS Y SUPER BALOTA*@
+                            <div class="col-sm-12 col-xs-12 row">
+                                <div class="div-balotas-mobile">
+                                    <p class="p-resultados p-acumulado-mobile">Números ganadores</p>
+                                    <ul class="ul-acumulado-mobile">
+                                        <li><a>@Html.DisplayFor(model => model.B1)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.B2)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.B3)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.B4)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.B5)</a></li>
+                                        <li class="super"><a>@Html.DisplayFor(model => model.SB)</a></li>
+                                    </ul>
+                                    <span style="margin-left:2%; color:#ffffff" class="text-title-bold">Súper balota</span>
+                                </div>
+                            </div>
+
+                            @*ACUMULADO REVANCHA *@
+                            <div class="row col-sm-12 col-xs-12">
+                                <div>
+                                    <div class="row text-center" style="margin-top:5%; margin-left:15%">
+                                        <div class="row">
+                                            <div style="width:65%;">
+                                                <span class="p-resultados p-acumulado-mobile">Acumulado multimillonario</span>
+                                            </div>
+                                            <div style="width:20%;">
+                                                <img src="~/Content/img/Page_1/Logo_right_1.png" alt="logo" class="img-responsive">
+                                            </div>
+                                        </div>
+                                        <div style="width:100%">
+                                            <h1 class="title-acumulado-mobile" style="margin-top:2%;">@Html.DisplayFor(model => model.Revancha) millones</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @*BALOTAS Y SUPER BALOTA REVANCHA*@
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="div-balotas-mobile-revancha">
+                                    <p class="p-resultados p-acumulado-mobile">Números ganadores</p>
+                                    <ul class="ul-acumulado-mobile">
+                                        <li><a>@Html.DisplayFor(model => model.RB1)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.RB2)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.RB3)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.RB4)</a></li>
+                                        <li><a>@Html.DisplayFor(model => model.RB5)</a></li>
+                                        <li class="super"><a>@Html.DisplayFor(model => model.RSB)</a></li>
+                                    </ul>
+                                    <span style="margin-left:2%; color:#ffffff" class="text-title-bold">Súper balota</span>
+                                </div>
+                            </div>
+
+                            @*TOTALES*@
+
+                            <div class="col-sm-12 col-xs-12 row" style="margin-top:3%">
+                                <div style="width:40%; margin-left:14%" class="text-center">
+                                    <img src="~/Content/img/Page_1/Logo_left_1.png" alt="logo" style="width:100%;">
+                                    <h1 class="title-acumulado-mobile" style="margin-top:2%; width:100%;">@Html.DisplayFor(model => model.TotalGanadoresBaloto) </h1>
+                                    <span style="color:#ffffff;" class="p-resultados text-title-bold">Total ganadores por sorteo</span>
+                                </div>
+                                <div style="width:40%; margin-left:2%; margin-top:1.5%" class="text-center">
+                                    <img src="~/Content/img/Page_1/Logo_right_1.png" alt="logo" style="width:100%;">
+                                    <h1 class="title-acumulado-mobile" style="margin-top:2%; width:100%;">@Html.DisplayFor(model => model.TotalGanadoresRevancha) </h1>
+                                    <span style="color:#ffffff;" class="p-resultados text-title-bold">Total ganadores por sorteo</span>
+                                </div>
+                            </div>
+
+                            @*LOGO COLJUEGOS*@
+
+                            <div class="col-sm-12 col-xs-12" style="margin-top:3%">
+                                <img src="~/Content/img/Page_1/logo-coljuegos.png" alt="logo" style="float:right; width:20%; margin-right:11%">
+                            </div>
+
+                        </div>
+
+                    }
+                </div>
+
+            </div>
+        }
+        <a href="#imageCarousel" class="carousel-control left" data-slide="prev">
+            <span class="glyphicon glyphicon"></span>
+        </a>
+        <a href="#imageCarousel" class="carousel-control right" data-slide="next">
+            <span class="glyphicon glyphicon"></span>
+        </a>
+    </div>
+</div>
+
+

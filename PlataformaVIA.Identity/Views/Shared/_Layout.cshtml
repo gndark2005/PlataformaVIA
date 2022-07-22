@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title - Plataforma VIA</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/datatables")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row fondoHeader">
+            <div class="container containerHead">
+                <div class="row">
+                    <div class="col-sm-6 logo">
+                        <img src="@Url.Content("~/Content/img/logo.png")">
+                    </div>
+                    <div class="col-sm-6 iconos">
+                        <div>
+                            @if (Request.IsAuthenticated)
+                            {
+                                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                {
+                                    <a href="@Url.Action("About", "Home")"><img src="@Url.Content("~/Content/img/contacto.png")" alt="contactanos" title="contacto"> </a>
+
+                                    @Html.AntiForgeryToken()
+
+                                    <a href="javascript:document.getElementById('logoutForm').submit()"><img src="@Url.Content("/Content/img/salir.png")" alt="salir de sesion" title="salir"></a>
+                                    <div class="textIconos">
+                                        <span> Contacto </span> <span> Salir </span>
+                                    </div>
+                                }
+
+                            }
+
+                        </div>
+
+
+                    </div>
+                    <div class="col-sm-5">
+                        <p style="font-size:1.5em ;">Plataforma Virtual</p>
+                        <p class="log ">Su ultima visita: (inf de la plataforma)</p>
+                        <p class="log ">Fecha y hora actual: (inf de la plataforma)</p>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="float-right">
+                            <p class="text-left" style="font-size:1.5em; padding-left: 2em;">Hola,</p>
+                            <p class="log text-center text-uppercase" style="font-size:2em ; ">Pedro Vargas Reyes</p>
+                            <p class="text-right">Nit. 900-334-4455</p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container " style="background-color: ;">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div>
+                        <ul class="nav nav-tabs pp">
+                            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link", @id = "inav" })</li>
+
+                            @if (Request.IsAuthenticated)
+                            {
+                                if (User.IsInRole("Representante Legal"))
+                                {
+                                    <li class="nav-item">@Html.ActionLink("Mis puntos de venta", "ConsultarPuntosdeVenta", "RepresentanteLegal", null, new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Mis cadenas", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Mis Pagos", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Mis colocadores", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Certificados", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Mis Pagos", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("Seguridad", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                }
+                                else if (User.IsInRole("Punto de Venta"))
+                                {
+                                    <li class="nav-item">@Html.ActionLink("Mis Productos", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                    <li class="nav-item">@Html.ActionLink("¿Cómo operar tu terminal?", "#", "Home", new { @class = "nav-link", @id = "inav" })</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            @RenderBody()
+            @*<footer>
+                    <p>&copy; @DateTime.Now.Year - IGT</p>
+                </footer>*@
+        </div>
+    </div>
+
+
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatables")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

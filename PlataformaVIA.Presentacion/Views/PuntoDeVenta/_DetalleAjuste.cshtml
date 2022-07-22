@@ -1,0 +1,209 @@
+@model PlataformaVIA.Core.Domain.Busqueda.BusquedaDetalleAjuste
+
+@{
+    Layout = null;
+}
+
+<div class="">
+    <table class="table table-striped table-bordered" style="width:100%;">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaHora)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Valor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Categoria)
+            </th>
+        </tr>
+
+        <tr>
+            <td><span id="ValFechaHora"></span></td>
+            <td><span id="ValValor"></span></td>
+            <td><span id="ValCategoria"></span></td>
+        </tr>
+
+    </table>
+
+    @Html.DisplayNameFor(model => model.Descripcion)
+
+    <span id="ValDescripcion"></span>
+
+     <br />
+     <br />
+
+    <div>
+        <table id="detallepago-data-table"
+               class="table table-striped table-bordered dataTableSinBotones"
+               style="width:100%" />
+    </div>
+
+    <div class="row textoCentro marto15">
+        <span class="col-md-9"></span>
+        <input type="button" class="btn btn-info mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Regresar" />
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var mispagosListVM;
+
+        $(function () {
+            mispagosListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#detallepago-data-table').DataTable({                      
+                        dom: 'Blrtip',
+                        "responsive": false,
+                        "bSort": false,
+                        buttons: [{
+                            "extend": 'excelHtml5',                            
+                            "title": 'Detalle pago',
+                            "text": 'Exportar a excel',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+                        "processing": true,
+                        "scrollX": true,
+                        "rowHeight": 'auto',
+                       // "ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAvanzadoDetalleAjuste", "PuntoDeVenta")",
+                            "data": function (data) {
+                                data.CodPuntoVenta = @ViewBag.Id;
+                            },
+                        },
+                        "initComplete": function (settings, json) {
+                            if (json.data[0].FechaHora!=null)
+                                $('#ValFechaHora').html(' ' + json.data[0].FechaHora);
+
+                            if (json.data[0].Valor != null)
+                                $('#ValValor').html(' ' + json.data[0].Valor);
+
+                            if (json.data[0].Categoria != null)
+                                $('#ValCategoria').html(' ' + json.data[0].Categoria);
+
+                            if (json.data[0].Descripcion != null)
+                                $('#ValDescripcion').html(' ' + json.data[0].Descripcion);
+
+                        },
+                        "columns": [
+                            {
+                                "title": "Codigo PDV",
+                                "data": "CODIGOPUNTODEVENTA",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Codigo Cadena",
+                                "data": "CODIGOCADENA",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Juegos IGT",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "JuegosIGT",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Juegos Fiducia",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "JuegosFiducia",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Pines Recargas",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "PinesRecargas",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Facturas Depositos",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "FacturasDepositos",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Retiros",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "Retiros",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Instalaciones",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "Instalaciones",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Total",
+                                "render": $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "data": "Total",
+                                "searchable": true
+                            },
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmAdvancedSearch')); //Importante agregar para validación en este tipo de vistas parciales
+                    if ($("#frmAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            // initialize the datatables
+            mispagosListVM.init();
+
+       });
+
+    var oldExportAction = function (self, e, dt, button, config) {
+        if (button[0].className.indexOf('buttons-excel') >= 0) {
+            if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+            }
+            else {
+                $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            }
+        } else if (button[0].className.indexOf('buttons-print') >= 0) {
+            $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+        }
+    };
+
+    var newExportAction = function (e, dt, button, config) {
+        var self = this;
+        var oldStart = dt.settings()[0]._iDisplayStart;
+
+        dt.one('preXhr', function (e, s, data) {
+            //carga todos los datos del server con el max value
+            data.start = 0;
+            data.length = 2147483647;
+
+            dt.one('preDraw', function (e, settings) {
+                // Call the original action function
+                oldExportAction(self, e, dt, button, config);
+
+                dt.one('preXhr', function (e, s, data) {
+
+                    settings._iDisplayStart = oldStart;
+                    data.start = oldStart;
+                });
+
+
+                setTimeout(dt.ajax.reload, 0);
+
+
+                return false;
+            });
+        });
+
+
+        dt.ajax.reload();
+    };
+
+</script>
+    

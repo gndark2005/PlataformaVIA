@@ -1,0 +1,40 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "Mis productos";
+}
+
+<div>
+    <div id="dvcontenedorpuntodeventainfo"/>
+</div>
+
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+        var idpuntoventa = "@ViewBag.Id";
+
+        $(function () {
+            CargarInformacionInicio("Productos");
+
+            function CargarInformacionInicio(idlink) {
+                gtag('event', 'PuntodeVenta/Productos/' + idlink, { 'idpuntoventa': idpuntoventa });
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("GetPartialView")",
+                    data: { idlink: idlink, idpuntoventa: idpuntoventa },
+                success: function(d) {
+                 /* d is the HTML of the returned response */
+                    $("#dvcontenedorpuntodeventainfo").empty();
+                   $("#dvcontenedorpuntodeventainfo").html(d); //replaces previous HTML with action
+               }
+            });
+            }
+
+
+     });
+    </script>
+}

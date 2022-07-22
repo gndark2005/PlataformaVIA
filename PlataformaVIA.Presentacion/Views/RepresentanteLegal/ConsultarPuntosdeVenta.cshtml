@@ -1,0 +1,101 @@
+@*@model IEnumerable<PlataformaVIA.Core.Domain.PuntoDeVenta.PuntodeVenta>*@
+
+@{
+    ViewBag.Title = "Puntos de Venta";
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Mis puntos de Venta</h1>
+            @*<button type="button"
+                class="btn btn-default btn-md"
+                data-toggle="modal"
+                data-target="#advancedSearchModal"
+                id="advancedsearch-button">*@
+            @*<span class="glyphicon glyphicon-search"
+                aria-hidden="true"></span> Búsqueda Avanzada*@
+        </div>
+        <div class="panel-body">
+            <table id="puntosdeventa-data-table"
+                   class="table table-striped table-bordered"
+                   style="width:100%"></table>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script type="text/javascript">
+        var puntosdeventaListVM;
+
+        $(function () {
+            puntosdeventaListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#puntosdeventa-data-table').DataTable({
+                        "serverSide": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        //"ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("ConsultarPuntoDeVentaData", "RepresentanteLegal")",
+                                "type": "POST"
+                        },
+
+                        "columns": [
+                            {
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class='py-0 text text--color--white border border--right' href='@Url.Action("Details", "PuntoDeVenta")/" + data.Id + "'" + "><i class='fa fa-search'></i></a>";
+                                    //btn btn--solid
+                                }
+                            },
+
+                            {
+                                "title": "ID",
+                                "data": "Id",
+                                "searchable": false,
+                                "visible": false
+                            },
+                            {
+                                "title": "Descripción",
+                                "data": "Nombre",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Fecha de Corte",
+                                "data": "FechaCorteFacturacion",
+                                "render": function (data) {
+                                    return moment(data).format('MM/DD/YYYY HH:mm');
+                                },
+                                "searchable": true
+                            },
+                            {
+                                "title": "Saldo",
+                                "data": "SaldoActual",
+                                render: $.fn.dataTable.render.number(',', '.', 2, '$'),
+                                "searchable": true,
+                                className: 'text-right'
+                            },
+                            {
+                                "title": "Días de Mora",
+                                "data": "DiasMora"
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                }
+            };
+            // initialize the datatables
+            puntosdeventaListVM.init();
+
+        });
+
+    </script>
+}

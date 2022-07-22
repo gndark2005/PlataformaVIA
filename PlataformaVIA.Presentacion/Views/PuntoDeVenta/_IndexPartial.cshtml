@@ -1,0 +1,41 @@
+﻿<div class="c-accordeon col-12 mt-3">
+    <div class="wrapper">
+        <button class="title title--sub w-100 text text--color--blue border border--bottom border--color--blue pb-1 bg bg--color--white text-left" type="button"
+                data-toggle="collapse"
+                data-target="#collapseExample"
+                aria-expanded="true" aria-controls="collapseExample">
+            Asunto <i class="fa fa-sort-down ml-1"></i>
+        </button>
+        <div class="collapse in" id="collapseExample">
+            <div class="c-accordeon__contenedor">
+                <table class="table c-table mt-3">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="text text--color--black h5 border border--reset col-7 p-1">Asunto</th>
+                            <th scope="col" class="text text--color--black h5 border border--reset col-5 p-1">Fecha</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row" class="text text--color--gray_light h5 col-5 border border--reset p-1">Notificación de reporte a centrales</th>
+                            <td class="text text--color--gray_light h5 col-5 border border--reset p-1">10/Dic/2018</td>
+                        </tr>
+                        <tr>
+                            <th scope="row" class="text text--color--gray_light h5 col-5 border border--reset p-1">Notificación de reporte a centrales</th>
+                            <td class="text text--color--gray_light h5 col-5 border border--reset p-1">10/Dic/2018</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="d-none d-lg-block col-xl-12 pr-lg-0">
+            @*<img src="/Content/img/banner.jpg" alt="" class="w-100">*@
+            @Html.Action("_Carousel", "Home")
+        </div>
+    </div>
+</div>
+        
+
+
+

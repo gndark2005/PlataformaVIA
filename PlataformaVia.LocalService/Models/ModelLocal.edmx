@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PortalViaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AdministracionCorreoLocal">
+          <Key>
+            <PropertyRef Name="ID_CORREO" />
+          </Key>
+          <Property Name="ID_CORREO" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TITULO" Type="varchar" MaxLength="150" />
+          <Property Name="ASUNTO" Type="varchar" MaxLength="150" />
+          <Property Name="MENSAJE" Type="varchar(max)" />
+          <Property Name="DESTINATARIOS" Type="varchar(max)" Nullable="false" />
+          <Property Name="COPIA_DESTINATARIOS" Type="varchar(max)" />
+          <Property Name="PATH_ADJUNTO" Type="varchar(max)" />
+          <Property Name="ID_ESTADO" Type="bigint" Nullable="false" />
+          <Property Name="RESPUESTA" Type="varchar(max)" />
+        </EntityType>
+        <EntityContainer Name="PortalViaModelStoreContainer">
+          <EntitySet Name="AdministracionCorreoLocal" EntityType="Self.AdministracionCorreoLocal" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PortalViaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="AdministracionCorreoLocal">
+          <Key>
+            <PropertyRef Name="ID_CORREO" />
+          </Key>
+          <Property Name="ID_CORREO" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TITULO" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ASUNTO" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="MENSAJE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="DESTINATARIOS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="COPIA_DESTINATARIOS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PATH_ADJUNTO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ID_ESTADO" Type="Int64" Nullable="false" />
+          <Property Name="RESPUESTA" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="PortalViaEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="AdministracionCorreoLocals" EntityType="Self.AdministracionCorreoLocal" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PortalViaModelStoreContainer" CdmEntityContainer="PortalViaEntities">
+          <EntitySetMapping Name="AdministracionCorreoLocals">
+            <EntityTypeMapping TypeName="PortalViaModel.AdministracionCorreoLocal">
+              <MappingFragment StoreEntitySet="AdministracionCorreoLocal">
+                <ScalarProperty Name="ID_CORREO" ColumnName="ID_CORREO" />
+                <ScalarProperty Name="TITULO" ColumnName="TITULO" />
+                <ScalarProperty Name="ASUNTO" ColumnName="ASUNTO" />
+                <ScalarProperty Name="MENSAJE" ColumnName="MENSAJE" />
+                <ScalarProperty Name="DESTINATARIOS" ColumnName="DESTINATARIOS" />
+                <ScalarProperty Name="COPIA_DESTINATARIOS" ColumnName="COPIA_DESTINATARIOS" />
+                <ScalarProperty Name="PATH_ADJUNTO" ColumnName="PATH_ADJUNTO" />
+                <ScalarProperty Name="ID_ESTADO" ColumnName="ID_ESTADO" />
+                <ScalarProperty Name="RESPUESTA" ColumnName="RESPUESTA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

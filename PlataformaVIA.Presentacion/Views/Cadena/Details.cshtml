@@ -1,0 +1,124 @@
+@{
+    ViewBag.Title = "Detalles de la Cadena";
+}
+
+<style>
+</style>
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="row m-0">
+    <div class="col-12">
+        <div id="divEncabezadoPDV" style="background-color:#063e8e;">
+            <h2 class="visible-md visible-lg" id="title" style="color:white; text-align:center;"></h2>
+            <h4 class="visible-xs visible-sm" id="title_xs" style="color:white; text-align:center;"></h4>
+        </div>
+        <div class="row">
+            <div class="center-block">
+                <div class="dropdown visible-xs visible-sm pb-2">
+                    <button class="btn btnMobile-secondary dropdownMobile-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Menu cadena
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a href="#" class="menupdv dropdownMobile-item" id="Inicio">Información General</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Facturacion">Facturación</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="DetalleCartera">Detalle cartera por PDV</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="DetalleCupo">Detalle cupo por PDV</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Pagos">Mis Pagos</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Ajustes">Mis Ajustes</a>
+                        <a href="#" class="menupdv dropdownMobile-item" id="Reportes">Reportes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 visible-md visible-lg">
+                <div class="menulateral visible-md visible-lg">
+                    <ul>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Inicio">Información General</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Facturacion">Facturación</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="DetalleCartera">Detalle cartera por PDV</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="DetalleCupo">Detalle cupo por PDV</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Pagos">Mis Pagos</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Ajustes">Mis Ajustes</a></li>
+                        <li class="menu__lateral--item"><a onclick="KeepMenu(this.id)" href="#" class="menupdv btn btn--link text" id="Reportes">Reportes</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="dvContenedorCadenainfo" class="col-md-9" style="margin:auto; width:100%;" />
+
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+
+    <script type="text/javascript">
+        var idpuntoventa = "@ViewBag.Id";
+        var currentMenu = "";
+
+        
+        $(function () {
+            CargarEncabezadoCadena("Encabezado");
+            CargarInformacionInicio("Inicio");
+
+
+        $('.menupdv').click(function() {
+            var id = this.id;
+            KeepMenu(this)
+            CargarInformacionInicio(id);
+            return false;
+        });
+
+            function CargarEncabezadoCadena(idlink) {
+                $.ajax({
+               type: "get",
+                    url: "@Url.Action("GetPartialView")",
+                    data: { idlink: idlink, idCadena: idpuntoventa },
+                success: function(data) {
+                    var texto = data.Nombre.split(".")[1] + " - Cadena " + data.CodCadenaDetail;
+                    $("#title").empty();
+                    $("#title").html(texto);
+                    $("#title_xs").empty();
+                    $("#title_xs").html(texto);
+                 }
+            });
+            }
+
+            $('.dropdownMobile-item').click(function () {
+                $('#dropdownMenuButton').text($(this).text());
+                $(".dropdownMobile-toggle").dropdown('toggle');
+            });
+
+            function KeepMenu(id) {
+                if (currentMenu != "") {
+                    $(currentMenu).removeAttr("style");
+                    $(currentMenu).addClass("menupdv btn btn--link text");
+                }
+
+                $(id).css("background-color", "#063e8e");
+                $(id).css("color", "white");
+
+                currentMenu = id;
+            }
+
+            function CargarInformacionInicio(idlink) {
+                gtag('event', 'Cadena/Details/' + idlink, { 'idpuntoventa': idpuntoventa });
+                $.ajax({
+               type: "get",
+                url: "@Url.Action("GetPartialView")",
+                    data: { idlink: idlink, idCadena: idpuntoventa },
+                success: function(d) {
+                 /* d is the HTML of the returned response */
+                    $("#dvContenedorCadenainfo").empty();
+                    $("#dvContenedorCadenainfo").html(d); //replaces previous HTML with action
+                 }
+            });
+            }
+
+
+     });
+    </script>
+}

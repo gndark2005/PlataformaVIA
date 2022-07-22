@@ -1,0 +1,110 @@
+@model PlataformaVIA.Presentacion.ViewModels.UsuarioInfo
+<div class="container-fluid">
+    <div class="row s-header">
+        <div class="container">
+            <div class="row pl-1">
+                <div class="col-xs-3">
+                    <a href="" class="btn btn--link">
+                        <img src="@Url.Content("~/Content/img/logo.png")" class="img-responsive" style="max-width:80px" alt="Plataforma Vía" />
+                        <div class="text text-default text-center">
+                            <span class="text text--color--white font-weight-bold hidden-sm hidden-xs">Plataforma Virtual</span>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-xs-7"></div>
+                <div class="col-xs-2 mt-2 visible-lg visible-md">
+                    <div class="col-xs-6 textoCentro">
+                        <a href="@Url.Action("Contact","Home" )">
+                            <img src="@Url.Content("~/Content/img/contacto.png")" class="img-responsive center-block" alt="CONTÁCTANOS" title="contacto" />
+                        </a>
+                        <div class="text text--color--white hidden-sm hidden-xs hidden-md">
+                            CONTÁCTANOS
+                        </div>
+
+                    </div>
+                    <div class="col-xs-6 textoCentro float-right">
+                        @if (Request.IsAuthenticated)
+                        {
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                    @Html.AntiForgeryToken()
+                                    <img src="@Url.Content("~/Content/img/salir.png")" class="img-responsive center-block" alt="Salir" title="Salir">
+                                </a>
+                                <div class="text text--color--white hidden-sm hidden-xs hidden-md">SALIR</div>
+                            }
+                        }
+                    </div>
+                </div>
+                <div class="col-xs-2 mt-2 visible-sm visible-xs" style="position:absolute; top:0; right:0;">
+                    <div class="col-xs-6 textoCentro">
+                        <a href="@Url.Action("Contact","Home" )">
+                            <img src="@Url.Content("~/Content/img/contacto.png")" class="img-responsive center-block" alt="CONTÁCTANOS" title="contacto" />
+                        </a>
+                        <div class="text text--color--white hidden-sm hidden-xs hidden-md">
+                            CONTÁCTANOS
+                        </div>
+
+                    </div>
+                    <div class="col-xs-6 textoCentro float-right">
+                        @if (Request.IsAuthenticated)
+                        {
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                <a href="javascript:document.getElementById('logoutForm').submit()">
+                                    @Html.AntiForgeryToken()
+                                    <img src="@Url.Content("~/Content/img/salir.png")" class="img-responsive center-block" alt="Salir" title="Salir">
+                                </a>
+                                <div class="text text--color--white hidden-sm hidden-xs hidden-md">SALIR</div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="row pl-1">
+                <div class="col-md-5 text-center text-md-left hidden-xs hidden-sm">
+                    <div class="s-header__brand">
+
+                    </div>
+                    @if (Request.IsAuthenticated)
+                    {
+                        <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag() { dataLayer.push(arguments); }
+                    gtag('js', new Date());
+                    gtag('config', 'UA-152604341-1', {
+                        'user_id': '@Model.EMAIL'
+                    });
+                        </script>
+                        <div class="s-header__dates">
+                            <p class="text text--color--white"><span>Su última visita fue:</span> @Model.FECHAHORAULTIMOINGRESO</p>
+                            <p class="text text--color--white"><span>Fecha y hora actual:</span> @DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm")</p>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-7 text-center text-md-right visible-lg visible-md">
+                    <div class="row">
+                        <div class="col-xs-offset-2"></div><div class="col-md-3 text text--color--white">Hola,</div><div class="col-md-7 text text--user text--color--white left-content">@Model.NOMBREUSUARIO</div>
+                    </div>
+                    @{
+                        if (Model.CODRAZONSOCIAL != null)
+                        {
+                            <p class="text text--color--white text--document">Nit, @Model.RazonSocial.NIT, @Model.RazonSocial.NOMBRERAZONSOCIAL</p>
+                        }
+                    }
+                </div>
+                <div class="text-center visible-sm visible-xs" style="margin:auto">
+                    <div>
+                        <div class="col-xs-offset-2"></div><div class="text text--color--white">Hola,</div><div class="text text--user text--color--white left-content">@Model.NOMBREUSUARIO</div>
+                    </div>
+                    @{
+                        if (Model.CODRAZONSOCIAL != null)
+                        {
+                            <p class="text text--color--white text--document">Nit, @Model.RazonSocial.NIT, @Model.RazonSocial.NOMBRERAZONSOCIAL</p>
+                        }
+                    }
+                </div>
+            </div>
+            </div>
+        </div>
+</div>

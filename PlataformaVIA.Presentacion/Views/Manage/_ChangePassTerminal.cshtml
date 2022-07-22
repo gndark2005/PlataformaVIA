@@ -1,0 +1,92 @@
+﻿@model PlataformaVIA.Presentacion.Models.ChangeTerminalPasswordViewModel
+@{
+    Layout = null;
+}
+
+<div class="col-md-12">
+    <div class="panel panel-primary list-panel" id="list-panel">
+        <div class="panel-heading list-panel-heading">
+            <h1 class="panel-title list-panel-title">Cambiar contraseña numérica de terminal</h1>
+        </div>
+        <div class="container center col-md-10 marto15">
+            @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "changeTerminalPass", autocomplete = "off" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.OldTerminalPassword, new { @class = "col-sm-5 col-form-label" })
+                    <div class="col-sm-4">
+                        @Html.PasswordFor(m => m.OldTerminalPassword, new { @class = "form-control", placeholder = "Contraseña de terminal actual", autocomplete = "new-password" })
+                        @Html.ValidationMessageFor(m => m.OldTerminalPassword, "", new { @class = "text-danger validationMessage" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.NewTerminalPassword, new { @class = "col-sm-5 col-form-label" })
+                    <div class="col-sm-4">
+                        @Html.PasswordFor(m => m.NewTerminalPassword, new { @class = "form-control", placeholder = "Nueva contraseña de terminal", autocomplete = "new-password" })
+                        @Html.ValidationMessageFor(m => m.NewTerminalPassword, "", new { @class = "text-danger validationMessage" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    @Html.LabelFor(m => m.ConfirmTerminalPassword, new { @class = "col-sm-5 col-form-label" })
+                    <div class="col-sm-4">
+                        @Html.PasswordFor(m => m.ConfirmTerminalPassword, new { @class = "form-control", placeholder = "Confirmar nueva contraseña", autocomplete = "new-password" })
+                        @Html.ValidationMessageFor(m => m.ConfirmTerminalPassword, "", new { @class = "text-danger validationMessage" })
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label id="lblresultadoTerminal" class="textoCentro"></label>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-5 textoCentro"></div>
+                    <div class="col-md-4 textoCentro">
+                        <input type="submit" value="Cambiar" class="btn btn-primary btn-block" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
+    $(function () {
+        $("#changeTerminalPass").submit(function (e) {
+            e.preventDefault();
+            if ($('#changeTerminalPass').validate({
+                focusInvalid: false
+            }).valid()) {
+                $('#lblresultadoTerminal').empty();
+                $.ajax({
+                    url: '@Url.Action("_ChangePassTerminal")',
+                    dataType: "json",
+                    type: "POST",
+                    data: $('#changeTerminalPass').serialize(),
+                    success: function (data) {
+                        if (data.Error == false) {
+                            $('#lblresultadoTerminal').removeClass('text-danger');
+                            $('#lblresultadoTerminal').addClass('text-success');
+                            $('#lblresultadoTerminal').empty();
+                            $('#lblresultadoTerminal').html('La contraseña ha sido cambiada exitosamente');
+                        } else {
+                            $('#lblresultadoTerminal').removeClass('text-danger');
+                            $('#lblresultadoTerminal').addClass('text-danger');
+                            $('#lblresultadoTerminal').empty();
+                            $('#lblresultadoTerminal').html('Mensaje: ' + data.Mensaje);
+                        }
+                    },
+                    error: function (error) {
+                        $('#lblresultadoTerminal').removeClass('text-danger');
+                        $('#lblresultadoTerminal').addClass('text-danger');
+                        $('#lblresultadoTerminal').empty();
+                        $('#lblresultadoTerminal').html('Error: ' + error);
+                    }
+                });
+            }
+         else {
+                $('#lblresultadoTerminal').removeClass('text-danger');
+                $('#lblresultadoTerminal').addClass('text-danger');
+                $('#lblresultadoTerminal').empty();
+                $('#lblresultadoTerminal').html('Debe diligenciar todos los campos requeridos');
+            }
+        });
+    })
+</script>

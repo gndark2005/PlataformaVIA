@@ -1,0 +1,256 @@
+@model PlataformaVIA.Core.Domain.PuntoDeVenta.DetalleProducto
+@using PlataformaVIA.Core.Domain.AdministradorDocumentos
+
+ @* Adjust the viewport width as per device width for mobile *@
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            <h3 class="modal-title" id="myModalLabel">Detalle de producto @Html.DisplayFor(model => model.NombreProducto)</h3>
+        </div>
+        <div class="modal-body">
+            <div class="dvCentro">
+
+                @Html.HiddenFor(model => model.IdProducto)
+                @Html.HiddenFor(model => model.CategoriaInstructivo)
+
+                <div class="row">
+                    <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.NombreProducto)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.NombreProducto)
+                    </div>
+                </div>
+
+                @if (Model.Descripcion != null && Model.Descripcion != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.Descripcion)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.Descripcion)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CodigoConvenio != null && Model.CodigoConvenio != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.CodigoConvenio)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.CodigoConvenio)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Empresa != null && Model.Empresa != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.Empresa)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.Empresa)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Convenio != null && Model.Convenio != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.Convenio)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.Convenio)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Categoría != null && Model.Categoría != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.Categoría)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.Categoría)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CodigoTerminal != null && Model.CodigoTerminal != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.CodigoTerminal)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.CodigoTerminal)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.AliadoEstrategico != null && Model.AliadoEstrategico != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.AliadoEstrategico)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.AliadoEstrategico)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.ReferenciaCaptura != null && Model.ReferenciaCaptura != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.ReferenciaCaptura)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.ReferenciaCaptura)
+                        </div>
+                    </div>
+                }
+
+                <div class="row">
+                    <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.AceptaVencidos)</div>
+                    <div class="col-md-6 ">
+                        @Html.Label(Model.AceptaVencidos ? "SI" : "NO")
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.AceptaParciales)</div>
+                    <div class="col-md-6 ">
+                        @Html.Label(Model.AceptaParciales ? "SI" : "NO")
+                    </div>
+                </div>
+
+                @if (Model.MontosPermitidos != null && Model.MontosPermitidos != "Desde $0.00 Hasta $0.00")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.MontosPermitidos)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.MontosPermitidos)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.CoberturaProducto != null && Model.CoberturaProducto != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.CoberturaProducto)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.CoberturaProducto)
+                        </div>
+                    </div>
+                }
+
+                @if (Model.PaginaWeb != null && Model.PaginaWeb != "")
+                {
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayNameFor(model => model.PaginaWeb)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.PaginaWeb)
+                        </div>
+                    </div>
+                }
+
+                <div class="row col-md-12">
+                    <div class="col-md-8  text font-weight-bold">@Html.DisplayName("Instructivos: ")</div>
+                    <div class="col-md-12 ">
+                        <label id="LabelMSG"></label>
+                        <div class="row">
+                            <div>
+                                <h5> Isys</h5>
+                                <a href="#" onclick="BuscarInstructivo(@Convert.ToInt32(TipoTerminalEnum.Isys))"><img class="img-responsive" src="~/Content/img/isys.png" alt="Terminal Isys" style="width:80px; height:80px;" /></a>
+                            </div>
+                            <div>
+                                <h5> Imagine</h5>
+                                <a href="#)" onclick="BuscarInstructivo(@Convert.ToInt32(TipoTerminalEnum.Imagine))"><img class="img-responsive" src="~/Content/img/imagine.png" alt="Terminal Imagine" style="width:80px; height:80px;" /></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div id="divLista">
+                    <div class="row">
+                        <div class="col-md-8  text font-weight-bold">@Html.DisplayName("Seleccione instructivo: ")</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownList("DocList", Enumerable.Empty<SelectListItem>(), "Seleccione...", new { @class = "form-control col-md-10", @title = "Seleccione" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row textoCentro marto15">
+                <span class="col-md-9"></span>
+                <input type="button" class="btn btn-info mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Regresar" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-detalle-instructivo">
+    <div id="modal-detalle-instructivo-container"></div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#divLista").hide();
+
+        $('#DocList').change(function () {
+            if ($(this).val() != "") {
+                AbrirInstructivo($(this).val());
+            }
+            else {
+                
+            }
+        });
+    });
+
+        function BuscarInstructivo(codTerminal) {
+
+            $("select[id$=DocList] > option:gt(0)").remove();
+
+            var codProducto = @Model.CodSubProducto;
+
+            if (codProducto == 0 || codProducto == null || codProducto == undefined) {
+                codProducto = @Model.IdProducto;
+            }
+
+            $.ajax({
+            url: '@Url.Action("GetInstructivosProducto", "Terminal")',
+                data: {
+                    codProducto: codProducto,
+                    codTerminal: codTerminal
+                },
+            type: 'POST',
+                success: function (data) {
+                   
+                    var length = data.length;
+
+                    if (length == 1) {
+
+                        AbrirInstructivo(data[0].IdInstructivo)
+
+                    } else if (length > 1) {
+                        $('#divLista').show();
+                        $.each(data, function (index, item) {
+                            $("#DocList").append($("<option>").val(item.IdInstructivo).text(item.Titulo));
+                        });
+                    } else {
+                        $("#LabelMSG").html("No hay instructivos.")
+                    }               
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#LabelMSG").html("error: " + thrownError)
+            }
+        });
+
+        }
+
+    function AbrirInstructivo(codInstructivo) {
+         var url = '@Url.Action("_GenericCarousel", "Terminal")';
+                    $.get(url + '/?codInstructivo=' + codInstructivo, function (data) {
+                        $('#modal-detalle-instructivo-container').html(data);
+                        $('#modal-detalle-instructivo').modal('show');
+                    });
+    }
+</script>
+

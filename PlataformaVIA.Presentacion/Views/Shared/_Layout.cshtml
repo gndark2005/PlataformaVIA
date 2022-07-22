@@ -1,0 +1,518 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @* Adjust the viewport width as per device width for mobile *@
+    <meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152604341-1"></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <title>@ViewBag.Title - Plataforma VIA</title>
+    <link href="@Url.Content("~/Content/img/iconVia.ico")" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/bundledatatables")
+    @if (Request.IsAuthenticated)
+    {
+        if (Request.Browser.IsMobileDevice)
+        {
+            <style>
+                .navbar-header {
+                    float: none!important;
+                }
+
+                .navbar-left, .navbar-right {
+                    float: none !important;
+                }
+
+                .navbar-toggle {
+                    display: block !important;
+                }
+
+                .navbar-collapse {
+                    border-top: 1px solid transparent !important;
+                    box-shadow: inset 0 1px 0 rgba(255,255,255,0.1) !important;
+                }
+
+                .navbar-fixed-top {
+                    top: 0 !important;
+                    border-width: 0 0 1px !important;
+                }
+
+                .navbar-collapse.collapse {
+                    display: none !important;
+
+                }
+
+                .navbar-nav {
+                    float: none !important;
+                    margin-top: 7.5px !important;
+                }
+
+                    .navbar-nav > li {
+                        float: none !important;
+                    }
+
+                        .navbar-nav > li > a {
+                            padding-top: 10px !important;
+                            padding-bottom: 10px !important;
+                        }
+
+                .collapse.in {
+                    display: block !important;
+                }
+
+
+            </style>
+            <script>
+
+            </script>
+        }
+    }
+            <script>
+                var language = {
+                    "dataTableParameters": {
+                        "sProcessing": "<div id='loader'></div>",
+                        "sLengthMenu": "Mostrar _MENU_ registros",
+                        "sZeroRecords": "No se encontraron resultados",
+                        "sEmptyTable": "Ningún dato disponible en esta tabla",
+                        "sInfo": "  Mostrando del _START_ al _END_ de _TOTAL_ registros",
+                        "sInfoEmpty": "No hay registros",
+                        "sInfoFiltered": "(filtrado de un total de _MAX_ registros)",
+                        "sInfoPostFix": "",
+                        "sSearch": "Buscar:",
+                        "sUrl": "",
+                        "sInfoThousands": ",",
+                        "sLoadingRecords": "Cargando...",
+                        "oPaginate": {
+                            "sFirst": "Primero",
+                            "sLast": "último",
+                            "sNext": "Siguiente",
+                            "sPrevious": "Anterior"
+                        },
+                        "oAria": {
+                            "sSortAscending": ": Activar para ordenar la columna de manera ascendente",
+                            "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+                        }
+                    },
+                    "pickerMonthNames": [
+                        "Enero",
+                        "Febrero",
+                        "Maezo",
+                        "Abril",
+                        "Mayo",
+                        "Junio",
+                        "Julio",
+                        "Agosto",
+                        "Septiembre",
+                        "Octubre",
+                        "Noviembre",
+                        "Diciembre"
+                    ],
+                    "pickerMonthNamesShort": [
+                        "Ene",
+                        "Feb",
+                        "Mar",
+                        "Abr",
+                        "May",
+                        "Jun",
+                        "Jul",
+                        "Ago",
+                        "Sep",
+                        "Oct",
+                        "Nov",
+                        "Dic"
+                    ],
+                    "pickerDayNames": ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"],
+                    "pickerDayNamesShort": ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                    "pickerDayNamesMin": ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+                    "pickerDateFormat": 'dd-mm-yy'
+                }
+            </script>
+        </head>
+<body marginwidth="0" marginheight="0" class="js" style="padding-bottom:100px">
+
+    @if (Request.IsAuthenticated)
+    {
+        @Html.Action("HeaderUserInfo", "Common")
+    }
+
+
+    <div class="container ">
+        <div class="row">
+            <div class="col-sm-12">
+                <div>
+
+                    @*NOTIFICACIONES MOVIL*@
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (Request.Browser.IsMobileDevice)
+                        {
+                            <div class="notificationsMobile">
+                                <button onclick="mobileNotifications()" style="font-size: 25px; z-index:100; cursor: pointer;" id="bellMobile" class="notiMobile glyphicon glyphicon-bell "><span style="font-size: 14px; color:red; font-weight:bold" class="count">&nbsp;</span></button>
+                            </div>
+                        }
+                        else
+                        {
+                            @*NOTIFICACIONES WEB*@
+                            <div class="notifications">
+                                <span style="font-size: 25px; z-index:100" id="bellWeb" class="noti glyphicon glyphicon-bell "><span style="font-size: 14px; color:red; font-weight:bold" class="count">&nbsp;</span></span>
+                            </div>
+                        }
+                    }
+
+                    
+                    <nav class="navbar navbar-inverse navbar-static-top navbar-new in" role="navigation" style="z-index:80">
+                        <div class="container-fluid">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                            </div>
+
+                            <div class="collapse navbar-collapse" id="bs-navbar-collapse-1">
+
+                                <ul class="nav navbar-nav pp">
+                                    @if (Request.IsAuthenticated)
+                                    {
+
+                                        if (User.IsInRole("Representante Legal"))
+                                        {
+                                            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis puntos de venta", "ConsultarPuntosdeVenta", "PuntoDeVenta", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis cadenas", "ConsultarCadenas", "Cadena", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis pagos", "ConsultarPagosAjustes", "RepresentanteLegal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis colocadores", "ConsultarColocadores", "Colocador", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Certificados", "Index", "Certificado", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("¿Cómo operar tu terminal?", "Index", "Terminal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Seguridad", "ChangePassword", "Manage", null, new { @class = "nav-link inav" })</li>
+                                        }
+                                        else if (User.IsInRole("Punto de Venta"))
+                                        {
+                                            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis puntos de venta", "ConsultarPuntosdeVenta", "PuntoDeVenta", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("¿Cómo operar tu terminal?", "Index", "Terminal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Seguridad", "ChangePassword", "Manage", null, new { @class = "nav-link inav" })</li>
+
+                                        }
+                                        else if (User.IsInRole("Funcionario"))
+                                        {
+                                            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Puntos de venta", "ConsultarPuntosdeVenta", "PuntoDeVenta", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Cadenas", "ConsultarCadenas", "Cadena", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("¿Cómo operar tu terminal?", "Index", "Terminal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis colocadores", "ConsultarColocadores", "Colocador", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Pagos", "ConsultarPagosAjustes", "RepresentanteLegal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Seguridad", "ChangePassword", "Manage", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Documentos", "Index", "Documento", null, new { @class = "nav-link inav" })</li>
+                                        }
+                                        else if (User.IsInRole("FuncionarioExterno"))
+                                        {
+                                            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Puntos de venta", "ConsultarPuntosdeVenta", "PuntoDeVenta", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Cadenas", "ConsultarCadenas", "Cadena", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("¿Cómoo operar tu terminal?", "Index", "Terminal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis colocadores", "ConsultarColocadores", "Colocador", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Pagos", "ConsultarPagosAjustes", "RepresentanteLegal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Seguridad", "ChangePassword", "Manage", null, new { @class = "nav-link inav" })</li>
+                                        }
+                                        else if (User.IsInRole("Admin"))
+                                        {
+                                            <li class="nav-item">@Html.ActionLink("Inicio", "Index", "Home", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis puntos de venta", "ConsultarPuntosdeVenta", "PuntoDeVenta", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis cadenas", "ConsultarCadenas", "Cadena", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis pagos", "ConsultarPagosAjustes", "RepresentanteLegal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Mis colocadores", "ConsultarColocadores", "Colocador", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("¿Cómo operar tu terminal?", "Index", "Terminal", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Seguridad", "ChangePassword", "Manage", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Documentos", "Index", "Documento", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Administrador Documentos", "Index", "AdministradorDocumentos", null, new { @class = "nav-link inav" })</li>
+                                            <li class="nav-item">@Html.ActionLink("Divulgaciones", "Index", "Divulgacion", null, new { @class = "nav-link inav" })</li>
+
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+
+                    @if (Request.IsAuthenticated)
+                    {
+                        if (Request.Browser.IsMobileDevice)
+                        {
+                            <div class="notiMobile-content scrollbar " style="z-index: 100; background-color:white; color: #063e8e" id="scrollNotifications">
+                                <div class="notiMobile-top-arrow"></div>
+                                <div>
+                                    <p style="margin-top:3%; margin-left:5%; font-size: 12px; color: #a8a4a4;"><b>Notificaciones</b></p>
+                                    <ul id="notiContent" style="border-top: 1px solid #e5e5e5;"></ul>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="noti-content scrollbar " style="z-index: 100; background-color:white; color: #063e8e" id="scrollNotifications">
+                                <div class="noti-top-arrow"></div>
+                                <div>
+                                    <p style="margin-top:3%; margin-left:5%; font-size: 12px; color: #a8a4a4;"><b>Notificaciones</b></p>
+                                    <ul id="notiContent" style="border-top: 1px solid #e5e5e5;"></ul>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+
+        @RenderBody()
+        <footer class="s-header" style="position:fixed; bottom: 0; left: 0; right:0; z-index: 100;">
+            @Html.Action("FooterPage", "Common")
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatables")
+    @Scripts.Render("~/bundles/jszip")
+    @Scripts.Render("~/bundles/buttonshtml5")
+    @Scripts.Render("~/bundles/firebase")
+    @Scripts.Render("~/bundles/dataTablesResponsive")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+
+<script type="text/javascript">
+
+
+    //CONFIGURACION DE CREDENCIALES FIREBASE
+    var firebaseConfig = {
+        apiKey:            '@System.Configuration.ConfigurationManager.AppSettings["apiKey"]',
+        authDomain:        '@System.Configuration.ConfigurationManager.AppSettings["authDomain"]',
+        databaseURL:       '@System.Configuration.ConfigurationManager.AppSettings["databaseURL"]',
+        projectId:         '@System.Configuration.ConfigurationManager.AppSettings["projectId"]',
+        storageBucket:     '@System.Configuration.ConfigurationManager.AppSettings["storageBucket"]',
+        messagingSenderId: '@System.Configuration.ConfigurationManager.AppSettings["messagingSenderId"]',
+        appId:             '@System.Configuration.ConfigurationManager.AppSettings["appId"]',
+        measurementId:     '@System.Configuration.ConfigurationManager.AppSettings["measurementId"]'
+    };
+
+    var fireBaseValid = checkBrowser();
+    var isAuthenticated = @Html.Raw(Json.Encode(Request.IsAuthenticated));
+
+    if (isAuthenticated) {
+
+        // Inicializa Firebase
+        if (fireBaseValid)
+            firebase.initializeApp(firebaseConfig);
+    }
+
+    $(document).ready(function () {
+
+      
+        if (isAuthenticated) {
+            updateNotification();
+
+            if (fireBaseValid) {
+
+                var messaging = firebase.messaging();
+
+                messaging.requestPermission()
+                    .then(function () {
+                        //si recibe permisos, solicita el token
+                        console.log('Se han aceptado las notificaciones');
+                        return messaging.getToken();
+                    })
+                    //si recibe el token, lo almacena en db (o lo actualiza)
+                    .then(function (token) {
+                        if (token) {
+                            //console.log(token)
+                            SaveToken(token);
+                        } else {
+                            SaveToken('');
+                        }
+                    })
+                    .catch(function (err) {
+                        //si no acepta el permiso, igualmente guarda un string vacío
+                        console.log('No se ha recibido permiso: ');
+                        SaveToken('');
+
+                        //cuando se elimina el permiso, y vuelve a aceptarse se dispara un bug de firebase, pero igualmente en el catch viene el nuevo token
+                        const token = messaging.getToken();
+                        if (token) {
+
+                            token.then(function (result) {
+                                SaveToken(result);
+                            });
+                        }
+
+                        else {
+                            console.log('Solicite permisos nuevamente.');
+                        }
+                    });
+
+                //LISTENER PARA CADA VEZ QUE LLEGA UN MENSAJE
+                messaging.onMessage(function (payload) {
+                    console.log("New push notification")
+                    updateNotification();
+                });
+            }
+            // CLICK EN LA CAMPANA PARA VER NOTIFICACIONES
+            $('#bellWeb').on("click",function (e) {               
+                e.stopPropagation();
+                if ($('.noti-content').is(":visible")) {
+                    $('.noti-content').hide();
+                    count = parseInt($('span.count').html()) || 0;
+                    $('span.count', this).html('&nbsp;');
+                    updateNotification();
+                } else {
+                    $('.noti-content').show();
+                    var count = 0;
+                    count = parseInt($('span.count').html()) || 0;
+                    $('span.count', this).html('&nbsp;');
+                }
+            });
+
+            
+            //$('#bellMobile').on("click", function (e) {                  
+            //    e.stopPropagation();
+            //    if ($('.notiMobile-content').is(":visible")) {
+            //        $('.notiMobile-content').hide();
+            //        count = parseInt($('span.count').html()) || 0;
+            //        $('span.count', this).html('&nbsp;');
+            //        updateNotification();
+            //    } else {
+            //        $('.notiMobile-content').show();
+            //        var count = 0;
+            //        count = parseInt($('span.count').html()) || 0;
+            //        $('span.count', this).html('&nbsp;');
+            //    }
+            //})
+        }
+    });
+
+    function mobileNotifications() {
+        if ($('.notiMobile-content').is(":visible")) {
+            $('.notiMobile-content').hide();
+            count = parseInt($('span.count').html()) || 0;
+            $('span.count', this).html('&nbsp;');
+            updateNotification();
+        } else {
+            $('.notiMobile-content').show();
+            var count = 0;
+            count = parseInt($('span.count').html()) || 0;
+            $('span.count', this).html('&nbsp;');
+        }
+    }
+
+        // cada vez que llega un mensaje se dispara el metodo que consulta las notificaciones en db
+    function updateNotification() {
+        console.log("Recibiendo...")
+        $('span.count').empty();
+
+        $('#notiContent').empty();
+        $('#notiContent').append($('<li>Cargando...</li>'));
+        $.ajax({
+        type: 'POST',
+        url: "@Url.Action("GetPushNotifications", "Notificaciones")",
+        success: function (response) {
+            $('#notiContent').empty();
+        if (response.length == 0) {
+        $('#notiContent').append($('<li>No hay notificaciones.</li>'));
+        }
+            $.each(response, function (index, value) {
+                var date = new Date(parseInt(value.FECHAHORAINGRESO.substr(6)));
+                var options = {
+                    year: "2-digit", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit",};
+                var formatDate = date.toLocaleTimeString("en-US", options);
+                if (!value.LEIDA) {
+                    if (value.URL != "" && value.URL != null) {
+                        $('#notiContent').prepend($('<li onclick="(MarkAsRead(\'' + value.ID_NOTIFICACIONUSUARIOINFO + '\',\'' + value.URL + '\'))" style="text-overflow: ellipsis; margin-left:5%; border-bottom: 1px solid #e5e5e5; background-color:#e7f1fe;" id="' + value.ID_NOTIFICACIONUSUARIOINFO + '"onclick="MarkAsRead(this.id)">' +
+                            '<div><p style="font-size: 14px;"><b onclick="">' + value.TITULO + ' <br>' + formatDate + '</b></p>' + value.MENSAJE + '</div>' + '</li>'));
+                    } else {
+                        $('#notiContent').prepend($('<li onclick="(MarkAsRead(\'' + value.ID_NOTIFICACIONUSUARIOINFO + '\',\'' + value.URL + '\'))" style="text-overflow: ellipsis; margin-left:5%; border-bottom: 1px solid #e5e5e5; background-color:#e7f1fe;" id="' + value.ID_NOTIFICACIONUSUARIOINFO + '"onclick="MarkAsRead(this.id)">' +
+                            '<div><p style="font-size: 14px;"><b>' + value.TITULO + ' <br>' + formatDate + '</b></p>' + value.MENSAJE + '</div>' + '</li>'));
+                    }
+                    updateNotificationCount();
+                } else {
+                    if (value.URL != "" && value.URL != null) {
+                        $('#notiContent').append($('<li onclick="GoToUrl(\'' + value.URL + '\')" style="margin-left:5%; border-bottom: 1px solid #e5e5e5;" id="' + value.ID_NOTIFICACIONUSUARIOINFO + ';">' + '<div><p style="font-size: 14px;"><b>' +
+                            value.TITULO + ' <br> ' + formatDate + '</b></p>' + value.MENSAJE + '</div>' + '</li>'));
+                    } else {
+                        $('#notiContent').append($('<li onclick="GoToUrl(\'' + value.URL + '\')" style="margin-left:5%; border-bottom: 1px solid #e5e5e5;" id="' + value.ID_NOTIFICACIONUSUARIOINFO + ';">' + '<div><p style="font-size: 14px;"><b>' +
+                            value.TITULO + ' <br> ' + formatDate + '</b></p>' + value.MENSAJE + '</div>' + '</li>'));
+                    }
+                }
+            });
+        },
+        error: function (error) {
+        console.log(error);
+        }
+        })
+    }
+
+        function SaveToken(token) {
+        $.ajax({
+        type: 'POST',
+            url: "@Url.Action("SaveToken", "Notificaciones")",
+            data: { token: token },
+        success: function (response) {
+            //console.log('almacenado');
+        },
+        error: function (error) {
+        console.log(error);
+        }
+        })
+    }
+
+    function MarkAsRead(id, url) {
+         $.ajax({
+        type: 'POST',
+            url: "@Url.Action("MarkAsRead", "Notificaciones")",
+             data: { idNotification: id },
+        success: function (response) {
+            //console.log('leído');
+            if (url != "" && url != null && url != undefined) {
+                GoToUrl(url);
+            } else {
+                updateNotification();
+            }
+        },
+        error: function (error) {
+        console.log(error);
+        }
+        })
+        }
+
+        // CONTADOR QUE APARECE EN PANTALLA
+        function updateNotificationCount() {
+        var count = 0;
+        count = parseInt($('span.count').html()) || 0;
+        count++;
+        $('span.count').html(count);
+    }
+
+    function GoToUrl(url) {
+       //window.open("https://" + url, '_self');
+        window.open(url, '_self');
+    }
+
+    function clearCount() {
+        var count = 0;
+        count = parseInt($('span.count').html()) || 0;
+        $('span.count').html(count);
+    }
+
+    function checkBrowser() {
+        if (navigator.userAgent.match(/msie/i) || navigator.userAgent.match(/trident/i)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+   
+
+</script>

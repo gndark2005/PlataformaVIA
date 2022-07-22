@@ -1,0 +1,479 @@
+@model PlataformaVIA.Core.Domain.AdministradorDocumentos.Instructivos
+@using PlataformaVIA.Core.Domain.AdministradorDocumentos
+
+@{
+    ViewBag.Title = "Modificar Documento";
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript(true);
+}
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+
+            <h3 class="modal-title" id="myModalLabel">@Model.Titulo</h3>
+
+            @Html.HiddenFor(model => model.CodTipoInstructivo)
+            @Html.HiddenFor(model => model.CodCategoria)
+            @Html.HiddenFor(model => model.Categoria)
+            @Html.HiddenFor(model => model.CodTipoTerminal)
+
+            <span id="errorLBL" style="color:red;"></span>
+
+        </div>
+        <div class="modal-body">
+            <div>
+                <table id="imagenes-data-table"
+                       class="table table-striped table-bordered dataTableBotonesColocador"
+                       style="width:100%"></table>
+
+                <div class="table-responsive" style="margin:auto;">
+                    <table id="TableRow" class="ttable table-striped table-bordered dataTableSinBotones" style="width:100%">                                               
+                    </table>
+                </div>
+            </div>
+            
+            <br />
+            <br />
+            <div class="dvCentro">
+                @using (Html.BeginForm("_ModificarDocumento", "AdministradorDocumentos", FormMethod.Post, new { id = "EditarDocumento" }))
+                {
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.HiddenFor(model => model.IdInstructivo)
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CodTipoInstructivo)</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.CodTipoInstructivo, (IEnumerable<SelectListItem>)ViewBag.Documentos, "Seleccione...",
+                                 new { @class = "form-control .w-100", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.CodTipoInstructivo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Titulo)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                            @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Descripcion)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    if (Model.TipoInstructivo == TipoDocumentoEnum.ManejoTerminal.ToString() || Model.TipoInstructivo == TipoDocumentoEnum.Producto.ToString())
+                    {
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CodTipoTerminal)</div>
+                            <div class="col-md-6 ">
+                                @Html.DropDownListFor(model => model.CodTipoTerminal, (IEnumerable<SelectListItem>)ViewBag.Terminales, "Seleccione...",
+                                     new { @class = "form-control .w-100" })
+                                @Html.ValidationMessageFor(model => model.CodTipoTerminal, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CodCategoria)</div>
+                            <div class="col-md-6 ">
+                                @Html.DropDownListFor(model => model.CodCategoria, (IEnumerable<SelectListItem>)ViewBag.Categorias, "Seleccione...",
+                                        new { @class = "form-control .w-100" })
+                                @Html.ValidationMessageFor(model => model.CodCategoria, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayName("Imagen: ")</div>
+                        <div class="col-md-6 ">
+                            <img id="CargaDocumento" width="200" height="200" />
+                        </div>
+                    </div>
+
+                    <div style="visibility: hidden" id="divClone">
+                        @Html.DropDownListFor(model => model.TipoImagen, (IEnumerable<SelectListItem>)ViewBag.TipoImagen, new { @class = "form-control", @onchange="UpdateAtributo(this.id, this.value)", @disabled="disabled" })
+                    </div>
+                    
+                    <div class="row textoCentro marto15">
+                        <span class="col-md-9"></span>
+                        <input type="submit" id="btnAgregar" class="btn btn-primary mensajeNota col-md-3" value="Modificar" />
+                        <input type="button" class="btn btn-info mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Regresar" />
+                    </div>
+
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+        var ImagenesListVM;
+
+        function CargarImagen(ubicacionFile) {
+
+            var url = '/AdministradorDocumentos/MostrarArchivo/?ubicacion=' + ubicacionFile
+
+            $("#CargaDocumento").attr("src", url);
+    }
+
+    function ActualizarImagen(idDoc, ubicacion) {
+
+        var file = $('#fileUpload' + idDoc)[0].files[0]
+        if (file) {
+
+            var formData = new FormData();
+
+            formData.append("file", file);
+            formData.append("idDoc", idDoc);
+            formData.append("ubicacion", ubicacion);
+
+
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("ModificarImagen")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+                success: function (response) {
+                    console.log(response)
+                if (response == "ok") {
+                    ImagenesListVM.refresh();
+                } else ($("#errorLBL").html("error"))
+            },
+            error: function (error) {
+
+            }
+            });
+
+        } else {
+            alert('Debe subir un archivo')
+        }
+    }
+
+    function ModificarOrden(idDoc, orden, accion) {
+
+
+            var formData = new FormData();
+
+            formData.append("orden", orden);
+            formData.append("idDoc", idDoc);
+            formData.append("accion", accion);
+
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("ModificarOrden")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+                success: function (response) {
+                    console.log(response)
+                if (response == "ok") {
+                    ImagenesListVM.refresh();                      
+                } else ($("#errorLBL").html("error"))
+            },
+            error: function (error) {
+
+            }
+            });
+    }
+
+    function EliminarImagen(idDoc, ubicacion) {
+
+
+            var formData = new FormData();
+
+        formData.append("idDoc", idDoc);
+        formData.append("ubicacion", ubicacion);
+
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("EliminarImagen")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+                success: function (response) {
+                    console.log(response)
+                if (response == "ok") {
+                    ImagenesListVM.refresh();
+                } else ($("#errorLBL").html("error"))
+            },
+            error: function (error) {
+
+            }
+            });
+    }
+
+     function UpdateAtributo(id, value) {
+        var idDoc = id.split("ddl");
+        //console.log(idDoc)
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ModificarAtributoImagen")',
+            data: {
+                idDoc: idDoc[1],
+                value: value
+            },
+            dataType: 'json',           
+                success: function (response) {
+                    console.log(response)
+                if (response == "ok") {
+                    ImagenesListVM.refresh();
+                } else ($("#errorLBL").html("error"))
+            },
+            error: function (error) {
+
+            }
+            });
+    }
+
+    function UpdateURL(id) {
+
+        var value = $('#TB_URL' + id + '').val();
+      
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("ModificarImagenURL")',
+            data: {
+                idDoc: id,
+                value: value
+            },
+            dataType: 'json',           
+                success: function (response) {
+                    console.log(response)
+                if (response == "ok") {
+                    ImagenesListVM.refresh();
+                    $("#errorLBL").html("URL actualizada")
+                } else ($("#errorLBL").html("error"))
+            },
+            error: function (error) {
+
+            }
+            });
+    }
+
+    function AgregarNuevaImagen(idDoc, codTipoTerminal, ubicacion) {        
+        var file = $('#newFile' + idDoc)[0].files[0]
+        var url = $('#TB_url' + idDoc).val()
+        var tipo = $('#newddL' + idDoc).val()
+        if (file) {
+
+            var formData = new FormData();
+
+            formData.append("file", file);
+            formData.append("ubicacion", ubicacion);
+            formData.append("url", url);
+            formData.append("tipo", tipo);
+            formData.append("codInstructivoTerminal", codTipoTerminal);
+
+            $.ajax({
+            type: "POST",
+            url: '@Url.Action("AgregarImagen")',
+            data: formData,
+            dataType: 'json',
+            contentType: false,
+            processData: false,
+                success: function (response) {
+                    console.log(response)
+                    if (response == "ok") {
+                        DeleteRow(idDoc)
+                        ImagenesListVM.refresh();
+                    } else {
+                        $("#errorLBL").html("error")
+                    }
+            },
+            error: function (error) {
+
+            }
+            });
+
+        } else {
+            alert("Ninguna imagen seleccionada");
+        }
+    }
+
+    function AddRow(idDoc, codTipoTerminal, ubicacion) {
+        var $template = $("#TipoImagen").clone();
+        var $template = $("#TipoImagen").clone().prop('id', 'newddL' + idDoc); 
+        //TableRow
+        $('#TableRow').append('<tr style="text-align:center;" id="TR' + idDoc + '">'+
+            '<td> <input type="file" id="newFile' + idDoc +  '" name="newFile' + idDoc +  '" data-val="true" data-val-required="Seleccione un archivo" accept="image/*" /></td > ' +
+            '<td> <input type="text" id="TB_url' + idDoc + '"" name="TB_url' + idDoc +  '"" placeholder="url" class="form-control"/></td > ' +
+            '<td id="fillTmp"></td>' +
+            '<td>' +
+            '<button class= "btn btn-primary"  onclick = "AgregarNuevaImagen(\'' + idDoc + '\',\'' + codTipoTerminal + '\',\'' + ubicacion +'\')" > Agregar  </button >' +
+            '<button class= "btn btn-info mensajeNota"  onclick = "DeleteRow(\'' + idDoc + '\')" > Cancelar </button >' +
+            '</td ></tr> ');
+        $("#fillTmp").html($template)
+    }
+
+    function DeleteRow(id) {
+        $('#TR' + id + '').remove();
+    }
+
+    $(function () {
+        ImagenesListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#imagenes-data-table').DataTable({
+                        dom: '',
+                        "serverSide": true,
+                        "bSort": false,
+                        "processing": true,
+                        "rowHeight": 'auto',                      
+                        //"ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            type: 'POST',
+                            "url":
+                                "@Url.Action("GetImagenesDetalle", "AdministradorDocumentos")",
+                            "data": {idDoc: @Model.IdInstructivo},
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "title": "",
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class ='py-0 text text--color--white border border--right btndetalle iconosColocador' data-toggle='tooltip' title='Consultar documento' id='" + data.Ubicacion + "'  onclick='CargarImagen(this.id)' data-id=" + data.IdInstructivoTipoTerminal + "><i class='fa fa-search'></i></a>";
+                                }
+                            },
+                            //{
+                            //    "title": "ID",
+                            //    "data": "Id",
+                            //    "searchable": false,
+                            //    "visible": false
+                            //},
+                            {
+                                "title": "",
+                                "data": "Orden",
+                                "searchable": false
+                            },
+                            {
+                                "title": "Archivo",
+                                "data": "NombreArchivo",
+                                "searchable": false
+                            },
+                            {
+                                "title": "Subir imagen",
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    var idUpload = "fileUpload" + data.IdInstructivoTipoTerminal;
+                                    @{
+
+                                        if (Model.TipoInstructivo == TipoDocumentoEnum.Documento.ToString())
+                                        {
+                                             <text>return "<input type='file' id='" + idUpload + "' name='' accept='.pdf, image/*'/>"; </text>
+                                        }
+                                        else
+                                        {
+                                            <text>return "<input type='file' id='" + idUpload + "' name='' accept='image/*'/>"; </text>
+                                        }
+                                   }
+
+                                }
+                            },
+                            {
+                                "title": "Tipo Archivo",
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    if (@Html.Raw(Json.Encode(Model.MultiplesArchivos))) {
+                                        $("#TipoImagen").attr("disabled", false)
+                                    } else{
+                                        $("#TipoImagen").attr("disabled", true)
+                                    }
+                                    var atribute = data.Atributo;                                    
+                                    var $divClone = $("#divClone").clone()
+                                    var $template = $("#TipoImagen").clone().prop('id', 'ddl' + data.IdInstructivoTipoTerminal); 
+                                    $template.find("option[value = '" + atribute + "']").attr("selected", "selected");
+                                    var returnDiv = $divClone.html($template);                                    
+                                    return returnDiv.html();                                                                                                                                                                         
+                                },                                
+                            },
+                            {
+                                "title": "URL",
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+
+                                    var urlData = "";
+                                    if (data.UrlImagen != null) {
+                                        urlData = data.UrlImagen;
+                                    }
+
+                                    console.log(urlData)
+                                                                      
+                                    if (@Html.Raw(Json.Encode(Model.MultiplesArchivos))) {
+                                        return'<div class="row" style="padding-left:7%">'+
+                                            '<input type="text" style="width:70%;"  id="TB_URL' + data.IdInstructivoTipoTerminal + '" class="form-control" value="' + urlData + '"/>' +
+                                            '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador" data-toggle="tooltip" title="Actualizar URL"  id="' + data.IdInstructivoTipoTerminal + '" onclick="UpdateURL(this.id)"><i class="fa fa-refresh" /></button>' +
+                                            '</div>'
+                                    } else{
+                                        return '<input type="text" id="TB_URL' + data.IdInstructivoTipoTerminal + '" class="form-control" disabled/>'
+                                    }
+                                                                                                                                                                                                          
+                                }, 
+                            },
+                            {
+                                "title": "Acciones",
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    
+                                    if (@Html.Raw(Json.Encode(Model.MultiplesArchivos))) {
+                                        return '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador" data-toggle="tooltip" title="Actualizar Imagen"  id="' + data.IdInstructivoTipoTerminal + '" onclick="ActualizarImagen(\'' + data.IdInstructivoTipoTerminal + '\',\'' + data.Ubicacion + '\')"><i class="fa fa-photo" /></button>' +
+                                            '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador" data-toggle="tooltip" title="Subir Imagen" id="' + data.IdInstructivo + '" onclick="ModificarOrden(\'' + data.IdInstructivo + '\',\'' + data.Orden + '\',\'' + 0 + '\')"><i class="fa fa-toggle-up" /></button>' +
+                                            '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador " data-toggle="tooltip" title="Bajar Imagen" id="' + data.IdInstructivo + '" onclick="ModificarOrden(\'' + data.IdInstructivo + '\',\'' + data.Orden + '\',\'' + 1 + '\')"><i class="fa fa-toggle-down" /></button>' +
+                                            '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador " data-toggle="tooltip" title="Eliminar Imagen" id="' + data.IdInstructivoTipoTerminal + '" onclick="EliminarImagen(\'' + data.IdInstructivoTipoTerminal + '\',\'' + data.Ubicacion + '\')"><i class="fa fa-trash" /></button>' +
+                                            //'<button id="' + data.IdInstructivoTipoTerminal + '" onclick="AgregarNuevaImagen(\'' + data.IdInstructivoTipoTerminal + '\',\'' + data.IdInstructivo + '\',\'' + data.Ubicacion +'\')">Agregar</button>';
+                                            '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador " data-toggle="tooltip" title="Agregar Imagen" id="' + data.IdInstructivoTipoTerminal + '" onclick="AddRow(\'' + data.IdInstructivoTipoTerminal + '\',\'' + data.IdInstructivo + '\',\'' + data.Ubicacion + '\')"><i class="fa fa-plus" /></button>';
+                                    } else {
+                                        return '<button class="py-0 text text--color--blue border border--right btndetalle iconosColocador" data-toggle="tooltip" title="Actualizar Imagen"  id="' + data.IdInstructivoTipoTerminal + '" onclick="ActualizarImagen(\'' + data.IdInstructivoTipoTerminal + '\',\'' + data.Ubicacion + '\')"><i class="fa fa-photo" /></button>'
+                                    }
+                                }
+                            },
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]],
+                    });
+                },
+                refresh: function () {
+                    dt.ajax.reload();
+                   
+                }
+        };
+            // initialize the datatables
+        ImagenesListVM.init();
+        
+    });
+
+</script>
+}
+
+

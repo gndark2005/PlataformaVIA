@@ -1,0 +1,33 @@
+﻿@model IEnumerable<PlataformaVIA.Core.Domain.Seguridad.TipoUsuario>
+
+@{
+    ViewBag.Title = "Tipos de Usuario";
+}
+
+<h2>Tipos de Usuario</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nombre)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.Id_TipoUsuario }) |
+            @Html.ActionLink("Details", "Details", new { id=item.Id_TipoUsuario }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.Id_TipoUsuario })
+        </td>
+    </tr>
+}
+
+</table>

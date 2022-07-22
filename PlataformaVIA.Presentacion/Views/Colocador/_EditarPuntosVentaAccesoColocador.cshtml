@@ -1,0 +1,164 @@
+@*<div class="col-md-12">*@
+<div class="panel panel-primary list-panel" id="list-panel">
+    <div class="panel-heading list-panel-heading">
+        <h1 class="panel-title list-panel-title">Puntos de Venta con acceso</h1>
+    </div>
+    <form id="frmAccesosColocador">
+        @Html.AntiForgeryToken()
+        <div class="panel-body">
+            <div>
+                <table id="puntosacceso-data-table"
+                       class="table table-striped table-bordered dataTableSinBotones"
+                       style="width:100%"></table>
+            </div>           
+        </div>
+    </form>
+</div>
+@*</div>*@
+
+<script type="text/javascript">
+        var puntosventaaccesoListVM;
+        var puntosAsignados = [];
+    $(function () {
+
+        $(document).on("preInit.dt", function () {
+            var searchDelay = null;
+            var $sb = $(".dataTables_filter input[type='search']");
+            $sb.off();
+            $sb.on("keyup", function (evtObj) {
+                var search = $('div.dataTables_filter input').val();
+
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    if (search != null) {
+                        dt.search(search).draw();
+                    }
+                }, 1000);
+            });
+        });
+
+                puntosventaaccesoListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#puntosacceso-data-table').DataTable({
+                        "serverSide": true,
+                        "bSort": false,
+                        "processing": true,
+                        "scrollX": true,
+                        "rowHeight": 'auto',
+                        //"ordering": false,
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            type: 'POST',
+                            "url":
+                                "@Url.Action("GetFiltroBasicoPuntosAcceso", "Colocador")",
+                            "data": function (data) {
+                                data.idcolocador = $("#Id").val();
+                            }
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    var check = '';
+                                    var estadoActual = validarSiTieneCambios(data.Id, data.AsignadoAColocador);
+                                    if (estadoActual == true) {
+                                        check = 'checked';
+                                    }
+
+                                    return "<input type='checkbox' id='cb" + data.Id + "'  " + check + "  value='" + data.Id +"' onclick='almacenadoTemporarlDeAsignaciones(this)' />";
+                                }
+                            },
+                            {
+                                "title": "ID",
+                                "data": "Id",
+                                "searchable": false,
+                                "visible": false
+                            },
+                            {
+                                "title": "Código Punto Venta",
+                                "data": "CodigoPuntoVenta",
+                                "searchable": true
+                            },
+                            {
+                                "title": "Nombre",
+                                "data": "Nombre",
+                                "searchable": true
+                            }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                }
+            };
+            // initialize the datatables
+                puntosventaaccesoListVM.init();
+    });
+
+    function almacenadoTemporarlDeAsignaciones(obj) {
+                var encontrado = false;
+                for (var i = 0; i < puntosAsignados.length; i++) {
+                    if (puntosAsignados[i].CodPuntoDeVenta == obj.value) {
+                        if ((puntosAsignados[i].Asignado == true && obj.checked == false) || (puntosAsignados[i].Asignado == false && obj.checked == true)) {
+                            puntosAsignados[i].Asignado = obj.checked;
+                            encontrado = true;
+                        }
+                    }
+                }
+            if (encontrado == false) {
+                puntosAsignados.push({ CodPuntoDeVenta: obj.value, Asignado: obj.checked, codColocador: $("#Id").val() });
+             }
+        }
+
+    function otorgarAcceso() {
+        $("#divMensajeAccesos").removeClass('text text-danger');
+        $("#divMensajeAccesos").removeClass('text text-success');
+        $("#divMensajeAccesos").empty();
+
+        if ($('#OtorgarAccesoGlobal').val() == "True") {
+            puntosAsignados = [];
+        } else if ($('#OtorgarAccesoGlobal').val() == "False") {
+            if ( puntosAsignados.length == 0) {
+                $("#divMensajeAccesos").empty();
+                $("#divMensajeAccesos").addClass('text text-danger');
+                $("#divMensajeAccesos").html('Debe seleccionar al menos un punto de venta');
+                return false;
+            } 
+        } else {
+            $("#divMensajeAccesos").empty();
+            $("#divMensajeAccesos").addClass('text text-danger');
+            $("#divMensajeAccesos").html('Debe seleccionar una opción');
+            return false;
+        }
+        var request = { asignaciones: puntosAsignados, accesoGlobal: $("#OtorgarAccesoGlobal").val(), codColocador: $("#Id").val() };
+            request.__RequestVerificationToken = $('#frmAccesosColocador input[name="__RequestVerificationToken"]').val();
+            var url = '@Url.Action("_OtorgarAccesoIndividual")';
+             $.post(url, request )
+            .done(function (data) {
+                if (data.Error == false) {
+                    $("#divMensajeAccesos").empty();
+                    $("#divMensajeAccesos").addClass('text text-success');
+                    $("#divMensajeAccesos").html('Se ha guardado correctamente');
+                    $("#btnOtorgarAcceso").hide();
+                    $("#btnCancelarCambios").hide();
+                    $("#btnRegresarAPrincipal").show();  
+                } else {
+                    $("#divMensajeAccesos").empty();
+                    $("#divMensajeAccesos").addClass('text text-danger');
+                    $("#divMensajeAccesos").html('Ha ocurrido un error: ' + data.Mensaje);
+                }
+                });
+    }
+
+    function validarSiTieneCambios(codPuntoDeVenta, asignado) {
+        for (var i = 0; i < puntosAsignados.length; i++) {
+            if (puntosAsignados[i].CodPuntoDeVenta == codPuntoDeVenta) {
+                asignado = puntosAsignados[i].Asignado;
+            }
+        }
+        return asignado;
+    }
+</script>

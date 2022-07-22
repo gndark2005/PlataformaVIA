@@ -1,0 +1,205 @@
+@*@model IEnumerable<PlataformaVIA.Core.Domain.PuntoDeVenta.PuntodeVenta>*@
+
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+
+<div class="panel panel-primary list-panel" id="list-panel">
+    @*<h1 class="panel-title list-panel-title">Mis Ajustes</h1>*@
+    @Html.Action("_BusquedaAvanzadaPagosFiltros")
+    <div class="panel-body">
+        <div>
+            <table id="pagos-data-table"
+                   class="table table-striped table-bordered"
+                   style="width:100%"></table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-detalleAjuste">
+    <div id="modal-detalleAjuste-container">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+                    <h3 class="modal-title" id="myModalLabel">Detalle de ajuste</h3>
+                </div>
+                <div id="modal-detalleAjuste-body" class="modal-body">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+            var pagosListVM;
+
+          
+            function DetallePago(id) {               
+                var url = '@Url.Action("_DetalleAjuste", "PuntoDeVenta")';
+                $.get(url + '?id=' + id, function (data) {
+                    $('#modal-detalleAjuste-body').html(data);
+                    $('#modal-detalleAjuste').modal('show');
+                });
+            };
+
+    $(function () {
+        $(document).on("preInit.dt", function () {
+            var searchDelay = null;
+            var $sb = $(".dataTables_filter input[type='search']");
+            $sb.off();
+            $sb.on("keyup", function (evtObj) {
+                var search = $('div.dataTables_filter input').val();
+
+                clearTimeout(searchDelay);
+
+                searchDelay = setTimeout(function () {
+                    if (search != null) {
+                        dt.search(search).draw();
+                    }
+                }, 1000);
+            });
+        });
+
+            pagosListVM = {
+                dt: null,
+
+                init: function () {
+                    dt = $('#pagos-data-table').DataTable({
+                        dom: 'Blrtip',
+                        "bSort": false,
+                        "responsive": false,
+                        "scrollX": true,
+                        buttons: [{
+                            "extend": 'excelHtml5',
+                            "className": 'btn btn-secondary',
+                            "title": 'Ajustes',
+                            "text": 'Exportar a excel',
+                            "action": newExportAction
+                        }],
+                        "serverSide": true,
+                        "processing": true,
+                        "rowHeight": 'auto',
+                        "oLanguage": language['dataTableParameters'],
+                        "ajax": {
+                            "url":
+                                "@Url.Action("GetFiltroAjustesFiltro", "RepresentanteLegal")",
+                            "data": function (data) {
+                                data.CodCicloFacturacion = $("#CodCicloFacturacion").val();
+                                data.CodTipoFiltro = $("#CodTipoFiltro").val();
+                                data.Valor = $("#Valor").val();
+                            },
+                            "type": "POST"
+                        },
+                        "columns": [
+                            {
+                                className: 'text-center',
+                                "mData": null,
+                                "bSortable": false,
+                                "mRender": function (data, type, full) {
+                                    return "<a class ='py-0 text text--color--white border border--right btndetalle' onclick='(DetallePago(" + data.Id + "))' data-id=" + data.Id +"><i class='fa fa-search'></i></a>";
+                                }
+                            },
+                            {
+                                "title": "ID",
+                                "data": "Id",
+                                "searchable": false,
+                                "visible": false
+                            },
+                            {
+                                "title": "Fecha Hora",
+                                "data": "FechaHora",
+                                "render": function (data) {
+                                    return moment(data).format('MM/DD/YYYY HH:mm');
+                                },
+                                "searchable": true
+                            },
+                            {
+                                "title": "Valor",
+                                "data": "Valor"
+                            },
+                            {
+                                "title": "Descripción de Ajuste",
+                                "data": "Descripcion",
+                                "searchable": true
+                            },
+                        ],
+                        "lengthMenu": [[10, 25, 50, 100], [10, 25, 50, 100]]
+                    });
+                },
+                refresh: function () {
+                    $.validator.unobtrusive.parse($('#frmPaymentsAdvancedSearch')); //Importante agregar para validación en este tipo de vistas parciales
+                    if ($("#frmPaymentsAdvancedSearch").valid()) {
+                        dt.ajax.reload();
+                    }
+                }
+            };
+
+            
+            //var form = $("#frmPaymentsAdvancedSearch");
+            //form.validate();
+
+          //  Manejador de botón de búsqueda avanzada
+            $('#btnBuscar').on("click", pagosListVM.refresh);
+            //$('#btnEjecutarBusquedaAvanzada').on("click",  pagosListVM.refresh);
+
+            // initialize the datatables
+            pagosListVM.init();
+
+    });
+
+    var oldExportAction = function (self, e, dt, button, config) {
+        if (button[0].className.indexOf('buttons-excel') >= 0) {
+            if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+            }
+            else {
+                $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            }
+        } else if (button[0].className.indexOf('buttons-print') >= 0) {
+            $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+        }
+    };
+
+    var oldExportAction = function (self, e, dt, button, config) {
+        if (button[0].className.indexOf('buttons-excel') >= 0) {
+            if ($.fn.dataTable.ext.buttons.excelHtml5.available(dt, config)) {
+                $.fn.dataTable.ext.buttons.excelHtml5.action.call(self, e, dt, button, config);
+            }
+            else {
+                $.fn.dataTable.ext.buttons.excelFlash.action.call(self, e, dt, button, config);
+            }
+        } else if (button[0].className.indexOf('buttons-print') >= 0) {
+            $.fn.dataTable.ext.buttons.print.action(e, dt, button, config);
+        }
+    };
+
+    var newExportAction = function (e, dt, button, config) {
+        var self = this;
+        var oldStart = dt.settings()[0]._iDisplayStart;
+
+        dt.one('preXhr', function (e, s, data) {
+            //carga todos los datos del server con el max value
+            data.start = 0;
+            data.length = 2147483647;
+
+            dt.one('preDraw', function (e, settings) {
+                // Call the original action function 
+                oldExportAction(self, e, dt, button, config);
+
+                dt.one('preXhr', function (e, s, data) {
+
+                    settings._iDisplayStart = oldStart;
+                    data.start = oldStart;
+                });
+
+
+                setTimeout(dt.ajax.reload, 0);
+
+
+                return false;
+            });
+        });
+
+
+        dt.ajax.reload();
+    };
+
+</script>

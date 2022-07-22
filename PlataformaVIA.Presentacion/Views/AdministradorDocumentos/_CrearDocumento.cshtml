@@ -1,0 +1,254 @@
+@model PlataformaVIA.Core.Domain.AdministradorDocumentos.Instructivos
+@using PlataformaVIA.Core.Domain.AdministradorDocumentos
+
+@{
+    ViewBag.Title = "Crear Documento";
+    Html.EnableClientValidation(true);
+    Html.EnableUnobtrusiveJavaScript(true);
+}
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            <h3 class="modal-title" id="myModalLabel">Crear Instructivo</h3>
+        </div>
+
+
+        @using (Html.BeginForm("_CrearDocumento", "AdministradorDocumentos", FormMethod.Post, new { id = "addDocumento", enctype = "multipart/form-data" }))
+        {
+
+
+
+            <div class="modal-body">
+                <div class="dvCentro">
+
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    @Html.EditorFor(model => model.URL, new { htmlAttributes = new { @class = "form-control .w-100", @style = "display: none" } })
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CodTipoInstructivo)</div>
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.CodTipoInstructivo, (IEnumerable<SelectListItem>)ViewBag.Documentos,
+                            new { @class = "form-control .w-100", @onchange = "ShowOptions(this.value)" })
+                            @Html.ValidationMessageFor(model => model.CodTipoInstructivo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Titulo)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Titulo, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                            @Html.ValidationMessageFor(model => model.Titulo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.Descripcion)</div>
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control .w-100" } })
+                            @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div id="seccionTerminal" class="dl-horizontal dlColocador">
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CodTipoTerminal)</div>
+                            <div class="col-md-6 ">
+                                @Html.DropDownListFor(model => model.CodTipoTerminal, (IEnumerable<SelectListItem>)ViewBag.Terminales, "Seleccione...",
+              new { @class = "form-control .w-100" })
+                                @Html.ValidationMessageFor(model => model.CodTipoTerminal, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+
+                        <br />
+                    </div>
+
+                    <div id="seccionCategoria" class="dl-horizontal dlColocador">
+                        <div class="row">
+                            <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.CodCategoria)</div>
+                            <div class="col-md-6 ">
+                                @Html.DropDownListFor(model => model.CodCategoria, (IEnumerable<SelectListItem>)ViewBag.Categorias, "Seleccione...",
+                 new { @class = "form-control .w-100" })
+                                @Html.ValidationMessageFor(model => model.CodCategoria, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <br />
+
+
+
+
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="TableDocuments" class="table table-striped table-bordered dataTableSinBotones">
+                    <tr style="text-align:center; width:90%; margin:auto; padding:10%">
+                        <th>Archivo</th>
+                        <th>URL</th>
+                        <th>Tipo Archivo</th>
+                        <th id="docOptions">Acción</th>
+                    </tr>
+                    <tr id="0">
+                        <td><input type="file" id="Files" name="Files" data-val="true" data-val-required="Seleccione un archivo" /></td>
+                        <td style="text-align:center;"><input id="TB0" type="text" class="form-control" /></td>
+                        <td id="template">@Html.DropDownListFor(model => model.TipoImagen, (IEnumerable<SelectListItem>)ViewBag.TipoImagen, new { @class = "form-control", @disabled = "disabled" })</td>
+                        <td style="text-align:center;" id="docActions">
+                            <a class='btn' data-toggle='tooltip' title='Agregar nuevo' onclick="CreateRow(this)"><i class='fa fa-plus'></i></a>
+                            <a class='btn' data-toggle='tooltip' title='Eliminar' onclick="DeleteRow(this)"><i class='fa fa-trash'></i></a>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-body">
+                <div class="dvCentro">
+                    <div class="row textoCentro marto15">
+                        <span class="col-md-4"></span>
+                        <input type="button" id="btnAgregar" class="btn btn-primary mensajeNota col-md-3" value="Crear" onclick="SubmitForm()" />
+                        <input type="button" class="btn btn-danger mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Cancelar" />
+                    </div>
+                    <div class="row textoCentro">
+                        <p class="resultadoGuardado" id="pMensajeResultado"></p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
+<script>
+
+    var idRows = 0;
+
+    $("#docOptions").hide();
+    $("#docActions").hide();
+    $("#seccionTerminal").hide();
+    $("#seccionCategoria").hide();
+    var form = $("#addDocumento");
+
+    function CreateRow(e) {
+        var id = parseInt(idRows) + 1;
+
+        var idTB = "fillTB" + id;
+        var idDDL = "fillTmp" + id;
+
+        var $template = $("#TipoImagen").clone();
+        var $textbox = $("#TB0").clone().prop('id', 'TB' + id);;
+        //console.log($template)
+        //updateTemplateElements($template)
+
+        $('#TableDocuments').append('<tr style="text-align:center;" id=' + id + '><td><input type="file" id="Files" name="Files" data-val="true" data-val-required="Seleccione un archivo" accept="image/*"/></td>' +          
+            '<td id=' + idTB + ' ></td>' +
+            '<td id=' + idDDL + ' ></td>' +           
+            '<td>'+
+            '<a class= "btn" data-toggle="tooltip" title = "Agregar nuevo" onclick = "CreateRow(this)" > <i class="fa fa-plus"></i></a >'+
+            '<a class= "btn" data-toggle="tooltip" title = "Agregar nuevo" onclick = "DeleteRow(this)" > <i class="fa fa-trash"></i></a >' +
+            '</td ></tr> ');
+        $("#" + idTB + "").html($textbox)
+        $("#" + idDDL + "").html($template)
+        idRows++;
+    }
+
+    function SubmitForm() {
+        var urls = "";
+        for (var i = 0; i <= idRows; i++) {
+            urls = urls + ',' + $('#TB' + i + '').val();
+        }
+
+        $("#URL").val(urls);
+        $("#addDocumento").submit();
+
+    }
+
+    function DeleteRow(e) {
+        var id = parseInt(e.closest('tr').id);
+        console.log(e.closest('tr').id);
+        if (id != 0) {
+            $('#' + id + '').remove();
+            idRows--;
+        }
+    }
+
+    function ShowOptions(idTipo) {
+
+        $("#Files").val("");
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("MostrarOpcionesCreacion")',
+            data: { idDoc: idTipo },
+            dataType: 'json',
+                success: function (response) {
+                    if (response == true) {
+                        $("#docOptions").show();
+                        $("#docActions").show();
+                        $("#TipoImagen").attr("disabled", false)
+                        $("#TB0").attr("disabled", false);
+                        $("#seccionTerminal").hide();
+                        $("#seccionCategoria").hide();
+                        $('#Files').attr("accept", "image/*")
+                        if (idTipo == @Html.Raw(Json.Encode((int)TipoDocumentoEnum.Producto)) || idTipo == @Html.Raw(Json.Encode((int)TipoDocumentoEnum.ManejoTerminal))) {
+                            $("#seccionTerminal").show();
+                            $("#seccionCategoria").show();
+                            $("#TipoImagen").find("option[value = '" + @Html.Raw(Json.Encode(Enum.GetName(typeof(TipoImagenEnum), 1))) + "']").attr("selected", "selected");
+                            $("#TipoImagen").attr("disabled", true);
+                            $("#TB0").attr("disabled", true);
+                        }
+                        addValidation();
+                    } else {
+                        ClearTable();
+                        $("#docOptions").hide();
+                        $("#docActions").hide();
+                        $("#seccionTerminal").hide();
+                        $("#TipoImagen").find("option[value = '" + @Html.Raw(Json.Encode(Enum.GetName(typeof(TipoImagenEnum), 1))) + "']").attr("selected", "selected");
+                        $("#TipoImagen").attr("disabled", true)
+                        $("#TB0").attr("disabled", true);
+                        if (idTipo == @Html.Raw(Json.Encode((int)TipoDocumentoEnum.Noticias))) {
+                            $('#Files').attr("accept", "image/*")
+                        } else {
+                            $('#Files').attr("accept", ".pdf, image/*")
+                        }
+                    }
+            },
+            error: function (error) {
+
+            }
+            });
+    }
+
+    function ClearTable(){
+        for (var i = 1; i <= idRows; i++) {
+            $('#' + i + '').remove();
+        }
+    }
+
+    function addValidation() {
+        
+        $("#addDocumento").validate({
+            rules: {
+                CodTipoTerminal: {
+                    min: 3
+                }
+            },
+            messages: {
+                CodTipoTerminal: {
+                    min: "Por favor ingresar un valor"
+                }
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,150 @@
+@{
+    /**/
+
+    ViewBag.Title = "Inicio Representante Legal";
+}
+
+
+@* Adjust the viewport width as per device width for mobile *@
+<meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+<div class="wrapper mt-lg-3">
+    <div class="tab-content" id="nav-tabContent-user">
+        <div class="tab-pane fade show active" id="tab-inicio" role="tabpanel"  aria-labelledby="tabs-inicio">
+            <div class="b-inicio ">
+                <div class="row align-items-lg-star">
+
+                    <div class="row col-md-12 pr-lg-0" style="margin-left:0.2%">
+                        <div class="col-md-6 pr-lg-0 mt-1 visible-md visible-lg">
+                            <div class="wrapper bg bg--color--blue p-3">
+                                <div class="row" style="text-align:center">
+                                    <div class="col-4">
+                                        <p class="title h2 text text--color--yellow text-uppercase mb-0">IGT</p>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="row" style="align-items:center; text-align:center">
+                                            <p class="text text--color--white mb-0">Fecha de pago IGT: &nbsp;</p>
+                                            <p id="pIGT" class="text text--color--white mb-0"></p>
+                                        </div>
+                                        <div class="row" style="align-items:center">
+                                            <p class="text text--color--white mb-0">Saldo Facturación: &nbsp;</p>
+                                            <p id="pPagoIGT" class="text text--color--white mb-0"></p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pr-lg-0 mt-1 visible-sm visible-xs">
+                            <div class="wrapper bg bg--color--blue p-3">
+                                <div style="text-align:center">
+                                    <div>
+                                        <p class="title h2 text text--color--yellow text-uppercase mb-0">IGT</p>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <p class="text text--color--white mb-0">Fecha de pago IGT: &nbsp;</p>
+                                            <p id="pIGTMobile" class="text text--color--white mb-0"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text text--color--white mb-0">Saldo Facturación: &nbsp;</p>
+                                            <p id="pPagoIGTMobile" class="text text--color--white mb-0"></p>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 pr-lg-0 mt-1 visible-md visible-lg">
+                            <div class="wrapper bg bg--color--blue p-3">
+                                <div class="row" style="text-align:center">
+                                    <div class="col-4">
+                                        <p class="title h2 text text--color--yellow text-uppercase mb-0">FIDUCIA</p>
+                                    </div>
+                                    <div class="col-8">
+                                        <div class="row" style="align-items:center">
+                                            <p class="text text--color--white mb-0">Fecha de pago fiducia:  &nbsp;</p>
+                                            <p id="pFiducia" class="text text--color--white mb-0"></p>
+                                        </div>
+                                        <div class="row" style="align-items:center">
+                                            <p class="text text--color--white mb-0">Saldo Facturación: &nbsp;</p>
+                                            <p id="pPagoFiducia" class="text text--color--white mb-0"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 pr-lg-0 mt-1 visible-xs visible-sm">
+                            <div class="wrapper bg bg--color--blue p-3 text-center">
+                                <div class="" style="text-align:center">
+                                    <div>
+                                        <p class="title h2 text text--color--yellow text-uppercase mb-0">FIDUCIA</p>
+                                    </div>
+                                    <div>
+                                        <div>
+                                            <p class="text text--color--white mb-0">Fecha de pago fiducia: &nbsp;</p>
+                                            <p id="pFiduciaMobile" class="text text--color--white mb-0"></p>
+                                        </div>
+                                        <div>
+                                            <p class="text text--color--white mb-0">Saldo Facturación: &nbsp;</p>
+                                            <p id="pPagoFiduciaMobile" class="text text--color--white mb-0"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-none d-lg-block col-md-12 pr-lg-0" style="width:100%">
+                        <br />
+                        @Html.Action("_Carousel", "Home")
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(function () {
+            CargarSaldos();
+        });
+
+        function CargarSaldos() {
+            $.ajax({
+                type: "post",
+                url: "@Url.Action("GetSaldosFacturacion")",
+                success: function (data) {
+
+                    //Fecha fiducia
+                    var date = new Date(parseInt(data.FechaFiducia.substr(6)));
+                    
+                    var options = {
+                        year: "numeric", month: "long", day: "2-digit"
+                    };
+                    var formatDate = date.toLocaleDateString("es-ES", options);
+
+                    $("#pFiducia").html(formatDate)
+                    $("#pFiduciaMobile").html(formatDate)
+
+                    //Fecha fiducia
+                    date = new Date(parseInt(data.FechaIGT.substr(6)));
+                    options = {
+                        year: "numeric", month: "long", day: "2-digit"
+                    };
+                    formatDate = date.toLocaleDateString("es-ES", options);
+
+                    $("#pIGTMobile").html(formatDate)
+
+                    //PAGOS
+                    $("#pPagoFiducia").html('$' + data.SaldoFiducia.toLocaleString())
+                    $("#pPagoIGT").html('$' + data.SaldoIGT.toLocaleString())
+                    $("#pPagoFiduciaMobile").html('$' + data.SaldoFiducia.toLocaleString())
+                    $("#pPagoIGTMobile").html('$' + data.SaldoIGT.toLocaleString())
+
+                }
+            });
+        }
+    </script>
+}

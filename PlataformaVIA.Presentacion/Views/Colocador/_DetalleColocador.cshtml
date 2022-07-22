@@ -1,0 +1,142 @@
+@model PlataformaVIA.Core.Domain.RepresentanteLegal.Colocador
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" type="button" data-dismiss="modal">×</button>
+            <h3 class="modal-title" id="myModalLabel">Detalle Colocador @Html.DisplayFor(model => model.Numero)</h3>
+        </div>
+        <div class="modal-body">
+            <div class="w-75 m-auto">
+                @Html.HiddenFor(model => model.Id)
+
+                @if (User.IsInRole("Funcionario") || User.IsInRole("FuncionarioExterno"))
+                {
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.RazonSocial)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.RazonSocial)
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.NIT)</div>
+                        <div class="col-md-6 ">
+                            @Html.DisplayFor(model => model.NIT)
+                        </div>
+                    </div>
+                }
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Nombres)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Nombres)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Apellidos)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Apellidos)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.TipoIdentificacion)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.TipoIdentificacion)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.NumeroIdentificacion)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.NumeroIdentificacion)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CiudadExpedicionCedula)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.CiudadExpedicionCedula)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Genero)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Genero)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.FechaNacimiento)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.FechaNacimiento)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CiudadNacimiento)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.CiudadNacimiento)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.DireccionVendedor)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.DireccionVendedor)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CiudadVendedor)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.CiudadVendedor)
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Telefono)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Telefono)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.Celular)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.Celular)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.TipoSangre)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.TipoSangre)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.TipoVendedor)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.TipoVendedor)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold">@Html.DisplayNameFor(model => model.CorreoElectronico)</div>
+                    <div class="col-md-6 ">
+                        @Html.DisplayFor(model => model.CorreoElectronico)
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4  text font-weight-bold"> @Html.DisplayNameFor(model => model.OtorgarAccesoGlobal)</div>
+                    <div class="col-md-6 ">
+                        @Html.DropDownListFor(model => model.OtorgarAccesoGlobal, (IEnumerable<SelectListItem>)ViewBag.OtorgarAcceso, "Seleccione...", new { @class = "form-control .w-100", disabled = "disabled" })
+                    </div>
+                </div>
+
+                    <dd>
+                        @Html.DropDownListFor(model => model.OtorgarAccesoGlobal, (IEnumerable<SelectListItem>)ViewBag.OtorgarAcceso, "Seleccione...", new { @class = "form-control .w-100", disabled = "disabled" })
+                    </dd>
+                </dl>
+            </div>
+            @if (Model.OtorgarAccesoGlobal == false)
+            {
+                @Html.Action("_PuntosVentaAccesoColocador", "Colocador")
+            }
+
+            <div class="row textoCentro marto15">
+                <span class="col-md-6"></span>
+                <input type="button" class="btn btn-info mensajeNota col-md-3" data-dismiss="modal" aria-label="Close" value="Regresar" />
+            </div>
+        </div>
+    </div>
+</div>

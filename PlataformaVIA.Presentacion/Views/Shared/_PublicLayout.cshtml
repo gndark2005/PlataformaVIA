@@ -1,0 +1,64 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    @* Adjust the viewport width as per device width for mobile *@
+    <meta name="viewport" content=" width=device-width, initial-scale=1.0" />
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-152604341-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-152604341-1');
+    </script>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=11">
+    <title>@ViewBag.Title - Plataforma VIA</title>
+    <link href="@Url.Content("~/Content/img/iconVia.ico")" rel="shortcut icon" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row s-header">
+            <div class="container">
+                <div class="row pl-1">
+                    <div class="col-xs-6 logo">
+                        <a href="@Url.Action("Login","Account" )"><img src="@Url.Content("~/Content/img/logo.png")"></a>
+                        <h4 class="text font-weight-bold  text--color--white">Plataforma virtual</h4>
+                    </div>
+                    <div class="col-xs-6 iconos visible-lg visible-md">
+                        <div class="textoCentro">
+                            <a href="@Url.Action("Contact","Home" )"><img src="@Url.Content("~/Content/img/contacto.png")" alt="CONTÁCTANOS" title="contacto"> </a>
+                            <div class="text text-default text-center">
+                                <span class="text text--color--white">CONTÁCTANOS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-6 iconos visible-sm visible-xs" style="position:absolute; top:0; right:0;">
+                        <div class="textoCentro">
+                            <a href="@Url.Action("Contact","Home" )"><img src="@Url.Content("~/Content/img/contacto.png")" alt="CONTÁCTANOS" title="contacto"> </a>
+                            <div class="text text-default text-center">
+                                <span class="text text--color--white">CONTÁCTANOS</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container" >
+            @RenderBody()
+            @*<footer class="s-header" style="position:fixed; bottom: 0; left: 0; right:0; z-index: 100;">
+                @Html.Action("FooterPage", "Common")
+            </footer>*@
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
